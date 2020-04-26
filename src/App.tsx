@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+import logo from './logo.svg';
 import "./App.css";
+type appStateType = { test: string };
 
-class App extends Component {
-  constructor(props) {
+export class App extends Component<{}, appStateType> {
+  constructor(props: appStateType) {
     super(props);
     this.state = { test: "Start" };
   }

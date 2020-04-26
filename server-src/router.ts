@@ -1,8 +1,8 @@
-let express = require('express'),
-	router = express.Router();
+import * as express from 'express';
+const router = express.Router();
 
 router.route('/')
-	.get(function (req, res) {
+	.get(function (req: express.Request, res: express.Response) {
 		try {
 			res.json({response: true});
 		} catch (e) {
@@ -11,7 +11,7 @@ router.route('/')
 	});
 
 router.route('/api')
-	.get(function (req, res) {
+	.get(function (req: express.Request, res: express.Response) {
 		try {
 			res.send({test: 'SuperTest'});
 		} catch (e) {
