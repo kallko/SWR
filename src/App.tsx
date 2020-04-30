@@ -1,40 +1,81 @@
 import React, { Component } from "react";
-import logo from './logo.svg';
+import { modsRoute } from "./router/modsRoute";
+import { guildRoute } from "./router/guildRoute";
+import { homeRoute } from "./router/homeRoute";
+import { TestChild } from "./router/testChild";
 import "./App.css";
-type appStateType = { test: string };
+import {BrowserRouter as Router, Switch, Route, Link, useParams, useRouteMatch} from "react-router-dom";
+import {apiDocRoute} from "./router/apidocRoute";
+type appStateType = { status: string; serverStartTime: Date | null };
 
 export class App extends Component<{}, appStateType> {
   constructor(props: appStateType) {
     super(props);
-    this.state = { test: "Start" };
+    this.state = { status: "Server connection failed", serverStartTime: null };
   }
   componentDidMount() {
     (async () => {
-      const response = await fetch("http://localhost:1976/api");
-      const data = await response.json();
-      this.setState({ test: data.test });
+      const data = await fetch("http://localhost:1976/api");
+      const status = await data.json();
+      const data2 = await fetch("http://localhost:1976/serverStatus");
+      const serverStartTime = await data2.json();
+      console.log(status, serverStartTime);
+      this.setState({
+        status: status.response,
+        serverStartTime: serverStartTime.response,
+      });
     })();
   }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React !!! {this.state.test}
-          </a>
-        </header>
+        <Router>
+          <div>
+            <nav className="nav-main">
+                  <Link className="nav-link" to="/">Home</Link>
+                  <Link className="nav-link" to="/mods">Unit-mods</Link>
+                  <Link className="nav-link" to="/guild">Guild</Link>
+                  <Link className="nav-link" to="/apidoc">API-documentation</Link>
+            </nav>
+            <Switch>
+              <Route path="/mods">{modsRoute}</Route>
+              <Route path="/guild">{guildRoute({ data: "100" })}</Route>
+              <Route path="/apidoc">{apiDocRoute({data: "apiDocumentation"})}</Route>
+              <Route path="/:id" children={<TestChild
+                  text={'text fro main'}
+                  addText={'additional text'}
+              />} />
+
+                <Route path="/">
+                {homeRoute(this.state.status, this.state.serverStartTime)}</Route>
+            </Switch>
+              <SuperTest />
+          </div>
+        </Router>
       </div>
     );
   }
 }
+
+
+class SuperTest extends Component {
+    constructor(props: any) {
+        super(props);
+    }
+    componentDidMount() {
+      this.testFunction();
+    }
+    testFunction(){
+      console.log('testFunction');
+    }
+    render() {
+        const text = '(c) Kalko Andrii';
+        return <div className="footer"> { text } </div>
+    }
+}
+
+
+
+
 
 export default App;

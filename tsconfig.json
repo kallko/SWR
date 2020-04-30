@@ -18,11 +18,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "sourceMap": true,
-    "outDir": "server-dist"
+    "sourceMap": true
   },
   "include": [
     "src",
-    "server-src"
+    "src/router"
+  ],
+  "exclude": [
+    "typings/browser.d.ts",
+    "typings/browser",
+    "node_modules"
   ]
 }
