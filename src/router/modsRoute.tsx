@@ -1,5 +1,5 @@
 import * as React from "react";
-import img from "../img/DeathStarConstruction.jpg";
+import img from "../img/UnderConstruction.jpg";
 
 import {
     BrowserRouter as Router,
@@ -22,7 +22,8 @@ export function modsRoute()  {
                 </nav>
             </div>
             <div className="div-right">
-                <img src={img}  alt="logo" />
+                <img src={img}  alt="logo" width="100%" >
+                </img>
             </div>
 
 

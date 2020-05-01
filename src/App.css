@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: 'SWR-solo';
 }
 
 .App-logo {
@@ -39,6 +40,7 @@
   margin-right: auto;
   display: flex;
   background: black;
+  font-family: 'SWR';
 }
 
 .nav-link {
@@ -58,16 +60,17 @@
 
 .div-left {
   float: left;
-  width: 10%;
+  width: 12%;
   background: black;
   height: 100%;
   min-width: 120px;
   line-height: 150%;
   text-align: left;
+  font-family: 'SWR-solo';
 }
 .div-right {
   overflow: hidden;
-  width: 90%;
+  width: 87%;
   background: black;
   height: 100%;
 
@@ -77,6 +80,17 @@
   background: black;
   color: white;
 }
+
+@font-face {
+  font-family: 'SWR';
+  src: local('SfDistantGalaxyItalic-WV3Y'), url(./font/SfDistantGalaxyItalic-WV3Y.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'SWR-solo';
+  src: local('SoloistStraight-Jqgx'), url(./font/SoloistStraight-Jqgx.otf) format('opentype');
+}
+
 
 @keyframes App-logo-spin {
   from {
