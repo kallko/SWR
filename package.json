@@ -29,6 +29,7 @@
     "server-build": "tsc server-src/*.ts --outDir server-dist",
     "forever": "forever start ./server-dist/main.js",
     "application:start": "npm-run-all --parallel start server",
+    "prodStart": "npx npm-run-all --parallel start server",
     "stop": "forever stopall"
   },
   "eslintConfig": {
@@ -48,5 +49,9 @@
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5"
+  },
+  "resolutions": {
+    "is-promise": "2.1.0",
+    "run-async/is-promise": "2.1.0"
   }
 }
