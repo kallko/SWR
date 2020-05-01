@@ -1,9 +1,10 @@
 import {appHeader} from "./header";
 import React from "react";
-import img from "../img/StarwarsFinal.jpg";
+import img from "../img/StarwarsFinal28.4.jpg";
 
 
 export function homeRoute(status: string, serverStartTime: Date | null) {
+    console.log('HOME ROUTE');
     return (
         <div className="div-content">
             <h2>STAR WARS GALAXY OF HEROES </h2>
@@ -12,7 +13,7 @@ export function homeRoute(status: string, serverStartTime: Date | null) {
                 <div>Server status: {status}</div>
                 <div>Server start time: {serverStartTime}</div>
                 {appHeader()}
-                <img src={img} className="App-img" alt="logo" />
+                <img src={img} alt="logo" width="60%"/>
             </div>
         </div> );
 }
