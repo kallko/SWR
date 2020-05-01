@@ -1,14 +1,287 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectFrameBounds">
-    <option name="x" value="20" />
-    <option name="y" value="42" />
-    <option name="width" value="1400" />
-    <option name="height" value="757" />
+  <component name="ChangeListManager">
+    <list default="true" id="a1ab965a-094d-4f41-ac6e-8ecd389dbc7f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxy-0l3d.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyAlternate-OE4d.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyAlternateItalic-3RDM.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyAltoutline-e2Bp.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyAltoutlineItalic-ZJDZ.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyItalic-WV3Y.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyOutline-xoeO.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyOutlineItalic-4yA4.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxySymbols-aylE.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxySymbolsItalic-EXv9.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/Soloist-Z6M8.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SoloistItalic-p1Kr.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SoloistLaserItalic-Aan7.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SoloistStraight-Jqgx.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/font/SoloistTitle-Gp7D.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/img/UnderConstruction.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/img/notFound404.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/apidocRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/apidocRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/guildRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/guildRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/homeRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/homeRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/modsRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/modsRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/testChild.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/testChild.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="A3-React-routing" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1bDBO036ahyMIF1FLtsjDe08reb" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="server&#9;FILE&#9;file:///Users/kalko/PhpstormProjects/SWR/server-dist" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/node_modules/eslint" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="/usr/local/lib/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/font" />
+      <recent name="$PROJECT_DIR$/src/img" />
+      <recent name="$PROJECT_DIR$/src/img/TIE2.svg" />
+      <recent name="$PROJECT_DIR$/src/TIE1" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/router" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.server">
+    <configuration name="application:start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="application:start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="server" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="server" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="stop" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="stop" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="npm.server" />
+      <item itemvalue="npm.application:start" />
+      <item itemvalue="npm.stop" />
+      <item itemvalue="npm.build" />
+      <item itemvalue="npm.start" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.build" />
+        <item itemvalue="npm.application:start" />
+        <item itemvalue="npm.start" />
+        <item itemvalue="npm.stop" />
+        <item itemvalue="npm.server" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a1ab965a-094d-4f41-ac6e-8ecd389dbc7f" name="Default Changelist" comment="" />
+      <created>1587821520492</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1587821520492</updated>
+      <workItem from="1587821521922" duration="4896000" />
+      <workItem from="1587829787642" duration="3820000" />
+      <workItem from="1587835307899" duration="124000" />
+      <workItem from="1587835435582" duration="2582000" />
+      <workItem from="1587841994934" duration="10109000" />
+      <workItem from="1587919002402" duration="2862000" />
+      <workItem from="1587923177067" duration="3001000" />
+      <workItem from="1588002956561" duration="4302000" />
+      <workItem from="1588075156000" duration="3085000" />
+      <workItem from="1588090587562" duration="6076000" />
+      <workItem from="1588156778012" duration="460000" />
+      <workItem from="1588158665925" duration="8719000" />
+      <workItem from="1588259618564" duration="2691000" />
+      <workItem from="1588335960069" duration="2605000" />
+    </task>
+    <task id="LOCAL-00001" summary="A0: init commit">
+      <created>1587834743833</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1587834743833</updated>
+    </task>
+    <task id="LOCAL-00002" summary="A1: npm-scripts updated&#10;    forever start added">
+      <created>1587836935672</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1587836935672</updated>
+    </task>
+    <task id="LOCAL-00003" summary="A1: npm-scripts updated&#10;    forever start added">
+      <created>1587836975605</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1587836975605</updated>
+    </task>
+    <task id="LOCAL-00004" summary="A2: npm-scripts updated&#10;    migration to ts">
+      <created>1587906639436</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1587906639436</updated>
+    </task>
+    <task id="LOCAL-00005" summary="A3: react routes added&#10;    templates for react-routes added&#10;    css edited&#10;    img added">
+      <created>1588236883711</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1588236883711</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/server-src/main.js" />
+        <option value="$PROJECT_DIR$/server-src/router.js" />
+      </list>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="A0: init commit" />
+    <MESSAGE value="A1: npm-scripts updated&#10;    forever start added" />
+    <MESSAGE value="A2: npm-scripts updated&#10;    migration to ts" />
+    <MESSAGE value="A3: react routes added&#10;    templates for react-routes added&#10;    css edited&#10;    img added" />
+    <option name="LAST_COMMIT_MESSAGE" value="A3: react routes added&#10;    templates for react-routes added&#10;    css edited&#10;    img added" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="393" y="206" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588260723333">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state x="393" y="206" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588260723333" />
+    <state x="299" y="23" key="CommitChangelistDialog2" timestamp="1588236883428">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state x="299" y="23" key="CommitChangelistDialog2/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588236883428" />
+    <state x="146" y="93" key="DiffContextDialog" timestamp="1588236689550">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state x="146" y="93" key="DiffContextDialog/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588236689550" />
+    <state width="1330" height="180" key="GridCell.Tab.0.bottom" timestamp="1588338175536">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state width="1330" height="180" key="GridCell.Tab.0.bottom/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588265999622" />
+    <state width="1330" height="180" key="GridCell.Tab.0.bottom/0.23.1440.810@0.23.1440.810" timestamp="1588338175536" />
+    <state width="1330" height="180" key="GridCell.Tab.0.center" timestamp="1588338175535">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state width="1330" height="180" key="GridCell.Tab.0.center/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588265999621" />
+    <state width="1330" height="180" key="GridCell.Tab.0.center/0.23.1440.810@0.23.1440.810" timestamp="1588338175535" />
+    <state width="1330" height="180" key="GridCell.Tab.0.left" timestamp="1588338175535">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state width="1330" height="180" key="GridCell.Tab.0.left/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588265999621" />
+    <state width="1330" height="180" key="GridCell.Tab.0.left/0.23.1440.810@0.23.1440.810" timestamp="1588338175535" />
+    <state width="1330" height="180" key="GridCell.Tab.0.right" timestamp="1588338175536">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state width="1330" height="180" key="GridCell.Tab.0.right/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588265999621" />
+    <state width="1330" height="180" key="GridCell.Tab.0.right/0.23.1440.810@0.23.1440.810" timestamp="1588338175536" />
+    <state x="422" y="154" width="600" height="486" key="find.popup" timestamp="1588336989257">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state x="422" y="154" width="600" height="486" key="find.popup/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588191574460" />
+    <state x="422" y="154" width="600" height="486" key="find.popup/0.23.1440.810@0.23.1440.810" timestamp="1588336989257" />
+    <state x="387" y="157" width="670" height="676" key="search.everywhere.popup" timestamp="1588235966615">
+      <screen x="0" y="23" width="1440" height="810" />
+    </state>
+    <state x="387" y="157" width="670" height="676" key="search.everywhere.popup/0.23.1440.810/-601.-1057.2560.1057@0.23.1440.810" timestamp="1588235966615" />
   </component>
 </project>

@@ -1,8 +1,15 @@
 .App {
   text-align: center;
+  font-family: 'SWR-solo';
 }
 
 .App-logo {
+  height: 40vmin;
+  pointer-events: none;
+  margin-top: 100px;
+}
+
+.App-img {
   height: 40vmin;
   pointer-events: none;
 }
@@ -19,7 +26,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -27,6 +34,63 @@
 .App-link {
   color: #61dafb;
 }
+.nav-main {
+  padding-top: 13px;
+  margin-left: 0;
+  margin-right: auto;
+  display: flex;
+  background: black;
+  font-family: 'SWR';
+}
+
+.nav-link {
+  padding: 0px 20px;
+  word-wrap: normal;
+  display: inline-block;
+  color: wheat;
+}
+
+.div-content {
+  margin: 0;
+  width: 100%;
+  padding-top: 15px;
+  background: black;
+  color: white;
+}
+
+.div-left {
+  float: left;
+  width: 12%;
+  background: black;
+  height: 100%;
+  min-width: 120px;
+  line-height: 150%;
+  text-align: left;
+  font-family: 'SWR-solo';
+}
+.div-right {
+  overflow: hidden;
+  width: 87%;
+  background: black;
+  height: 100%;
+
+}
+
+.footer {
+  background: black;
+  color: white;
+}
+
+@font-face {
+  font-family: 'SWR';
+  src: local('SfDistantGalaxyItalic-WV3Y'), url(./font/SfDistantGalaxyItalic-WV3Y.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'SWR-solo';
+  src: local('SoloistStraight-Jqgx'), url(./font/SoloistStraight-Jqgx.otf) format('opentype');
+}
+
 
 @keyframes App-logo-spin {
   from {

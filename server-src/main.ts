@@ -1,4 +1,4 @@
-const express = require('express');
+import * as express from 'express';
 const app = express();
 const cors = require("cors");
 const server = require('http').Server(app);
