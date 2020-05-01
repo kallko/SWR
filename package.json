@@ -29,6 +29,7 @@
     "server-build": "tsc server-src/*.ts --outDir server-dist",
     "forever": "forever start ./server-dist/main.js",
     "application:start": "npm-run-all --parallel start server",
+    "prodStart": "npx npm-run-all --parallel start server",
     "stop": "forever stopall"
   },
   "eslintConfig": {

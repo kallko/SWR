@@ -2,31 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1ab965a-094d-4f41-ac6e-8ecd389dbc7f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxy-0l3d.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyAlternate-OE4d.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyAlternateItalic-3RDM.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyAltoutline-e2Bp.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyAltoutlineItalic-ZJDZ.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyItalic-WV3Y.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyOutline-xoeO.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxyOutlineItalic-4yA4.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxySymbols-aylE.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SfDistantGalaxySymbolsItalic-EXv9.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/Soloist-Z6M8.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SoloistItalic-p1Kr.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SoloistLaserItalic-Aan7.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SoloistStraight-Jqgx.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/font/SoloistTitle-Gp7D.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/img/UnderConstruction.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/img/notFound404.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/img/StarwarsFinal28.4.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/apidocRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/apidocRoute.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/guildRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/guildRoute.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/homeRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/homeRoute.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/modsRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/modsRoute.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/testChild.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/testChild.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
