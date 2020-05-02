@@ -1,0 +1,8 @@
+{
+  "production": {
+    "url": "http://3.21.129.16:1976"
+  },
+  "development": {
+    "url": "http://localhost:1976"
+  }
+}
