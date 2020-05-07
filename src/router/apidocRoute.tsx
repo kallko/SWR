@@ -1,11 +1,13 @@
-import * as React from "react";
+import * as React  from "react";
 import logo from "../logo.svg";
 import img from "../img/UnderConstruction.jpg";
-import {Link} from "react-router-dom";
+import {Link, useRouteMatch} from "react-router-dom";
 
-export function apiDocRoute(inputData: { data: string }) {
+export function ApiDocRoute(inputData: { data: string }) {
   console.log("Key", inputData);
-  return (
+    // const [isOnline, setIsOnline] = React.useState(null);
+    // console.log('TEST 1', isOnline);
+    return (
     <div className="div-content">
       {/*<h2>Users {inputData.data}</h2>*/}
       {/*<header className="App-header">      */}

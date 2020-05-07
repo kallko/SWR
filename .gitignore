@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .idea
+!/node_modules/swrTypes
 
 # testing
 /coverage
