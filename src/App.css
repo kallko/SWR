@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   font-family: 'SWR-solo';
+  background: black;
 }
 
 .App-logo {
@@ -51,7 +52,6 @@
 }
 
 .div-content {
-  margin: 0;
   width: 100%;
   padding-top: 15px;
   background: black;
