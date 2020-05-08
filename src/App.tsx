@@ -11,6 +11,7 @@ import {
 import "./App.css";
 import homeImg from "./img/StarwarsFinal28.4.jpg";
 import underConstruction from "./img/UnderConstruction.jpg";
+import { useTable, useExpanded } from 'react-table'
 
 // Some folks find value in a centralized route config.
 // A route config is just data. React is great at mapping
@@ -126,9 +127,6 @@ function Mods({ routes }: any) {
                     <RouteWithSubRoutes key={i} {...route} />
                 ))}
             </Switch>
-            <div className="div-right">
-                <img src={underConstruction} alt="logo" width="60%"/>
-            </div>
         </div>
     );
 }
@@ -139,22 +137,96 @@ function GACheck() {
 
 function Colorup() {
     const [colorUpMods, setcolorUpMods] = React.useState('');
+    const [data, setData] = React.useState([]);
+    const columns: any = React.useMemo(
+        () => [
+            {
+                Header: 'Column 1',
+                accessor: 'col1', // accessor is the "key" in the data
+            },
+            {
+                Header: 'Column 2',
+                accessor: 'col2',
+            },
+        ],
+        [],
+    )
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = useTable({ columns, data })
 
     React.useEffect(() => {
         // You need to restrict it at some point
         // This is just dummy code and should be replaced by actual
         if (!colorUpMods) {
             let result = getColorUpMods();
-            console.log('Get token ', result);
         }
     }, []);
 
     const getColorUpMods = async () => {
         const data2 = await fetch("http://localhost:1976/mods/colorup");
         const serverStartTime = await data2.json();
+        console.log('Data ', serverStartTime.result);
         setcolorUpMods(serverStartTime.result[0].character);
+        setData(serverStartTime.result);
     };
-    return <h3>Colorup {colorUpMods}</h3>;
+    if (!!data) {
+        return  (
+            <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+                <thead>
+                {headerGroups.map((headerGroup: any) => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column: any) => (
+                            <th
+                                {...column.getHeaderProps()}
+                                style={{
+                                    borderBottom: 'solid 3px red',
+                                    background: 'aliceblue',
+                                    color: 'black',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {column.render('Header')}
+                            </th>
+                        ))}
+                    </tr>
+                ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                {rows.map((row: any) => {
+                    prepareRow(row)
+                    return (
+                        <tr {...row.getRowProps()}>
+                            {row.cells.map((cell: any) => {
+                                return (
+                                    <td
+                                        {...cell.getCellProps()}
+                                        style={{
+                                            padding: '10px',
+                                            border: 'solid 1px gray',
+                                            background: 'papayawhip',
+                                        }}
+                                    >
+                                        {cell.render('Cell')}
+                                    </td>
+                                )
+                            })}
+                        </tr>
+                    )
+                })}
+                </tbody>
+            </table>
+        )
+    } else {
+        return (            <div className="div-right">
+            <img src={underConstruction} alt="logo" width="60%"/>
+        </div>)
+    }
+
 }
 
 function Guild() {

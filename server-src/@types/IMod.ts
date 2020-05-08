@@ -17,3 +17,8 @@ export interface IMod {
   secondary_stats: IStat[];
   primary_stat: IStat
 }
+
+export interface IColorUpModFrontEnd {
+  col1: string;
+  col2: number
+}
