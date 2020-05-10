@@ -18,7 +18,3 @@ export interface IMod {
   primary_stat: IStat
 }
 
-export interface IColorUpModFrontEnd {
-  col1: string;
-  col2: number
-}

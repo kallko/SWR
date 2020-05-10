@@ -1,5 +1,7 @@
 import * as express from 'express';
 import {modController} from "./controller/modController";
+import {guildController} from "./controller/guildController";
+import {IFrontColorUpMod} from "./@types/IFrontEnd";
 const router = express.Router();
 const serverStartTime = new Date();
 
@@ -33,11 +35,23 @@ router.route('/serverstatus')
 router.route('/mods/colorup')
     .get(async function (req: express.Request, res: express.Response) {
         try {
-        	const result = await modController.getColorUpMods( req.body && req.body.id);
+        	const result: IFrontColorUpMod[] = await modController.getColorUpMods( req.body && req.body.id);
             res.json({result});
         } catch (e) {
             console.log( "ERROR " + e + e.stack);
         }
     });
+
+router.route('/guild/legendprogress')
+	.get(async function (req: express.Request, res: express.Response) {
+		try {
+			console.log('Receive REQ');
+			const result = await guildController.getLegendProgress();
+			console.log('Send to front ', result);
+			res.json({result});
+		} catch (e) {
+			console.log( "ERROR " + e + e.stack);
+		}
+	});
 
 module.exports = router;
