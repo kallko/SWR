@@ -11,13 +11,14 @@ export const Transformer = {
         }})
     },
     transformLegendProgress(legendPlayerProgresses: ILegendPlayerProgress[]): IFrontLegendTable[][] {
+        console.log('Progress ', legendPlayerProgresses);
         let tableKylo: IFrontLegendTable[] = legendPlayerProgresses.map(progress => {
             return {
                 player: progress.player_name,
                 sort: progress.legend_progress[0].display_data.sorting_data,
                 display: progress.legend_progress[0].display_data.display_status
             }
-        })
+        });
         let tableRey: IFrontLegendTable[] = legendPlayerProgresses.map(progress => {
             return {
                 player: progress.player_name,
@@ -25,8 +26,8 @@ export const Transformer = {
                 display: progress.legend_progress[1].display_data.display_status
             }
         });
-        tableKylo.sort(Sorter.sortByProgress)
-        tableRey.sort(Sorter.sortByProgress)
-        return [tableKylo, tableRey]
+        tableKylo.sort(Sorter.sortByProgress);
+        tableRey.sort(Sorter.sortByProgress);
+        return [tableKylo, tableRey];
     }
 }

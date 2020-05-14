@@ -1,4 +1,6 @@
-const KAYLO = {
+import {ILegendRequirements} from "../@types/IGuild";
+
+const KAYLO: ILegendRequirements = {
     name: 'SUPREMELEADERKYLOREN',
     req_units: [
     {
@@ -70,7 +72,7 @@ const KAYLO = {
     }
 ]};
 
-const RAY = {
+const RAY: ILegendRequirements = {
     name: 'GLREY',
     req_units: [
     {

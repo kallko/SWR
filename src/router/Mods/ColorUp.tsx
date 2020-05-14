@@ -35,6 +35,7 @@ export function ColorUp() {
     const getColorUpMods = async () => {
         const data2 = await fetch("http://localhost:1976/mods/colorup");
         const serverStartTime = await data2.json();
+        console.log('Received data ', serverStartTime);
         setcolorUpMods(serverStartTime.result[0].character);
         setData(serverStartTime.result);
     };

@@ -1,12 +1,16 @@
 import React from "react";
 import {useTable} from "react-table";
 import underConstruction from "../../img/UnderConstruction.jpg";
+import {dataHelper} from "../../dataHelper/dataHelper";
 
 export function LegendProgress() {
     const [data, setData] = React.useState([]);
     const columns: any = React.useMemo(
         () => [
             {
+                Header: 'N',
+                accessor: 'index',
+            },            {
                 Header: 'Player Name',
                 accessor: 'player',
             },
@@ -16,14 +20,14 @@ export function LegendProgress() {
             },
         ],
         [],
-    )
+    );
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data })
+    } = useTable({ columns, data });
 
     React.useEffect(() => {
 
@@ -33,14 +37,19 @@ export function LegendProgress() {
     }, [data.length]);
 
     const getLegendProgress = async () => {
-        const serverData = await fetch("http://localhost:1976/guild/legendprogress");
-        const serverStartTime = await serverData.json();
-        // let unitedData = {player: '', display:'Legend KYLO'};
-        const unitedData = serverStartTime.result[0]
-            .concat({player: '', display:'Legend REY'})
-            .concat(serverStartTime.result[1])
-        unitedData.unshift({player: '', display: 'Legend Kylo'});
-        setData(unitedData);
+        let guild: any = await fetch("http://localhost:1976/guild/brazzers");
+        guild = await guild.json();
+        if (guild.result && guild.result.length > 0) {
+            let guildData: any = [];
+            for (let i = 0; i < guild.result.length; i++){
+                let playerProgress: any = await fetch("http://localhost:1976/player/legendprogress/" + guild.result[i].id);
+                playerProgress = await playerProgress.json();
+                guildData = guildData.concat([{player: guild.result[i].name, result: playerProgress.result}]);
+                let displayData = dataHelper.guildDataunite(guildData);
+                await setData(displayData);
+            }
+
+        }
     };
     if (!!data) {
         return  (

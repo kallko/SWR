@@ -1,4 +1,6 @@
-export const BRAZZERS = [
+import {IGuild} from "../@types/IGuild";
+
+export const BRAZZERS: IGuild[] = [
     { id: 621723826, name: 'KontrAdmiralTriton' },
     { id: 347317671, name: 'shamannexus' },
     { id: 452867287, name: 'Arinnar' },
@@ -48,6 +50,9 @@ export const BRAZZERS = [
     { id: 897529469, name: 'Peldor Varga' },
     { id: 553384869, name: 'Geniy' },
     { id: 632196399, name: 'Konstantin' },
+    { id: 478749715, name: 'Vandoss' },
+    { id: 272773262, name: 'Sepultura' },
+    { id: 317992411, name: 'Pashok013' },
     { id: 845794297, name: 'SG РedоВear Владыка' }
 ];
 

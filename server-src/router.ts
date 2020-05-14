@@ -2,6 +2,7 @@ import * as express from 'express';
 import {modController} from "./controller/modController";
 import {guildController} from "./controller/guildController";
 import {IFrontColorUpMod} from "./@types/IFrontEnd";
+import {playerController} from "./controller/playerController";
 const router = express.Router();
 const serverStartTime = new Date();
 
@@ -53,5 +54,26 @@ router.route('/guild/legendprogress')
 			console.log( "ERROR " + e + e.stack);
 		}
 	});
+
+router.route('/player/legendprogress/:id')
+    .get(async function (req: express.Request, res: express.Response) {
+        try {
+            console.log('Receive REQ with id ', req.params.id);
+            const result = await playerController.getLegendProgress(parseInt(req.params.id, 10));
+            res.json({result});
+        } catch (e) {
+            console.log( "ERROR " + e + e.stack);
+        }
+    });
+
+router.route('/guild/brazzers')
+    .get(async function (req: express.Request, res: express.Response) {
+        try {
+            const result = guildController.getGuild();
+            res.json({result});
+        } catch (e) {
+            console.log( "ERROR " + e + e.stack);
+        }
+    });
 
 module.exports = router;

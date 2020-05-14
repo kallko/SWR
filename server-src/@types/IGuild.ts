@@ -1,3 +1,21 @@
+export interface IGuild {
+    id: number;
+    name: string;
+}
+
+export interface IReqUnits {
+    base_id: string;
+    power: number;
+    relic?: number;
+    ship?: boolean;
+    rarity?: number;
+}
+
+export interface ILegendRequirements {
+    name: string;
+    req_units: IReqUnits [];
+}
+
 export interface ILegendPlayerProgress {
     player_name: string;
     legend_progress : ILegendProgress[];

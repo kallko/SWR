@@ -1,4 +1,6 @@
-export const MOD_OPTIONS = {
+import {IMOD_OPTIONS} from "../@types/IMod";
+
+export const MOD_OPTIONS: IMOD_OPTIONS = {
     form: ['', 'square','arrow','romb', 'triangle', 'circle', 'cross'],
     sets: [
         {id: 4, name: 'Speed', setCount: 4, fullBonus: 10 },
