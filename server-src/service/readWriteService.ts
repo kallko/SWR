@@ -13,9 +13,12 @@ export const readWriteService = {
 	},
 	async readJson(name = 'brazzers.json') {
 		const fileName = join(baseSaveUrl, name);
-		return fs.readFileSync(fileName, 'utf8', function (err: any, data: any) {
-			if (err) throw err;
-			return JSON.parse(data);
+		return fs.readFileSync(fileName, 'utf8', async function (err: any, data: any) {
+			if (err) {
+				console.log('ERRROR ', err);
+				throw err
+			}
+			return await JSON.parse(data);
 		});
 	}
 };

@@ -18,7 +18,11 @@ export function LegendProgress() {
 			{
 				Header: 'Progress',
 				accessor: 'display'
-			}
+			},
+            {
+                Header: 'Last Week',
+                accessor: 'weekProgress'
+            }
 		],
 		[]
 	);

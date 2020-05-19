@@ -6,10 +6,8 @@ import { readWriteService } from '../service/readWriteService';
 import {
 	IGuild,
 	ILegendPlayerProgress,
-	ILegendProgress,
-	ILegendReqUnit
+	ILegendProgress
 } from '../@types/IGuild';
-import { IMod } from '../@types/IMod';
 import { Transformer } from '../helper/transformer';
 import { playerController } from './playerController';
 

@@ -5,7 +5,8 @@ export const dataHelper = {
             return {
                 player: member.player,
                 display: member.result[0].display_data.display_status,
-                sort: member.result[0].display_data.sorting_data
+                sort: member.result[0].display_data.sorting_data,
+                weekProgress: member.result[0].display_data.last_week_add
             }
         });
         kyloProgress.sort(sortByProgress);
@@ -14,7 +15,8 @@ export const dataHelper = {
             return {
                 player: member.player,
                 display: member.result[1].display_data.display_status,
-                sort: member.result[1].display_data.sorting_data
+                sort: member.result[1].display_data.sorting_data,
+                weekProgress: member.result[1].display_data.last_week_add
             }
         });
         reyProgress.sort(sortByProgress);
@@ -37,7 +39,8 @@ function addIndex(members: any) {
         return {
             player: member.player,
             display: member.display,
-            index: index + 1
+            index: index + 1,
+            weekProgress: member.weekProgress
         }
-    })
+    });
 }

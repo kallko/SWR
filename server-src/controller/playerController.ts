@@ -1,26 +1,30 @@
 import { BRAZZERS } from '../@const/brazzers';
-import { ILegendProgress, ILegendReqUnit } from '../@types/IGuild';
+import {ILegendPlayerProgress, ILegendProgress, ILegendRequirements, ILegendReqUnit} from '../@types/IGuild';
 import { IUnit } from '../@types/IUnit';
 import { fetchDataService } from '../service/fetchDataService';
 import { IMod } from '../@types/IMod';
 import { LEGEND } from '../@const/legendRequirements';
+import {readWriteService} from "../service/readWriteService";
 
 export const playerController = {
 	getLegendProgress: async function (id: number): Promise<any> {
 		// @ts-ignore: Object is possibly 'null'.
 		const playerName = BRAZZERS.find((member) => member.id === id).name || '';
-		console.log('Start get info for ', playerName);
 		let result: ILegendProgress[] = [];
 		let units: IUnit[] = (await fetchDataService.getPlayer(id)).units;
 		const mods: IMod[] = await fetchDataService.getAllMods(id);
 		console.log('Received units ', units.length, ' and mods ', mods.length);
-		LEGEND.forEach((legend) => {
+        let lastWeek = await readWriteService.readJson('brazzersLast.json');
+		let lastWeekDataPlayers: ILegendPlayerProgress[] = await JSON.parse(lastWeek);
+		let lastWeekDataPlayer = lastWeekDataPlayers.find(player => player.player_name === playerName);
+        LEGEND.forEach((legend) => {
 			if (isExist(legend.name, units)) {
 				result.push({
 					legend_name: legend.name,
 					display_data: {
 						display_status: 'EXIST',
-						sorting_data: 101
+						sorting_data: 101,
+						last_week_add: 0
 					}
 				});
 			} else {
@@ -36,7 +40,7 @@ export const playerController = {
 								isComplete: true,
 								need_power: reqUnit.power,
 								current_power: reqUnit.power,
-								previous_power: 0
+								previous_power: getLastWeekData(lastWeekDataPlayer, legend, reqUnit.base_id)
 							});
 						} else {
 							unitProgress.push({
@@ -44,7 +48,7 @@ export const playerController = {
 								isComplete: false,
 								need_power: reqUnit.power,
 								current_power: playerUnit.data.power,
-								previous_power: 0
+								previous_power: getLastWeekData(lastWeekDataPlayer, legend, reqUnit.base_id)
 							});
 						}
 					} else {
@@ -74,7 +78,8 @@ export const playerController = {
 					legend_name: legend.name,
 					display_data: {
 						display_status: '' + playerLegendProgress + '%',
-						sorting_data: playerLegendProgress
+						sorting_data: playerLegendProgress,
+						last_week_add: playerLegendProgress - getLastWeekProgress(lastWeekDataPlayer, legend)
 					},
 					data: unitProgress
 				});
@@ -120,4 +125,20 @@ function getCorrectedPower(
 		(unit.current_power * playerUnit.data.rarity) / reqUnit.rarity,
 		unit.current_power
 	);
+}
+
+function getLastWeekData(lastWeekData: ILegendPlayerProgress, legend: ILegendRequirements,  base_id: string): number {
+	if (!lastWeekData) {
+		return 0;
+	}
+	let index: number = legend.name === 'SUPREMELEADERKYLOREN' ? 0 : 1;
+	let unit = lastWeekData.legend_progress[index].data.find(unit => unit.base_id === base_id);
+	return unit? unit.current_power : 0;
+}
+
+function getLastWeekProgress(lastWeekDataPlayer, legend) {
+    if (!lastWeekDataPlayer) {
+        return 0;
+    }    let index: number = legend.name === 'SUPREMELEADERKYLOREN' ? 0 : 1;
+    return lastWeekDataPlayer.legend_progress[index].display_data.sorting_data;
 }

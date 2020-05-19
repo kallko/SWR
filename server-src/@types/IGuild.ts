@@ -26,6 +26,7 @@ export interface ILegendProgress {
 		display_status: string;
 		display_week_progress?: string;
 		sorting_data: number;
+		last_week_add: number;
 	};
 	data?: ILegendReqUnit[];
 }
