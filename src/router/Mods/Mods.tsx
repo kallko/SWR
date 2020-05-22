@@ -2,7 +2,8 @@ import {Link, Switch} from "react-router-dom";
 import React from "react";
 import {RouteWithSubRoutes} from "../System/RouteWithSubRoutes";
 
-export function Mods({ routes }: any) {
+export function Mods(props) {
+    const routes = props.routes;
     return (
         <div className="div-content">
             <ul className="div-left">
@@ -12,7 +13,7 @@ export function Mods({ routes }: any) {
 
             <Switch>
                 {routes.map((route: any, i: number) => (
-                    <RouteWithSubRoutes key={i} {...route} />
+                    <RouteWithSubRoutes key={i} {...route} playerId={props.playerId} />
                 ))}
             </Switch>
         </div>

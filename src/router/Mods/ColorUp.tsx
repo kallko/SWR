@@ -2,8 +2,7 @@ import React from "react";
 import {useTable} from "react-table";
 import underConstruction from "../../img/UnderConstruction.jpg";
 
-export function ColorUp() {
-    const [colorUpMods, setcolorUpMods] = React.useState('');
+export function ColorUp(props) {
     const [data, setData] = React.useState([]);
     const columns: any = React.useMemo(
         () => [
@@ -17,27 +16,26 @@ export function ColorUp() {
             },
         ],
         [],
-    )
+    );
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data })
+    } = useTable({ columns, data });
 
     React.useEffect(() => {
-        if (!colorUpMods) {
+        if (!data) {
             getColorUpMods().then(() =>{});
         }
-    }, [colorUpMods]);
+    }, [data]);
 
     const getColorUpMods = async () => {
-        const data2 = await fetch("http://localhost:1976/mods/colorup");
-        const serverStartTime = await data2.json();
-        console.log('Received data ', serverStartTime);
-        setcolorUpMods(serverStartTime.result[0].character);
-        setData(serverStartTime.result);
+        const dataFromServer = await fetch("http://localhost:1976/mods/colorup");
+        const data = await dataFromServer.json();
+        console.log('Received data ', dataFromServer);
+        setData(data.result);
     };
     if (!!data) {
         return  (

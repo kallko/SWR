@@ -2,9 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import './App.css';
 import { RouteWithSubRoutes } from './router/System/RouteWithSubRoutes';
+import { InputPlayerId } from './component/InputPlayerCode';
 import { ROUTES } from './router/routesConfig';
 
 export default function App() {
+    const [playerId, setPlayerId] = React.useState('');
 	return (
 		<div className={'App'}>
 			<Router>
@@ -28,11 +30,12 @@ export default function App() {
 						<Link to="/sysadmin" className="nav-link">
 							Sysadmin
 						</Link>
+						<InputPlayerId passChildData={setPlayerId}/>
 					</ul>
 
 					<Switch>
 						{ROUTES.map((route, i) => (
-							<RouteWithSubRoutes key={i} {...route} className="div-left" />
+							<RouteWithSubRoutes key={i} playerId={playerId} {...route}  className="div-left" />
 						))}
 					</Switch>
 				</div>

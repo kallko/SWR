@@ -2,8 +2,8 @@ import {Link, Switch} from "react-router-dom";
 import {RouteWithSubRoutes} from "../System/RouteWithSubRoutes";
 import React from "react";
 
-export function Guild({ routes }: any) {
-    console.log('Start Guild');
+export function Guild({ routes, id }) {
+    console.log('Start Guild', id, routes);
     return (
         <div className="div-content">
             <ul className="div-left">
