@@ -1,7 +1,12 @@
 import {Route} from "react-router-dom";
 import React from "react";
+interface IRoute {
+   routes: string[];
+   path: string;
+   component: any;
+}
 
-export function RouteWithSubRoutes(route: any) {
+export function RouteWithSubRoutes(route: IRoute) {
     console.log('Create route with subroutes', route.routes);
     return (
         <Route

@@ -3,9 +3,14 @@ import { useTable } from 'react-table';
 import underConstruction from '../../img/UnderConstruction.jpg';
 import { dataHelper } from '../../dataHelper/dataHelper';
 
+interface IColumn {
+	Header: string;
+	accessor: string;
+}
+
 export function LegendProgress() {
 	const [data, setData] = React.useState([]);
-	const columns: any = React.useMemo(
+	const columns: IColumn[] = React.useMemo(
 		() => [
 			{
 				Header: 'N',

@@ -1,7 +1,4 @@
 import { BRAZZERS } from '../@const/brazzers';
-import { LEGEND } from '../@const/legendRequirements';
-import { IUnit } from '../@types/IUnit';
-import { fetchDataService } from '../service/fetchDataService';
 import { readWriteService } from '../service/readWriteService';
 import {
 	IGuild,
@@ -10,9 +7,10 @@ import {
 } from '../@types/IGuild';
 import { Transformer } from '../helper/transformer';
 import { playerController } from './playerController';
+import {IFrontLegendTable} from "../@types/IFrontEnd";
 
 export const guildController = {
-	getLegendProgress: async function (): Promise<any> {
+	getLegendProgress: async function (): Promise<IFrontLegendTable[][]> {
 		let guildResult: ILegendPlayerProgress[] = [];
 		//todo for testing
 		let test: number = 3;

@@ -1,5 +1,5 @@
 import { BRAZZERS } from '../@const/brazzers';
-import {ILegendPlayerProgress, ILegendProgress, ILegendRequirements, ILegendReqUnit} from '../@types/IGuild';
+import {ILegendPlayerProgress, ILegendProgress, ILegendRequirements, ILegendReqUnit, IReqUnits} from '../@types/IGuild';
 import { IUnit } from '../@types/IUnit';
 import { fetchDataService } from '../service/fetchDataService';
 import { IMod } from '../@types/IMod';
@@ -7,7 +7,7 @@ import { LEGEND } from '../@const/legendRequirements';
 import {readWriteService} from "../service/readWriteService";
 
 export const playerController = {
-	getLegendProgress: async function (id: number): Promise<any> {
+	getLegendProgress: async function (id: number): Promise<ILegendProgress[]> {
 		// @ts-ignore: Object is possibly 'null'.
 		const playerName = BRAZZERS.find((member) => member.id === id).name || '';
 		let result: ILegendProgress[] = [];
@@ -92,7 +92,7 @@ export const playerController = {
 function isExist(name: string, units: IUnit[]) {
 	return units.some((unit: IUnit) => unit.data.base_id === name);
 }
-function isComplete(playerUnit: IUnit, unit: any) {
+function isComplete(playerUnit: IUnit, unit: IReqUnits) {
 	return (
 		playerUnit.data.relic_tier - 2 === unit.relic ||
 		playerUnit.data.rarity === unit.rarity
@@ -103,7 +103,7 @@ function getCorrectedPower(
 	unit: ILegendReqUnit,
 	playerUnits: IUnit[],
 	mods: IMod[],
-	reqUnits: any[]
+	reqUnits: IReqUnits[]
 ) {
 	if (unit.isComplete || unit.current_power === 0) {
 		return unit.current_power;

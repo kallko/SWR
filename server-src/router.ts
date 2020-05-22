@@ -3,6 +3,7 @@ import { modController } from './controller/modController';
 import { guildController } from './controller/guildController';
 import { IFrontColorUpMod } from './@types/IFrontEnd';
 import { playerController } from './controller/playerController';
+import {ILegendProgress} from "./@types/IGuild";
 const router = express.Router();
 const serverStartTime = new Date();
 
@@ -65,7 +66,7 @@ router
 	.get(async function (req: express.Request, res: express.Response) {
 		try {
 			console.log('Receive REQ with id ', req.params.id);
-			const result = await playerController.getLegendProgress(
+			const result: ILegendProgress[] = await playerController.getLegendProgress(
 				parseInt(req.params.id, 10)
 			);
 			res.json({ result });

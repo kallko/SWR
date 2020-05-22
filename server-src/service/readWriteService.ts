@@ -1,8 +1,10 @@
+import {ILegendPlayerProgress} from "../@types/IGuild";
+
 const fs = require('fs');
 const baseSaveUrl = './files/';
 
 export const readWriteService = {
-	saveLegendProgressForGuild(results: any, name = 'last.json') {
+	saveLegendProgressForGuild(results: ILegendPlayerProgress[], name = 'last.json') {
 		const fileName = join(baseSaveUrl, name);
 		fs.writeFile(fileName, JSON.stringify(results), 'utf8', (err: any) => {
 			if (err) {
@@ -23,6 +25,6 @@ export const readWriteService = {
 	}
 };
 
-function join(...args: any[]) {
+function join(...args: string[]) {
 	return args.reduce((sum, arg) => sum + arg, '');
 }
