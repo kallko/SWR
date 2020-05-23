@@ -42,7 +42,6 @@ export const BRAZZERS: IGuild[] = [
 	{ id: 284677897, name: 'ПалкоВВодеЦ' },
 	{ id: 418175181, name: 'Smersh' },
 	{ id: 218624793, name: 'CalvinKlein' },
-	{ id: 259674128, name: 'Anthony Trenor' },
 	{ id: 742589523, name: 'rondorf' },
 	{ id: 228375396, name: 'MRSkipper' },
 	{ id: 725112884, name: 'DarthTyranus3D aka DjBGW' },

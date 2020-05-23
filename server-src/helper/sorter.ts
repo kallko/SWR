@@ -1,5 +1,5 @@
 import { IMod } from '../@types/IMod';
-import {IFrontLegendTable} from "../@types/IFrontEnd";
+import { IFrontLegendTable } from '../@types/IFrontEnd';
 
 export const Sorter = {
 	sortByTier(first: IMod, second: IMod): number {

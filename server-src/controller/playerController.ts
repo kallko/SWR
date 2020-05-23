@@ -1,23 +1,34 @@
 import { BRAZZERS } from '../@const/brazzers';
-import {ILegendPlayerProgress, ILegendProgress, ILegendRequirements, ILegendReqUnit, IReqUnits} from '../@types/IGuild';
+import {
+	ILegendPlayerProgress,
+	ILegendProgress,
+	ILegendRequirements,
+	ILegendReqUnit,
+	IReqUnits
+} from '../@types/IGuild';
 import { IUnit } from '../@types/IUnit';
 import { fetchDataService } from '../service/fetchDataService';
 import { IMod } from '../@types/IMod';
 import { LEGEND } from '../@const/legendRequirements';
-import {readWriteService} from "../service/readWriteService";
+import { readWriteService } from '../service/readWriteService';
 
 export const playerController = {
-	getLegendProgress: async function (id: number): Promise<ILegendProgress[]> {
+	getLegendProgress: async function (id: string): Promise<ILegendProgress[]> {
 		// @ts-ignore: Object is possibly 'null'.
-		const playerName = BRAZZERS.find((member) => member.id === id).name || '';
+		const playerName =
+			BRAZZERS.find((member) => member.id.toString() === id).name || '';
 		let result: ILegendProgress[] = [];
 		let units: IUnit[] = (await fetchDataService.getPlayer(id)).units;
 		const mods: IMod[] = await fetchDataService.getAllMods(id);
 		console.log('Received units ', units.length, ' and mods ', mods.length);
-        let lastWeek = await readWriteService.readJson('brazzersLast.json');
-		let lastWeekDataPlayers: ILegendPlayerProgress[] = await JSON.parse(lastWeek);
-		let lastWeekDataPlayer = lastWeekDataPlayers.find(player => player.player_name === playerName);
-        LEGEND.forEach((legend) => {
+		let lastWeek = await readWriteService.readJson('brazzersLast.json');
+		let lastWeekDataPlayers: ILegendPlayerProgress[] = await JSON.parse(
+			lastWeek
+		);
+		let lastWeekDataPlayer = lastWeekDataPlayers.find(
+			(player) => player.player_name === playerName
+		);
+		LEGEND.forEach((legend) => {
 			if (isExist(legend.name, units)) {
 				result.push({
 					legend_name: legend.name,
@@ -40,7 +51,11 @@ export const playerController = {
 								isComplete: true,
 								need_power: reqUnit.power,
 								current_power: reqUnit.power,
-								previous_power: getLastWeekData(lastWeekDataPlayer, legend, reqUnit.base_id)
+								previous_power: getLastWeekData(
+									lastWeekDataPlayer,
+									legend,
+									reqUnit.base_id
+								)
 							});
 						} else {
 							unitProgress.push({
@@ -48,7 +63,11 @@ export const playerController = {
 								isComplete: false,
 								need_power: reqUnit.power,
 								current_power: playerUnit.data.power,
-								previous_power: getLastWeekData(lastWeekDataPlayer, legend, reqUnit.base_id)
+								previous_power: getLastWeekData(
+									lastWeekDataPlayer,
+									legend,
+									reqUnit.base_id
+								)
 							});
 						}
 					} else {
@@ -79,13 +98,26 @@ export const playerController = {
 					display_data: {
 						display_status: '' + playerLegendProgress + '%',
 						sorting_data: playerLegendProgress,
-						last_week_add: playerLegendProgress - getLastWeekProgress(lastWeekDataPlayer, legend)
+						last_week_add:
+							playerLegendProgress -
+							getLastWeekProgress(lastWeekDataPlayer, legend)
 					},
 					data: unitProgress
 				});
 			}
 		});
 		return result;
+	},
+	check: async function (id: string) {
+		let player = await fetchDataService.getPlayer(id);
+		if (player.data && player.data.name) {
+			console.log('Player ', player.data.name);
+		} else {
+			player.data = {
+				name: player.detail
+			};
+		}
+		return player.data.name;
 	}
 };
 
@@ -127,18 +159,25 @@ function getCorrectedPower(
 	);
 }
 
-function getLastWeekData(lastWeekData: ILegendPlayerProgress, legend: ILegendRequirements,  base_id: string): number {
+function getLastWeekData(
+	lastWeekData: ILegendPlayerProgress,
+	legend: ILegendRequirements,
+	base_id: string
+): number {
 	if (!lastWeekData) {
 		return 0;
 	}
 	let index: number = legend.name === 'SUPREMELEADERKYLOREN' ? 0 : 1;
-	let unit = lastWeekData.legend_progress[index].data.find(unit => unit.base_id === base_id);
-	return unit? unit.current_power : 0;
+	let unit = lastWeekData.legend_progress[index].data.find(
+		(unit) => unit.base_id === base_id
+	);
+	return unit ? unit.current_power : 0;
 }
 
 function getLastWeekProgress(lastWeekDataPlayer, legend) {
-    if (!lastWeekDataPlayer) {
-        return 0;
-    }    let index: number = legend.name === 'SUPREMELEADERKYLOREN' ? 0 : 1;
-    return lastWeekDataPlayer.legend_progress[index].display_data.sorting_data;
+	if (!lastWeekDataPlayer) {
+		return 0;
+	}
+	let index: number = legend.name === 'SUPREMELEADERKYLOREN' ? 0 : 1;
+	return lastWeekDataPlayer.legend_progress[index].display_data.sorting_data;
 }

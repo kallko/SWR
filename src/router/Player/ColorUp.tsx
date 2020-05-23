@@ -1,35 +1,21 @@
 import React from 'react';
 import { useTable } from 'react-table';
-import { dataHelper } from '../../dataHelper/dataHelper';
 import {config} from "../../config/configService";
 const baseUrl = config.get('url');
 
-
-interface IColumn {
-	Header: string;
-	accessor: string;
-}
-
-export function LegendProgress() {
+export function ColorUp(props) {
+	console.log('PlayerId ', props.playerId);
 	const [data, setData] = React.useState([]);
 	const [upload, setUpload] = React.useState(false);
-	const columns: IColumn[] = React.useMemo(
+	const columns: any = React.useMemo(
 		() => [
 			{
-				Header: 'N',
-				accessor: 'index'
+				Header: 'Unit Name',
+				accessor: 'col1' // accessor is the "key" in the data
 			},
 			{
-				Header: 'Player Name',
-				accessor: 'player'
-			},
-			{
-				Header: 'Progress',
-				accessor: 'display'
-			},
-			{
-				Header: 'Last Week',
-				accessor: 'weekProgress'
+				Header: 'Slot',
+				accessor: 'col2'
 			}
 		],
 		[]
@@ -43,30 +29,23 @@ export function LegendProgress() {
 	} = useTable({ columns, data });
 
 	React.useEffect(() => {
-		if (data.length === 0) {
-			getLegendProgress().then(() => {});
+		console.log('Use Effect ', data.length);
+		if (!upload && props.playerId) {
+			console.log('Start fetch');
+			getColorUpMods().then(() => {});
 		}
-	}, [data.length]);
+	}, [data]);
 
-	const getLegendProgress = async () => {
-		let guild: any = await fetch(baseUrl + '/guild/brazzers');
-		guild = await guild.json();
-		if (guild.result && guild.result.length > 0) {
-			let guildData: any = [];
-			for (let i = 0; i < guild.result.length; i++) {
-				let playerProgress: any = await fetch(
-					baseUrl + '/player/legendprogress/' + guild.result[i].id
-				);
-				await setUpload(true);
-				playerProgress = await playerProgress.json();
-				guildData = guildData.concat([
-					{ player: guild.result[i].name, result: playerProgress.result }
-				]);
-				let displayData = dataHelper.guildDataunite(guildData);
-				await setData(displayData);
-			}
-		}
+	const getColorUpMods = async () => {
+		const url = baseUrl + '/player/colorup/' + props.playerId;
+		console.log('GET ', url);
+		const dataFromServer = await fetch(url);
+		const data = await dataFromServer.json();
+		console.log('Received data ', data.result);
+		setData(data.result);
+		setUpload(true);
 	};
+
 	if (upload) {
 		return (
 			<table
@@ -125,7 +104,7 @@ export function LegendProgress() {
 	} else {
 		return (
 			<div className="div-right">
-				A long time ago in a galaxy far, far away....
+				You should input Your ally-code, and wait a little
 			</div>
 		);
 	}

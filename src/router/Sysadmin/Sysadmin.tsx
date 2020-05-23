@@ -1,6 +1,11 @@
-import React from "react";
+import React from 'react';
+import { UnderConstruction } from '../../component/underConstraction';
 
 export function Sysadmin() {
-    console.log('Sysadmin');
-    return <h3>Sysadmin</h3>;
+	return (
+		<div className="div-content">
+			<h3>Hidden page for System Administrator</h3>
+			<UnderConstruction />
+		</div>
+	);
 }

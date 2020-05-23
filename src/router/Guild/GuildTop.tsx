@@ -1,5 +1,11 @@
-import React from "react";
+import React from 'react';
+import { UnderConstruction } from '../../component/underConstraction';
 
 export function GuildTop() {
-    return <h3>GuildTop</h3>;
+	return (
+		<div>
+			<h3>This page will show best achievements of Guild</h3>
+			<UnderConstruction />
+		</div>
+	);
 }

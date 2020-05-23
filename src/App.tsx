@@ -6,7 +6,10 @@ import { InputPlayerId } from './component/InputPlayerCode';
 import { ROUTES } from './router/routesConfig';
 
 export default function App() {
-    const [playerId, setPlayerId] = React.useState('');
+	const [playerId, setPlayerId] = React.useState('');
+	const [playerName, setPlayerName] = React.useState('');
+	console.log('Player id ', playerId);
+	console.log('playerName  ', playerName);
 	return (
 		<div className={'App'}>
 			<Router>
@@ -17,7 +20,7 @@ export default function App() {
 						</Link>
 
 						<Link to="/mods" className="nav-link">
-							Mods
+							Player
 						</Link>
 
 						<Link to="/guild" className="nav-link">
@@ -30,12 +33,24 @@ export default function App() {
 						<Link to="/sysadmin" className="nav-link">
 							Sysadmin
 						</Link>
-						<InputPlayerId passChildData={setPlayerId}/>
+						{playerId.length !== 9 ? (
+							<InputPlayerId
+								passPlayerId={setPlayerId}
+								definePlayerName={setPlayerName}
+							/>
+						) : (
+							<a className="nav-link">{playerName}</a>
+						)}
 					</ul>
 
 					<Switch>
 						{ROUTES.map((route, i) => (
-							<RouteWithSubRoutes key={i} playerId={playerId} {...route}  className="div-left" />
+							<RouteWithSubRoutes
+								key={i}
+								playerId={playerId}
+								{...route}
+								className="div-left"
+							/>
 						))}
 					</Switch>
 				</div>

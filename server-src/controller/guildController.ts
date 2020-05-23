@@ -7,7 +7,7 @@ import {
 } from '../@types/IGuild';
 import { Transformer } from '../helper/transformer';
 import { playerController } from './playerController';
-import {IFrontLegendTable} from "../@types/IFrontEnd";
+import { IFrontLegendTable } from '../@types/IFrontEnd';
 
 export const guildController = {
 	getLegendProgress: async function (): Promise<IFrontLegendTable[][]> {
@@ -18,7 +18,7 @@ export const guildController = {
 
 		for (let i: number = 0; i < players; i++) {
 			let result: ILegendProgress[] = await playerController.getLegendProgress(
-				BRAZZERS[i].id
+				BRAZZERS[i].id.toString()
 			);
 			guildResult.push({
 				player_name: BRAZZERS[i].name,
