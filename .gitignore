@@ -5,12 +5,14 @@
 /.pnp
 .pnp.js
 .idea
+!/node_modules/swrTypes
 
 # testing
 /coverage
 
 # production
 /build
+/server-dist
 
 # misc
 .DS_Store

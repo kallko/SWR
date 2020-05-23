@@ -1,6 +1,8 @@
 .App {
   text-align: center;
   font-family: 'SWR-solo';
+  background: black;
+  height: 100vh;
 }
 
 .App-logo {
@@ -38,9 +40,9 @@
   padding-top: 13px;
   margin-left: 0;
   margin-right: auto;
-  display: flex;
   background: black;
   font-family: 'SWR';
+  display: block;
 }
 
 .nav-link {
@@ -51,7 +53,6 @@
 }
 
 .div-content {
-  margin: 0;
   width: 100%;
   padding-top: 15px;
   background: black;
@@ -60,7 +61,7 @@
 
 .div-left {
   float: left;
-  width: 12%;
+  width: 17%;
   background: black;
   height: 100%;
   min-width: 120px;
@@ -70,7 +71,7 @@
 }
 .div-right {
   overflow: hidden;
-  width: 87%;
+  width: 77%;
   background: black;
   height: 100%;
 
