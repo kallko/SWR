@@ -1,11 +1,12 @@
 {
   "name": "untitled",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/assert": "^1.4.7",
     "@types/express": "^4.17.6",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.2",
@@ -17,12 +18,12 @@
     "cors": "2.8.5",
     "express": "~4.17.1",
     "node-fetch": "^2.6.0",
+    "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "react-table": "^7.0.4",
-    "typescript": "^3.8.3"
+    "react-table": "^7.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,7 +31,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "node ./server-dist/main.js",
-    "server-build": "tsc server-src/*.ts --outDir server-dist",
+    "server-build-old": "tsc server-src/*.ts --outDir server-dist",
+    "server-build": "tsc -p server-src/tsconfigServer.json",
+    "server-test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --require ts-node/register 'test/*.test.ts'",
     "forever": "forever start ./server-dist/main.js",
     "application:start": "npm-run-all --parallel start server",
     "prodStart": "npx npm-run-all --parallel start server",
@@ -52,7 +55,22 @@
     ]
   },
   "devDependencies": {
-    "npm-run-all": "^4.1.5"
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "mocha": "^7.1.2",
+    "npm-run-all": "^4.1.5",
+    "nyc": "^15.0.1",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.2"
   },
   "resolutions": {
     "is-promise": "2.1.0",
