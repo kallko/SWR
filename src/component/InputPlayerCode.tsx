@@ -5,6 +5,7 @@ const baseUrl = config.get('url');
 export function InputPlayerId(props) {
 	return (
 		<input
+			placeholder='ally code'
 			style={{
 				borderBottom: 'solid 2px blue',
 				background: 'aliceblue',
@@ -24,16 +25,13 @@ export function InputPlayerId(props) {
 }
 
 async function validatePlayerId(id, setName, setId) {
-	id = id.toString().trim();
-	console.log('ValidateId ', id);
+	id = id.toString().split('-').join('').trim();
 	if (id.length !== 9) {
 		return null;
 	} else {
 		const url = baseUrl + '/player/check/' + id;
-		console.log('GET ', url);
 		const dataFromServer = await fetch(url);
 		const data = await dataFromServer.json();
-		console.log('Received name ', data.result);
 		setName(data.result);
 		setId(id);
 	}

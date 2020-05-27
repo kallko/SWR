@@ -3,7 +3,6 @@ import { RouteWithSubRoutes } from '../System/RouteWithSubRoutes';
 import React from 'react';
 
 export function Guild({ routes, id }) {
-	console.log('Start Guild', id, routes);
 	return (
 		<div className="div-content">
 			<ul className="div-left">

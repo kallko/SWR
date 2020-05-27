@@ -43,9 +43,6 @@ router
 			const result: IFrontColorUpMod[] = await modController.getColorUpMods(
 				req.params && req.params.id.toString()
 			);
-
-			console.log('Send to front ', result);
-
 			res.json({ result });
 		} catch (e) {
 			console.log('ERROR ' + e + e.stack);
