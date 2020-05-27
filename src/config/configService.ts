@@ -13,7 +13,6 @@ export const config = {
 		if (!field) {
 			throw new Error('field for config not specified');
 		}
-		console.log('Get function ', env);
 		return customEnv[field];
 	}
 };

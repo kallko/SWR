@@ -8,8 +8,6 @@ import { ROUTES } from './router/routesConfig';
 export default function App() {
 	const [playerId, setPlayerId] = React.useState('');
 	const [playerName, setPlayerName] = React.useState('');
-	console.log('Player id ', playerId);
-	console.log('playerName  ', playerName);
 	return (
 		<div className={'App'}>
 			<Router>
