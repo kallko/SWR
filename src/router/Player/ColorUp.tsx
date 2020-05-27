@@ -4,7 +4,6 @@ import {config} from "../../config/configService";
 const baseUrl = config.get('url');
 
 export function ColorUp(props) {
-	console.log('PlayerId ', props.playerId);
 	const [data, setData] = React.useState([]);
 	const [upload, setUpload] = React.useState(false);
 	const columns: any = React.useMemo(
@@ -29,19 +28,15 @@ export function ColorUp(props) {
 	} = useTable({ columns, data });
 
 	React.useEffect(() => {
-		console.log('Use Effect ', data.length);
 		if (!upload && props.playerId) {
-			console.log('Start fetch');
 			getColorUpMods().then(() => {});
 		}
 	}, [data]);
 
 	const getColorUpMods = async () => {
 		const url = baseUrl + '/player/colorup/' + props.playerId;
-		console.log('GET ', url);
 		const dataFromServer = await fetch(url);
 		const data = await dataFromServer.json();
-		console.log('Received data ', data.result);
 		setData(data.result);
 		setUpload(true);
 	};

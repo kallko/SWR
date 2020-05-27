@@ -31,7 +31,6 @@ export const guildController = {
 			'.' +
 			(new Date().getMonth() + 1) +
 			'.json';
-		console.log('filename ', fileName);
 		readWriteService.saveLegendProgressForGuild(guildResult, fileName);
 		readWriteService.saveLegendProgressForGuild(
 			guildResult,

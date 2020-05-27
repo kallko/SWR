@@ -15,7 +15,6 @@ export const Transformer = {
 	transformLegendProgress(
 		legendPlayerProgresses: ILegendPlayerProgress[]
 	): IFrontLegendTable[][] {
-		console.log('Progress ', legendPlayerProgresses);
 		let tableKylo: IFrontLegendTable[] = legendPlayerProgresses.map(
 			(progress) => {
 				return {
