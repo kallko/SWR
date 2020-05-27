@@ -41,18 +41,18 @@ export function ColorUp(props) {
 		setUpload(true);
 	};
 
-	if (upload) {
-		return (
-			<table
-				{...getTableProps()}
-				style={{
-					border: 'solid 1px red',
-					margin: 'auto',
-					color: 'white',
-					background: 'black'
-				}}
-			>
-				<thead>
+	if (upload && data.length > 0) {
+		return (<div>
+				<table
+					{...getTableProps()}
+					style={{
+						border: 'solid 1px red',
+						margin: 'auto',
+						color: 'white',
+						background: 'black'
+					}}
+				>
+					<thead>
 					{headerGroups.map((headerGroup: any) => (
 						<tr {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map((column: any) => (
@@ -70,8 +70,8 @@ export function ColorUp(props) {
 							))}
 						</tr>
 					))}
-				</thead>
-				<tbody {...getTableBodyProps()}>
+					</thead>
+					<tbody {...getTableBodyProps()}>
 					{rows.map((row: any) => {
 						prepareRow(row);
 						return (
@@ -93,14 +93,27 @@ export function ColorUp(props) {
 							</tr>
 						);
 					})}
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+				<div>
+					1:square, 2:arrow, 3:romb, 4:triangle, 5:circle, 6:cross
+				</div>
+			</div>
+
 		);
 	} else {
-		return (
-			<div className="div-right">
-				You should input Your ally-code, and wait a little
-			</div>
-		);
+		if (!props.playerId) {
+			return (
+				<div className="div-right">
+					You should input Your ally-code, and wait a little
+				</div>
+			);
+		} else {
+			return (
+				<div className="div-right">
+					Everything ok. You shouldn't worry.
+				</div>)
+		}
+
 	}
 }
