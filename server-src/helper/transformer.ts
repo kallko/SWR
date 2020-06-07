@@ -7,15 +7,15 @@ export const Transformer = {
 	transformColorUpMods(mods: IMod[]): IFrontColorUpMod[] {
 		return mods.map((mod: IMod) => {
 			return {
-				col1: mod.character,
-				col2: mod.slot
+				character: mod.character,
+				slot: mod.slot
 			};
 		});
 	},
 	transformLegendProgress(
 		legendPlayerProgresses: ILegendPlayerProgress[]
 	): IFrontLegendTable[][] {
-		let tableKylo: IFrontLegendTable[] = legendPlayerProgresses.map(
+		const tableKylo: IFrontLegendTable[] = legendPlayerProgresses.map(
 			(progress) => {
 				return {
 					player: progress.player_name,
@@ -24,7 +24,7 @@ export const Transformer = {
 				};
 			}
 		);
-		let tableRey: IFrontLegendTable[] = legendPlayerProgresses.map(
+		const tableRey: IFrontLegendTable[] = legendPlayerProgresses.map(
 			(progress) => {
 				return {
 					player: progress.player_name,

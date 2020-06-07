@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTable } from 'react-table';
-import {config} from "../../config/configService";
+import { config } from '../../config/configService';
 const baseUrl = config.get('url');
 
 export function ColorUp(props) {
@@ -10,11 +10,11 @@ export function ColorUp(props) {
 		() => [
 			{
 				Header: 'Unit Name',
-				accessor: 'col1' // accessor is the "key" in the data
+				accessor: 'character' // accessor is the "key" in the data
 			},
 			{
 				Header: 'Slot',
-				accessor: 'col2'
+				accessor: 'slot'
 			}
 		],
 		[]
@@ -42,7 +42,8 @@ export function ColorUp(props) {
 	};
 
 	if (upload && data.length > 0) {
-		return (<div>
+		return (
+			<div>
 				<table
 					{...getTableProps()}
 					style={{
@@ -53,53 +54,50 @@ export function ColorUp(props) {
 					}}
 				>
 					<thead>
-					{headerGroups.map((headerGroup: any) => (
-						<tr {...headerGroup.getHeaderGroupProps()}>
-							{headerGroup.headers.map((column: any) => (
-								<th
-									{...column.getHeaderProps()}
-									style={{
-										borderBottom: 'solid 3px red',
-										background: 'aliceblue',
-										color: 'black',
-										fontWeight: 'bold'
-									}}
-								>
-									{column.render('Header')}
-								</th>
-							))}
-						</tr>
-					))}
+						{headerGroups.map((headerGroup: any) => (
+							<tr {...headerGroup.getHeaderGroupProps()}>
+								{headerGroup.headers.map((column: any) => (
+									<th
+										{...column.getHeaderProps()}
+										style={{
+											borderBottom: 'solid 3px red',
+											background: 'aliceblue',
+											color: 'black',
+											fontWeight: 'bold'
+										}}
+									>
+										{column.render('Header')}
+									</th>
+								))}
+							</tr>
+						))}
 					</thead>
 					<tbody {...getTableBodyProps()}>
-					{rows.map((row: any) => {
-						prepareRow(row);
-						return (
-							<tr {...row.getRowProps()}>
-								{row.cells.map((cell: any) => {
-									return (
-										<td
-											{...cell.getCellProps()}
-											style={{
-												padding: '10px',
-												border: 'solid 1px gray',
-												background: 'black'
-											}}
-										>
-											{cell.render('Cell')}
-										</td>
-									);
-								})}
-							</tr>
-						);
-					})}
+						{rows.map((row: any) => {
+							prepareRow(row);
+							return (
+								<tr {...row.getRowProps()}>
+									{row.cells.map((cell: any) => {
+										return (
+											<td
+												{...cell.getCellProps()}
+												style={{
+													padding: '10px',
+													border: 'solid 1px gray',
+													background: 'black'
+												}}
+											>
+												{cell.render('Cell')}
+											</td>
+										);
+									})}
+								</tr>
+							);
+						})}
 					</tbody>
 				</table>
-				<div>
-					1:square, 2:arrow, 3:romb, 4:triangle, 5:circle, 6:cross
-				</div>
+				<div>1:square, 2:arrow, 3:romb, 4:triangle, 5:circle, 6:cross</div>
 			</div>
-
 		);
 	} else {
 		if (!props.playerId) {
@@ -110,10 +108,8 @@ export function ColorUp(props) {
 			);
 		} else {
 			return (
-				<div className="div-right">
-					Everything ok. You shouldn't worry.
-				</div>)
+				<div className="div-right">Everything ok. You shouldn't worry.</div>
+			);
 		}
-
 	}
 }

@@ -20,7 +20,6 @@ export const playerController = {
 		let result: ILegendProgress[] = [];
 		let units: IUnit[] = (await fetchDataService.getPlayer(id)).units;
 		const mods: IMod[] = await fetchDataService.getAllMods(id);
-		console.log('Received units ', units.length, ' and mods ', mods.length);
 		let lastWeek = await readWriteService.readJson('brazzersLast.json');
 		let lastWeekDataPlayers: ILegendPlayerProgress[] = await JSON.parse(
 			lastWeek
@@ -111,7 +110,6 @@ export const playerController = {
 	check: async function (id: string) {
 		let player = await fetchDataService.getPlayer(id);
 		if (player.data && player.data.name) {
-			console.log('Player ', player.data.name);
 		} else {
 			player.data = {
 				name: player.detail

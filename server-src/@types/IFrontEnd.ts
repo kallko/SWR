@@ -1,6 +1,6 @@
 export interface IFrontColorUpMod {
-	col1: string;
-	col2: number;
+	character: string;
+	slot: number;
 }
 
 export interface IFrontLegendTable {
