@@ -116,7 +116,7 @@ export const playerController = {
 			let todayData = playerArchiveData.find(
 				(entry) =>
 					entry.year === DateHelper.getYear() &&
-					entry.month === DateHelper.getMonth() + 1 &&
+					entry.month === DateHelper.getMonth() &&
 					entry.day === DateHelper.getDate()
 			);
 			todayData.legend_progress = data;
