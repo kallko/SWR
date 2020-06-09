@@ -47,5 +47,8 @@ export const BRAZZERS: IGuild[] = [
 	{ id: 478749715, name: 'Vandoss' },
 	{ id: 272773262, name: 'Sepultura' },
 	{ id: 317992411, name: 'Pashok013' },
-	{ id: 845794297, name: 'SG РedоВear Владыка' }
+	{ id: 845794297, name: 'SG РedоВear Владыка' },
+	{ id: 413994434, name: 'wadich' },
+	{ id: 261738459, name: 'Серега' },
+	{ id: 649662359, name: 'Kolax3' }
 ];

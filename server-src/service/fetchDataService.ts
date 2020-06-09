@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import { IMod } from '../@types/IMod';
+import { IPlayer } from '../@types/IPlayer';
 
 export const fetchDataService = {
 	async getAllHeroes(): Promise<number[]> {
@@ -16,12 +17,13 @@ export const fetchDataService = {
 		}
 		return null;
 	},
-	async getPlayer(allyCode: string) {
+	async getPlayer(allyCode: string): Promise<IPlayer> {
 		const url = 'https://swgoh.gg/api/player/' + allyCode + '/';
 		const result = await fetch(url);
 		if (result.status === 200) {
 			return await result.json();
 		}
-		return null;
+		console.error('No such player data ', allyCode);
+		return { units: null, data: null, detail: null };
 	}
 };

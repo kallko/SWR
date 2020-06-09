@@ -39,6 +39,7 @@ export const dataHelper = {
 					')\n',
 				''
 			);
+			console.info('Brazzers Console ', con);
 		}
 		return result;
 	}

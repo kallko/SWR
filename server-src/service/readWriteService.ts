@@ -1,8 +1,8 @@
 import { ILegendPlayerProgress } from '../@types/IGuild';
-import { string } from 'prop-types';
-
+const { promisify } = require('util');
 const fs = require('fs');
 const baseSaveUrl = './files/';
+const readDirAsyncFunction = promisify(fs.readdir);
 
 export const readWriteService = {
 	saveLegendProgressForGuild(
@@ -38,6 +38,9 @@ export const readWriteService = {
 			}
 			console.info('The file was saved : ', fileName);
 		});
+	},
+	async readDirAsync(name: string): Promise<string[]> {
+		return readDirAsyncFunction(name);
 	}
 };
 
