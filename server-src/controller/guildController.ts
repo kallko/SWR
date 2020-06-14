@@ -1,23 +1,26 @@
-import { BRAZZERS } from '../@const/brazzers';
-import { readWriteService } from '../service/readWriteService';
+import { IFrontLegendTable } from '../@types/IFrontEnd';
 import {
 	IGuild,
 	ILegendPlayerProgress,
 	ILegendProgress
 } from '../@types/IGuild';
-import { Transformer } from '../helper/transformer';
+import { BRAZZERS } from '../@const/brazzers';
+
+import { readWriteService } from '../service/readWriteService';
+
 import { playerController } from './playerController';
-import { IFrontLegendTable } from '../@types/IFrontEnd';
+
+import { Transformer } from '../helper/transformer';
+import { DateHelper } from '../helper/dateHelper';
 
 export const guildController = {
 	getLegendProgress: async function (): Promise<IFrontLegendTable[][]> {
 		let guildResult: ILegendPlayerProgress[] = [];
-		//todo for testing
-		let test: number = 3;
-		let players: number = Math.min(test, BRAZZERS.length);
+		const test: number = process.env.NODE_ENV === 'PRODUCTION' ? 300 : 3;
+		const players: number = Math.min(test, BRAZZERS.length);
 
 		for (let i: number = 0; i < players; i++) {
-			let result: ILegendProgress[] = await playerController.getLegendProgress(
+			const result: ILegendProgress[] = await playerController.getLegendProgress(
 				BRAZZERS[i].id.toString()
 			);
 			guildResult.push({
@@ -27,9 +30,9 @@ export const guildController = {
 		}
 		const fileName: string =
 			'arch/braz' +
-			new Date().getDate().toLocaleString() +
+			DateHelper.getDate() +
 			'.' +
-			(new Date().getMonth() + 1) +
+			DateHelper.getMonth() +
 			'.json';
 		readWriteService.saveLegendProgressForGuild(guildResult, fileName);
 		readWriteService.saveLegendProgressForGuild(

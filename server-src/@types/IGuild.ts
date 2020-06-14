@@ -16,8 +16,14 @@ export interface ILegendRequirements {
 	req_units: IReqUnits[];
 }
 
+export interface ILegendPlayerProgressArchiv {
+	year: number;
+	month: number;
+	day: number;
+	legend_progress: ILegendProgress[];
+}
 export interface ILegendPlayerProgress {
-	player_name: string;
+	player_name?: string;
 	legend_progress: ILegendProgress[];
 }
 export interface ILegendProgress {

@@ -24,6 +24,23 @@ export const dataHelper = {
 			.concat({ player: '', display: 'Legend REY' })
 			.concat(reyProgress);
 		result.unshift({ player: '', display: 'Legend Kylo' });
+		//todo log for Brazzers
+		if (result.length > 85) {
+			let con = result.reduce(
+				(sum, res) =>
+					sum +
+					res.index +
+					' ' +
+					res.player +
+					' ' +
+					res.display +
+					' (' +
+					res.weekProgress +
+					')\n',
+				''
+			);
+			console.info('Brazzers Console ', con);
+		}
 		return result;
 	}
 };

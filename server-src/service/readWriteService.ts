@@ -1,33 +1,46 @@
 import { ILegendPlayerProgress } from '../@types/IGuild';
-
+const { promisify } = require('util');
 const fs = require('fs');
 const baseSaveUrl = './files/';
+const readDirAsyncFunction = promisify(fs.readdir);
 
 export const readWriteService = {
 	saveLegendProgressForGuild(
 		results: ILegendPlayerProgress[],
-		name = 'last.json'
+		fileName = 'last.json'
 	) {
-		const fileName = join(baseSaveUrl, name);
-		fs.writeFile(fileName, JSON.stringify(results), 'utf8', (err: any) => {
+		const filePath = join(baseSaveUrl, fileName);
+		fs.writeFile(filePath, JSON.stringify(results), 'utf8', (err: any) => {
 			if (err) {
-				return console.log(err);
+				return console.error(err);
 			}
-			console.log('The file was saved!');
+			console.info('The file was saved: ', fileName);
 		});
 	},
-	async readJson(name = 'brazzers.json') {
-		const fileName = join(baseSaveUrl, name);
-		return fs.readFileSync(fileName, 'utf8', async function (
+	async readJson(fileName: string = 'brazzers.json') {
+		const filePath = join(baseSaveUrl, fileName);
+		return fs.readFileSync(filePath, 'utf8', async function (
 			err: any,
 			data: any
 		) {
 			if (err) {
-				console.log('ERRROR ', err);
+				console.error('ERRROR ', err);
 				throw err;
 			}
 			return await JSON.parse(data);
 		});
+	},
+	async saveJson(data: any, fileName: string): Promise<void> {
+		const filePath = join(baseSaveUrl, fileName);
+		fs.writeFile(filePath, JSON.stringify(data), 'utf8', (err: any) => {
+			if (err) {
+				return console.error(err);
+			}
+			console.info('The file was saved : ', fileName);
+		});
+	},
+	async readDirAsync(name: string): Promise<string[]> {
+		return readDirAsyncFunction(name);
 	}
 };
 

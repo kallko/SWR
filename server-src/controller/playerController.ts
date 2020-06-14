@@ -1,33 +1,26 @@
-import { BRAZZERS } from '../@const/brazzers';
 import {
 	ILegendPlayerProgress,
+	ILegendPlayerProgressArchiv,
 	ILegendProgress,
 	ILegendRequirements,
 	ILegendReqUnit,
 	IReqUnits
 } from '../@types/IGuild';
 import { IUnit } from '../@types/IUnit';
-import { fetchDataService } from '../service/fetchDataService';
 import { IMod } from '../@types/IMod';
+
 import { LEGEND } from '../@const/legendRequirements';
+
+import { fetchDataService } from '../service/fetchDataService';
 import { readWriteService } from '../service/readWriteService';
+import { DateHelper } from '../helper/dateHelper';
 
 export const playerController = {
 	getLegendProgress: async function (id: string): Promise<ILegendProgress[]> {
-		// @ts-ignore: Object is possibly 'null'.
-		const playerName =
-			BRAZZERS.find((member) => member.id.toString() === id).name || '';
 		let result: ILegendProgress[] = [];
 		let units: IUnit[] = (await fetchDataService.getPlayer(id)).units;
 		const mods: IMod[] = await fetchDataService.getAllMods(id);
-		console.log('Received units ', units.length, ' and mods ', mods.length);
-		let lastWeek = await readWriteService.readJson('brazzersLast.json');
-		let lastWeekDataPlayers: ILegendPlayerProgress[] = await JSON.parse(
-			lastWeek
-		);
-		let lastWeekDataPlayer = lastWeekDataPlayers.find(
-			(player) => player.player_name === playerName
-		);
+		const lastWeekDataPlayer = await getLastWeekPlayerData(id);
 		LEGEND.forEach((legend) => {
 			if (isExist(legend.name, units)) {
 				result.push({
@@ -41,9 +34,9 @@ export const playerController = {
 			} else {
 				let unitProgress: ILegendReqUnit[] = [];
 				legend.req_units.forEach((reqUnit): void => {
-					const playerUnit: IUnit | undefined = units.find(
-						(unit) => unit.data.base_id === reqUnit.base_id
-					);
+					const playerUnit: IUnit | undefined =
+						units &&
+						units.find((unit) => unit.data.base_id === reqUnit.base_id);
 					if (playerUnit) {
 						if (isComplete(playerUnit, reqUnit)) {
 							unitProgress.push({
@@ -106,12 +99,43 @@ export const playerController = {
 				});
 			}
 		});
+		await playerController.saveLegendProgress(id, result);
 		return result;
+	},
+	saveLegendProgress: async function (id: string, data: ILegendProgress[]) {
+		let playerArchiveData: ILegendPlayerProgressArchiv[];
+		try {
+			const playerArchiveDataResp: string = await readWriteService.readJson(
+				`arch/players/lp/${id}.json`
+			);
+			playerArchiveData = await JSON.parse(playerArchiveDataResp);
+		} catch (e) {
+			playerArchiveData = [];
+		}
+		if (playerArchiveData.length > 0 && isTodayDataExist(playerArchiveData)) {
+			let todayData = playerArchiveData.find(
+				(entry) =>
+					entry.year === DateHelper.getYear() &&
+					entry.month === DateHelper.getMonth() &&
+					entry.day === DateHelper.getDate()
+			);
+			todayData.legend_progress = data;
+		} else {
+			playerArchiveData.push({
+				month: DateHelper.getMonth(),
+				day: DateHelper.getDate(),
+				year: DateHelper.getYear(),
+				legend_progress: data
+			});
+		}
+		await readWriteService.saveJson(
+			playerArchiveData,
+			`arch/players/lp/${id}.json`
+		);
 	},
 	check: async function (id: string) {
 		let player = await fetchDataService.getPlayer(id);
 		if (player.data && player.data.name) {
-			console.log('Player ', player.data.name);
 		} else {
 			player.data = {
 				name: player.detail
@@ -122,7 +146,7 @@ export const playerController = {
 };
 
 function isExist(name: string, units: IUnit[]) {
-	return units.some((unit: IUnit) => unit.data.base_id === name);
+	return units && units.some((unit: IUnit) => unit.data.base_id === name);
 }
 function isComplete(playerUnit: IUnit, unit: IReqUnits) {
 	return (
@@ -180,4 +204,42 @@ function getLastWeekProgress(lastWeekDataPlayer, legend) {
 	}
 	let index: number = legend.name === 'SUPREMELEADERKYLOREN' ? 0 : 1;
 	return lastWeekDataPlayer.legend_progress[index].display_data.sorting_data;
+}
+
+export async function getLastWeekPlayerData(
+	id: string
+): Promise<ILegendPlayerProgress> {
+	try {
+		const playerDataResp: string = await readWriteService.readJson(
+			`arch/players/lp/${id}.json`
+		);
+		const playerData: ILegendPlayerProgressArchiv[] = await JSON.parse(
+			playerDataResp
+		);
+		const currentDate = DateHelper.getDate();
+		const currentMonth = DateHelper.getMonth();
+		const result = playerData
+			.reverse()
+			.find(
+				(entry) =>
+					DateHelper.getDayDiff(
+						currentDate,
+						currentMonth,
+						entry.day,
+						entry.month
+					) >= 7
+			);
+		return result || playerData[0];
+	} catch (e) {
+		return null;
+	}
+}
+
+function isTodayDataExist(data: ILegendPlayerProgressArchiv[]): boolean {
+	const currentDate = DateHelper.getDate();
+	const currentMonth = DateHelper.getMonth();
+	return (
+		data[data.length - 1].month === currentMonth &&
+		data[data.length - 1].day === currentDate
+	);
 }
