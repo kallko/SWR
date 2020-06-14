@@ -47,6 +47,9 @@ export const discordDispatcher = {
 				msg
 			);
 		}
+		if (msg.channel.type === 1 && !msg.author.bot) {
+			return discordDispatcher['help'].call(discordDispatcher, channel, msg);
+		}
 	},
 	register: async function (
 		channel: IDiscordChannel,

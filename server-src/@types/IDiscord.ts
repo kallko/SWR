@@ -5,6 +5,7 @@ export interface IDiscordMessage {
 	author?: {
 		id: string;
 		username: string;
+		bot: boolean;
 	};
 }
 
@@ -14,6 +15,7 @@ export interface IDiscordUser {
 
 export interface IDiscordChannel {
 	id?: number;
+	type: number;
 	createMessage?: (msg: string) => {};
 	lastMessageID?: string;
 	message?: any;
