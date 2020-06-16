@@ -10,7 +10,7 @@ interface IColumn {
 	accessor: string;
 }
 
-export function LegendProgress() {
+export function LegendProgress(props) {
 	const [data, setData] = React.useState([]);
 	const [upload, setUpload] = React.useState(false);
 	const columns: IColumn[] = React.useMemo(
@@ -43,13 +43,13 @@ export function LegendProgress() {
 	} = useTable({ columns, data });
 
 	React.useEffect(() => {
-		if (data.length === 0) {
+		if (data.length === 0 && props.playerId) {
 			getLegendProgress().then(() => {});
 		}
 	}, [data.length]);
 
 	const getLegendProgress = async () => {
-		let guild: any = await fetch(baseUrl + '/guild/brazzers');
+		let guild: any = await fetch(baseUrl + '/guild/legendprogress/' + props.playerId);
 		guild = await guild.json();
 		if (guild.result && guild.result.length > 0) {
 			let guildData: any = [];

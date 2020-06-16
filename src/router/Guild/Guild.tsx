@@ -2,7 +2,8 @@ import { Link, Switch } from 'react-router-dom';
 import { RouteWithSubRoutes } from '../System/RouteWithSubRoutes';
 import React from 'react';
 
-export function Guild({ routes, id }) {
+export function Guild(props) {
+	const routes = props.routes;
 	return (
 		<div className="div-content">
 			<ul className="div-left">
@@ -16,7 +17,7 @@ export function Guild({ routes, id }) {
 			</ul>
 			<Switch>
 				{routes.map((route: any, i: number) => (
-					<RouteWithSubRoutes key={i} {...route} />
+					<RouteWithSubRoutes key={i} {...route} playerId={props.playerId} />
 				))}
 			</Switch>
 		</div>
