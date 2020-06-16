@@ -8,21 +8,30 @@ describe('discordDispatcher tests:', async function () {
 	it('msg with content swr -h should call help function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
 		const message: IDiscordMessage = { content: 'swr -h' };
-		let result: any = await discordDispatcher.dispatch(message, { id: 100 });
+		let result: any = await discordDispatcher.dispatch(message, {
+			id: 100,
+			type: 0
+		});
 		expect(result).equal(true);
 		stub.restore();
 	});
 	it('msg with content swr -h should call help function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
 		const message: IDiscordMessage = { content: 'swr -h' };
-		let result: any = await discordDispatcher.dispatch(message, { id: 100 });
+		let result: any = await discordDispatcher.dispatch(message, {
+			id: 100,
+			type: 0
+		});
 		expect(result).equal(true);
 		stub.restore();
 	});
 	it('msg with content swr -cu should call colorUp function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'colorUp').callsFake(() => true);
 		const message: IDiscordMessage = { content: 'swr -cu' };
-		let result: any = await discordDispatcher.dispatch(message, { id: 100 });
+		let result: any = await discordDispatcher.dispatch(message, {
+			id: 100,
+			type: 0
+		});
 		expect(result).equal(true);
 		stub.restore();
 	});
@@ -31,14 +40,10 @@ describe('discordDispatcher tests:', async function () {
 			.stub(discordDispatcher, 'legendProgress')
 			.callsFake(() => true);
 		const message: IDiscordMessage = { content: 'swr -lp' };
-		let result: any = await discordDispatcher.dispatch(message, { id: 100 });
-		expect(result).equal(true);
-		stub.restore();
-	});
-	xit('msg with content swr -h should call help function', async function () {
-		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
-		const message: IDiscordMessage = { content: 'swr -h' };
-		let result: any = await discordDispatcher.dispatch(message, { id: 100 });
+		let result: any = await discordDispatcher.dispatch(message, {
+			id: 100,
+			type: 0
+		});
 		expect(result).equal(true);
 		stub.restore();
 	});

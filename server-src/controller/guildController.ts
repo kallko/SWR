@@ -7,6 +7,7 @@ import {
 import { BRAZZERS } from '../@const/brazzers';
 
 import { readWriteService } from '../service/readWriteService';
+import { fetchDataService } from '../service/fetchDataService';
 
 import { playerController } from './playerController';
 
@@ -43,5 +44,8 @@ export const guildController = {
 	},
 	getGuild: function (): IGuild[] {
 		return BRAZZERS;
+	},
+	getGuildAll: async function (allyCode: number): Promise<IGuild[]> {
+		return await fetchDataService.getGuildPlayersCode(allyCode);
 	}
 };

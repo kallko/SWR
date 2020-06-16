@@ -10,7 +10,7 @@ describe('playerController tests:', async function () {
 		let result: any = await playerController.getLegendProgress('621723826');
 		expect(result.length).equal(2);
 	});
-	it.only('should load file with progress and compare it', async function () {
+	it('should load file with progress', async function () {
 		this.timeout(5000);
 		let result: any = await getLastWeekPlayerData('621723826');
 		expect(result.hasOwnProperty('month')).equal(true);
