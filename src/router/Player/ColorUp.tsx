@@ -31,7 +31,7 @@ export function ColorUp(props) {
 		if (!upload && props.playerId) {
 			getColorUpMods().then(() => {});
 		}
-	}, [data]);
+	}, [data, props.playerId]);
 
 	const getColorUpMods = async () => {
 		const url = baseUrl + '/player/colorup/' + props.playerId;

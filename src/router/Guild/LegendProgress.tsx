@@ -46,7 +46,7 @@ export function LegendProgress(props) {
 		if (data.length === 0 && props.playerId) {
 			getLegendProgress().then(() => {});
 		}
-	}, [data.length]);
+	}, [data.length, props.playerId]);
 
 	const getLegendProgress = async () => {
 		let guild: any = await fetch(baseUrl + '/guild/legendprogress/' + props.playerId);
