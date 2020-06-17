@@ -47,7 +47,7 @@ describe('discordDispatcher tests:', async function () {
 		expect(result).equal(true);
 		stub.restore();
 	});
-	it.only('msg with content swr -gl should call guildList function', async function () {
+	it('msg with content swr -gl should call guildList function', async function () {
 		const stub = sinon
 			.stub(discordDispatcher, 'guildList')
 			.callsFake(() => true);
@@ -63,8 +63,7 @@ describe('discordDispatcher tests:', async function () {
 			id: 100,
 			type: 0
 		});
-		console.log('Result in tests ', result);
-		// expect(result).equal(true);
+		expect(result).equal(true);
 		stub.restore();
 	});
 });

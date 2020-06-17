@@ -17,15 +17,15 @@ export const guildController = {
 	): Promise<IFrontLegendTable[][]> {
 		let guildResult: ILegendPlayerProgress[] = [];
 		const test: number = process.env.NODE_ENV === 'PRODUCTION' ? 300 : 3;
-		const guild = await fetchDataService.getGuildPlayersCode(allyCode);
+		const guild: IGuild = await fetchDataService.getGuildPlayersCode(allyCode);
 		const players: number = Math.min(test, guild.members.length);
 
 		for (let i: number = 0; i < players; i++) {
 			const result: ILegendProgress[] = await playerController.getLegendProgress(
-				guild[i].id.toString()
+				guild.members[i].id.toString()
 			);
 			guildResult.push({
-				player_name: guild[i].name,
+				player_name: guild.members[i].name,
 				legend_progress: result
 			});
 		}

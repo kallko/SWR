@@ -2,7 +2,7 @@ import { IGuild, ILegendProgress } from '../../@types/IGuild';
 import { IFrontColorUpMod } from '../../@types/IFrontEnd';
 import { MOD_OPTIONS } from '../../@const/modOptions';
 export const discordResultStringifier = {
-	legendProgressStringify(result: ILegendProgress[]): string {
+	legendProgress(result: ILegendProgress[]): string {
 		return (
 			'' +
 			result[0].legend_name +
@@ -14,7 +14,7 @@ export const discordResultStringifier = {
 			result[1].display_data.display_status
 		);
 	},
-	colorUpModsStringify(result: IFrontColorUpMod[]): string {
+	colorUpMods(result: IFrontColorUpMod[]): string {
 		if (result.length === 0) {
 			return 'You made your best. Nothing to upgrade.';
 		}

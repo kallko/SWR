@@ -118,9 +118,7 @@ export const discordDispatcher = {
 		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
 		if (allyCode) {
 			const result = await modController.getColorUpMods(allyCode);
-			const stringResult = discordResultStringifier.colorUpModsStringify(
-				result
-			);
+			const stringResult = discordResultStringifier.colorUpMods(result);
 			channel.createMessage(stringResult);
 		} else {
 			channel.createMessage(
@@ -139,9 +137,7 @@ export const discordDispatcher = {
 		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
 		if (allyCode) {
 			const result = await playerController.getLegendProgress(allyCode);
-			const stringResult = discordResultStringifier.legendProgressStringify(
-				result
-			);
+			const stringResult = discordResultStringifier.legendProgress(result);
 			channel.createMessage(stringResult);
 		} else {
 			channel.createMessage(
