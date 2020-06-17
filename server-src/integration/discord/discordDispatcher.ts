@@ -18,28 +18,28 @@ const discordConfig = [
 		id: 1,
 		key: '-r',
 		description:
-			'Register. Usage: swr -r 111222333 Register user ally code for next operations',
+			' Register. Usage: swr -r 111222333 Register user ally code for next operations',
 		handler: 'register'
 	},
 	{
 		id: 2,
 		key: '-cu',
 		description:
-			'ColorUp. Usage: swr -cu Find mods, wich after color up, could add more than 20 speed',
+			' ColorUp. Usage: swr -cu Find mods, wich after color up, could add more than 20 speed',
 		handler: 'colorUp'
 	},
 	{
 		id: 3,
 		key: '-lp',
 		description:
-			'LegendProgress. Usage: swr -lp Check Your progress to receive Legends',
+			' LegendProgress. Usage: swr -lp Check Your progress to receive Legends',
 		handler: 'legendProgress'
 	},
 	{
 		id: 4,
 		key: '-gl',
 		description:
-			'GuildList. usage: swr -gl Return list of guild members with allycodes',
+			' GuildList. usage: swr -gl Return list of guild members with allycodes',
 		handler: 'guildList'
 	}
 ];
