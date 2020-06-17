@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import './App.css';
 import { RouteWithSubRoutes } from './router/System/RouteWithSubRoutes';
-import { InputPlayerId } from './component/InputPlayerCode';
+import { InputPlayerId, logout } from './component/loginLogout';
 import { ROUTES } from './router/routesConfig';
 
 export default function App() {
@@ -39,7 +39,11 @@ export default function App() {
 								definePlayerName={setPlayerName}
 							/>
 						) : (
-							<a className="nav-link">{playerName}</a>
+							<div className="nav-link">
+								<a >{playerName} </a>
+								<a style={{cursor: 'pointer'}} onClick={() => logout(setPlayerName, setPlayerId)}>logout </a>
+							</div>
+
 						)}
 					</ul>
 

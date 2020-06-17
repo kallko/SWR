@@ -24,6 +24,13 @@ export function InputPlayerId(props) {
 	);
 }
 
+export function logout (setName, setId) {
+	setName('');
+	setId('');
+	localStorage.removeItem('playerId');
+	localStorage.removeItem('playerName');
+}
+
 async function validatePlayerId(playerId, setName, setId) {
 	playerId = playerId.toString().split('-').join('').trim();
 	if (playerId.length !== 9) {
