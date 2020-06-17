@@ -6,8 +6,10 @@ import { InputPlayerId } from './component/InputPlayerCode';
 import { ROUTES } from './router/routesConfig';
 
 export default function App() {
-	const [playerId, setPlayerId] = React.useState('');
-	const [playerName, setPlayerName] = React.useState('');
+	const storedPlayerId = localStorage.getItem('playerId');
+	const storedPlayerNAme = localStorage.getItem('playerName');
+	const [playerId, setPlayerId] = React.useState((storedPlayerId || ''));
+	const [playerName, setPlayerName] = React.useState((storedPlayerNAme || ''));
 	return (
 		<div className={'App'}>
 			<Router>

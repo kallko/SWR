@@ -24,15 +24,17 @@ export function InputPlayerId(props) {
 	);
 }
 
-async function validatePlayerId(id, setName, setId) {
-	id = id.toString().split('-').join('').trim();
-	if (id.length !== 9) {
+async function validatePlayerId(playerId, setName, setId) {
+	playerId = playerId.toString().split('-').join('').trim();
+	if (playerId.length !== 9) {
 		return null;
 	} else {
-		const url = baseUrl + '/player/check/' + id;
+		const url = baseUrl + '/player/check/' + playerId;
 		const dataFromServer = await fetch(url);
 		const data = await dataFromServer.json();
 		setName(data.result);
-		setId(id);
+		setId(playerId);
+		localStorage.setItem('playerId', playerId);
+		localStorage.setItem('playerName', data.result);
 	}
 }

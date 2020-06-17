@@ -96,7 +96,7 @@ export function ColorUp(props) {
 						})}
 					</tbody>
 				</table>
-				<div>1:square, 2:arrow, 3:romb, 4:triangle, 5:circle, 6:cross</div>
+				<div style={{paddingLeft: '150px', paddingTop: '20px'}}>1:square, 2:arrow, 3:romb, 4:triangle, 5:circle, 6:cross</div>
 			</div>
 		);
 	} else {

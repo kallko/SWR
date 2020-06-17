@@ -11,14 +11,14 @@ const discordConfig = [
 	{
 		id: 0,
 		key: '-h',
-		description: ' Help. Usage: swr - h Help about acceptable commands',
+		description: '   Help. Usage: swr - h Help about acceptable commands',
 		handler: 'help'
 	},
 	{
 		id: 1,
 		key: '-r',
 		description:
-			' Register. Usage: swr -r 111222333 Register user ally code for next operations',
+			'   Register. Usage: swr -r 111222333 Register user ally code for next operations',
 		handler: 'register'
 	},
 	{
