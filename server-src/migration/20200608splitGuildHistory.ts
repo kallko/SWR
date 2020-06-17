@@ -23,9 +23,13 @@ export const splitGuildHistory = {
 					.replace('braz', '')
 					.replace('.json', '');
 				const dataDate = dataDateString.split('.');
-				BRAZZERS.forEach((braz) => {
+				BRAZZERS.members.forEach((braz) => {
 					if (!guildResult[braz.name]) {
-						guildResult[braz.name] = { name: braz.name, id: braz.id, data: [] };
+						guildResult[braz.name] = {
+							name: braz.name,
+							id: braz.id,
+							data: []
+						};
 					}
 					const player = players.find(
 						(player) => player.player_name === braz.name

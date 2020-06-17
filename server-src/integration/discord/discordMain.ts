@@ -8,7 +8,9 @@ const bot = new eris.Client(config.discordToken);
 
 bot.on('ready', async () => {
 	masterChannel = await bot.getDMChannel(config.discordMasterId);
-	masterChannel.createMessage('Server started: ' + new Date().toLocaleString());
+	masterChannel.createMessage(
+		process.env.NODE_ENV + ' Server started: ' + new Date().toLocaleString()
+	);
 	await bot.editStatus('online', { name: 'swr -h', type: 0 });
 });
 
@@ -19,13 +21,13 @@ bot.on('messageCreate', async (msg: IDiscordMessage) => {
 
 	if (botWasMentioned) {
 		try {
-			await msg.channel.createMessage('Present');
+			return await msg.channel.createMessage('swr -h for help');
 		} catch (err) {
 			console.warn('Failed to respond to mention.');
-			console.warn(err);
+			return console.warn(err);
 		}
 	}
-	await discordDispatcher.dispatch(msg, msg.channel);
+	return await discordDispatcher.dispatch(msg, msg.channel);
 });
 
 bot.on('error', (err) => {

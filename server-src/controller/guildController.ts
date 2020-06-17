@@ -18,7 +18,7 @@ export const guildController = {
 		let guildResult: ILegendPlayerProgress[] = [];
 		const test: number = process.env.NODE_ENV === 'PRODUCTION' ? 300 : 3;
 		const guild = await fetchDataService.getGuildPlayersCode(allyCode);
-		const players: number = Math.min(test, guild.length);
+		const players: number = Math.min(test, guild.members.length);
 
 		for (let i: number = 0; i < players; i++) {
 			const result: ILegendProgress[] = await playerController.getLegendProgress(
@@ -32,7 +32,7 @@ export const guildController = {
 
 		return Transformer.transformLegendProgress(guildResult);
 	},
-	getGuildAll: async function (allyCode: number): Promise<IGuild[]> {
+	getGuildAll: async function (allyCode: number): Promise<IGuild> {
 		return await fetchDataService.getGuildPlayersCode(allyCode);
 	}
 };

@@ -5,6 +5,7 @@ import { discordResultStringifier } from './discordResultStringifier';
 import { readWriteService } from '../../service/readWriteService';
 import { IRegistration, Rang } from '../../@types/iRegistration';
 import { fetchDataService } from '../../service/fetchDataService';
+import { guildController } from '../../controller/guildController';
 
 const discordConfig = [
 	{
@@ -31,6 +32,12 @@ const discordConfig = [
 		key: '-lp',
 		description: 'usage: swr -lp Check Your progress to receive Legends',
 		handler: 'legendProgress'
+	},
+	{
+		id: 4,
+		key: '-gl',
+		description: 'usage: swr -gl Return list of guild members with allycode',
+		handler: 'guildList'
 	}
 ];
 
@@ -135,6 +142,21 @@ export const discordDispatcher = {
 			const stringResult = discordResultStringifier.legendProgressStringify(
 				result
 			);
+			channel.createMessage(stringResult);
+		} else {
+			channel.createMessage(
+				'You are not registered yet.\n Try: \n swr -r allyCode.\n For help: \n swr -h'
+			);
+		}
+	},
+	guildList: async function (
+		channel: IDiscordChannel,
+		msg: IDiscordMessage
+	): Promise<void> {
+		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
+		if (allyCode) {
+			const result = await guildController.getGuildAll(parseInt(allyCode));
+			const stringResult = discordResultStringifier.guildList(result);
 			channel.createMessage(stringResult);
 		} else {
 			channel.createMessage(

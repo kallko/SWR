@@ -1,4 +1,4 @@
-import { ILegendProgress } from '../../@types/IGuild';
+import { IGuild, ILegendProgress } from '../../@types/IGuild';
 import { IFrontColorUpMod } from '../../@types/IFrontEnd';
 import { MOD_OPTIONS } from '../../@const/modOptions';
 export const discordResultStringifier = {
@@ -22,6 +22,17 @@ export const discordResultStringifier = {
 			(sum, entry) =>
 				sum + entry.character + ' - ' + MOD_OPTIONS.form[entry.slot] + '\n',
 			''
+		);
+	},
+	guildList(guild: IGuild): string {
+		return (
+			guild.name +
+			': \n' +
+			guild.members.reduce(
+				(sum, member, index) =>
+					(sum += index + 1 + '.  ' + member.name + ' ' + member.id + '\n'),
+				''
+			)
 		);
 	}
 };

@@ -31,15 +31,18 @@ export const fetchDataService = {
 		console.error('No such player data ', allyCode);
 		return { units: null, data: null, detail: null };
 	},
-	async getGuildPlayersCode(allyCode: number): Promise<IGuild[]> {
+	async getGuildPlayersCode(allyCode: number): Promise<IGuild> {
 		await swapi.connect();
 		const payload = { allyCode };
 		const { result, error, warning } = await swapi.fetchGuild(payload);
-		return result[0].roster.map((member) => {
-			return {
-				name: member.name,
-				id: member.allyCode
-			};
-		});
+		return {
+			name: result[0].name,
+			members: result[0].roster.map((member) => {
+				return {
+					name: member.name,
+					id: member.allyCode
+				};
+			})
+		};
 	}
 };
