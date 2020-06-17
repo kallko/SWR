@@ -11,32 +11,35 @@ const discordConfig = [
 	{
 		id: 0,
 		key: '-h',
-		description: 'usage: swr - h Help about acceptable commands',
+		description: ' Help. Usage: swr - h Help about acceptable commands',
 		handler: 'help'
 	},
 	{
 		id: 1,
 		key: '-r',
 		description:
-			'usage: swr -r 111222333 Register user ally code for next operations',
+			'Register. Usage: swr -r 111222333 Register user ally code for next operations',
 		handler: 'register'
 	},
 	{
 		id: 2,
 		key: '-cu',
-		description: 'usage: swr -cu Find units with weak mod collection',
+		description:
+			'ColorUp. Usage: swr -cu Find mods, wich after color up, could add more than 20 speed',
 		handler: 'colorUp'
 	},
 	{
 		id: 3,
 		key: '-lp',
-		description: 'usage: swr -lp Check Your progress to receive Legends',
+		description:
+			'LegendProgress. Usage: swr -lp Check Your progress to receive Legends',
 		handler: 'legendProgress'
 	},
 	{
 		id: 4,
 		key: '-gl',
-		description: 'usage: swr -gl Return list of guild members with allycode',
+		description:
+			'GuildList. usage: swr -gl Return list of guild members with allycodes',
 		handler: 'guildList'
 	}
 ];

@@ -27,7 +27,9 @@ bot.on('messageCreate', async (msg: IDiscordMessage) => {
 			return console.warn(err);
 		}
 	}
-	return await discordDispatcher.dispatch(msg, msg.channel);
+	const channel =
+		process.env.NODE_ENV === 'PRODUCTION' ? msg.channel : masterChannel;
+	return await discordDispatcher.dispatch(msg, channel);
 });
 
 bot.on('error', (err) => {

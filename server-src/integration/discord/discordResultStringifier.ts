@@ -4,7 +4,7 @@ import { MOD_OPTIONS } from '../../@const/modOptions';
 export const discordResultStringifier = {
 	legendProgress(result: ILegendProgress[]): string {
 		return (
-			'' +
+			'Your progress for Legend: \n' +
 			result[0].legend_name +
 			' ' +
 			result[0].display_data.display_status +
@@ -21,7 +21,7 @@ export const discordResultStringifier = {
 		return result.reduce(
 			(sum, entry) =>
 				sum + entry.character + ' - ' + MOD_OPTIONS.form[entry.slot] + '\n',
-			''
+			'This mods after upgrade could add more than 20 speed: \n'
 		);
 	},
 	guildList(guild: IGuild): string {
