@@ -21,7 +21,7 @@ export const discordResultStringifier = {
 		return result.reduce(
 			(sum, entry) =>
 				sum + entry.character + ' - ' + MOD_OPTIONS.form[entry.slot] + '\n',
-			'This mods after upgrade could add more than 20 speed: \n'
+			'These mods after upgrade could add more than 20 speed: \n'
 		);
 	},
 	guildList(guild: IGuild): string {
