@@ -100,10 +100,10 @@ export function ColorUp(props) {
 			</div>
 		);
 	} else {
-		if (!props.playerId) {
+		if (!props.playerId || !upload) {
 			return (
 				<div className="div-right">
-					You should input Your ally-code, and wait a little
+					{!upload ? 'wait a little' : 'You should input Your ally-code, and wait a little'}
 				</div>
 			);
 		} else {
