@@ -51,16 +51,16 @@ export function LegendProgress(props) {
 	const getLegendProgress = async () => {
 		let guild: any = await fetch(baseUrl + '/guild/legendprogress/' + props.playerId);
 		guild = await guild.json();
-		if (guild.result && guild.result.length > 0) {
+		if (guild.result && guild.result.members.length > 0) {
 			let guildData: any = [];
-			for (let i = 0; i < guild.result.length; i++) {
+			for (let i = 0; i < guild.result.members.length; i++) {
 				let playerProgress: any = await fetch(
-					baseUrl + '/player/legendprogress/' + guild.result[i].id
+					baseUrl + '/player/legendprogress/' + guild.result.members[i].id
 				);
 				await setUpload(true);
 				playerProgress = await playerProgress.json();
 				guildData = guildData.concat([
-					{ player: guild.result[i].name, result: playerProgress.result }
+					{ player: guild.result.members[i].name, result: playerProgress.result }
 				]);
 				let displayData = dataHelper.guildDataunite(guildData);
 				await setData(displayData);
