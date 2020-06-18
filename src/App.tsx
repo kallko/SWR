@@ -27,12 +27,12 @@ export default function App() {
 							Guild
 						</Link>
 
-						<Link to="/apidoc" className="nav-link">
-							API-Doc
-						</Link>
-						<Link to="/sysadmin" className="nav-link">
-							Sysadmin
-						</Link>
+						{/*<Link to="/apidoc" className="nav-link">*/}
+							{/*API-Doc*/}
+						{/*</Link>*/}
+						{/*<Link to="/sysadmin" className="nav-link">*/}
+							{/*Sysadmin*/}
+						{/*</Link>*/}
 						{playerId.length !== 9 ? (
 							<InputPlayerId
 								passPlayerId={setPlayerId}
