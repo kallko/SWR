@@ -15,6 +15,7 @@
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.4",
     "@types/react-table": "^7.0.17",
+    "api-swgoh-help": "^3.3.0",
     "cors": "2.8.5",
     "eris": "^0.13.1",
     "express": "~4.17.1",
@@ -32,13 +33,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "NODE_ENV=DEVELOPMENT node ./server-dist/main.js",
-    "server-build-old": "tsc server-src/*.ts --outDir server-dist",
+    "serverProd": "NODE_ENV=PRODUCTION node ./server-dist/main.js",
     "server-build": "tsc -p server-src/tsconfigServer.json",
-    "server-test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --require ts-node/register 'test/*.test.ts'",
-    "forever": "forever start ./server-dist/main.js",
-    "application:start": "npm-run-all --parallel start server",
-    "prodStart": "npx npm-run-all --parallel start server",
-    "stop": "forever stopall"
+    "server-test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --require ts-node/register 'test/*.test.ts'"
   },
   "eslintConfig": {
     "extends": "react-app"

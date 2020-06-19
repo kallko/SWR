@@ -1,6 +1,8 @@
 import { IGuild } from '../@types/IGuild';
 
-export const BRAZZERS: IGuild[] = [
+export const BRAZZERS: IGuild = {
+	name: 'AE Legion of Brazzzers',
+	members: [
 	{ id: 621723826, name: 'KontrAdmiralTriton' },
 	{ id: 347317671, name: 'shamannexus' },
 	{ id: 452867287, name: 'Arinnar' },
@@ -51,4 +53,4 @@ export const BRAZZERS: IGuild[] = [
 	{ id: 413994434, name: 'wadich' },
 	{ id: 261738459, name: 'Серега' },
 	{ id: 649662359, name: 'Kolax3' }
-];
+]};

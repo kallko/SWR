@@ -1,6 +1,7 @@
 export const Rang = {
 	hope: 'hope',
 	officer: 'officer',
+	lord: 'lord',
 	emperor: 'emperor'
 };
 

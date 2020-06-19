@@ -2,12 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import './App.css';
 import { RouteWithSubRoutes } from './router/System/RouteWithSubRoutes';
-import { InputPlayerId } from './component/InputPlayerCode';
+import { InputPlayerId, logout } from './component/loginLogout';
 import { ROUTES } from './router/routesConfig';
 
 export default function App() {
-	const [playerId, setPlayerId] = React.useState('');
-	const [playerName, setPlayerName] = React.useState('');
+	const storedPlayerId = localStorage.getItem('playerId');
+	const storedPlayerNAme = localStorage.getItem('playerName');
+	const [playerId, setPlayerId] = React.useState((storedPlayerId || ''));
+	const [playerName, setPlayerName] = React.useState((storedPlayerNAme || ''));
 	return (
 		<div className={'App'}>
 			<Router>
@@ -25,19 +27,23 @@ export default function App() {
 							Guild
 						</Link>
 
-						<Link to="/apidoc" className="nav-link">
-							API-Doc
-						</Link>
-						<Link to="/sysadmin" className="nav-link">
-							Sysadmin
-						</Link>
+						{/*<Link to="/apidoc" className="nav-link">*/}
+							{/*API-Doc*/}
+						{/*</Link>*/}
+						{/*<Link to="/sysadmin" className="nav-link">*/}
+							{/*Sysadmin*/}
+						{/*</Link>*/}
 						{playerId.length !== 9 ? (
 							<InputPlayerId
 								passPlayerId={setPlayerId}
 								definePlayerName={setPlayerName}
 							/>
 						) : (
-							<a className="nav-link">{playerName}</a>
+							<div className="nav-link">
+								<a >{playerName} </a>
+								<a style={{cursor: 'pointer'}} onClick={() => logout(setPlayerName, setPlayerId)}>logout </a>
+							</div>
+
 						)}
 					</ul>
 

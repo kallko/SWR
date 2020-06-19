@@ -31,7 +31,7 @@ export function ColorUp(props) {
 		if (!upload && props.playerId) {
 			getColorUpMods().then(() => {});
 		}
-	}, [data]);
+	}, [data, props.playerId]);
 
 	const getColorUpMods = async () => {
 		const url = baseUrl + '/player/colorup/' + props.playerId;
@@ -96,14 +96,14 @@ export function ColorUp(props) {
 						})}
 					</tbody>
 				</table>
-				<div>1:square, 2:arrow, 3:romb, 4:triangle, 5:circle, 6:cross</div>
+				<div style={{paddingLeft: '150px', paddingTop: '20px'}}>1:square, 2:arrow, 3:romb, 4:triangle, 5:circle, 6:cross</div>
 			</div>
 		);
 	} else {
-		if (!props.playerId) {
+		if (!props.playerId || !upload) {
 			return (
 				<div className="div-right">
-					You should input Your ally-code, and wait a little
+					{!upload ? 'wait a little' : 'You should input Your ally-code, and wait a little'}
 				</div>
 			);
 		} else {

@@ -231,6 +231,7 @@ export async function getLastWeekPlayerData(
 			);
 		return result || playerData[0];
 	} catch (e) {
+		console.error('getLastWeekPlayerData', e);
 		return null;
 	}
 }

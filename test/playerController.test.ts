@@ -7,12 +7,12 @@ import {
 describe('playerController tests:', async function () {
 	it('should load file with progress and compare it', async function () {
 		this.timeout(5000);
-		let result: any = await playerController.getLegendProgress('621723826');
+		const result: any = await playerController.getLegendProgress('621723826');
 		expect(result.length).equal(2);
 	});
-	it.only('should load file with progress and compare it', async function () {
-		this.timeout(5000);
-		let result: any = await getLastWeekPlayerData('621723826');
+	it('should load file with progress', async function () {
+		this.timeout(50000);
+		const result: any = await getLastWeekPlayerData('621723826');
 		expect(result.hasOwnProperty('month')).equal(true);
 		expect(result.hasOwnProperty('day')).equal(true);
 		expect(result.hasOwnProperty('year')).equal(true);
