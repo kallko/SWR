@@ -5,32 +5,42 @@ import { discordResultStringifier } from './discordResultStringifier';
 import { readWriteService } from '../../service/readWriteService';
 import { IRegistration, Rang } from '../../@types/iRegistration';
 import { fetchDataService } from '../../service/fetchDataService';
+import { guildController } from '../../controller/guildController';
 
 const discordConfig = [
 	{
 		id: 0,
 		key: '-h',
-		description: 'usage: swr - h Help about acceptable commands',
+		description: '   Help. Usage: swr - h Help about acceptable commands',
 		handler: 'help'
 	},
 	{
 		id: 1,
 		key: '-r',
 		description:
-			'usage: swr -r 111222333 Register user ally code for next operations',
+			'   Register. Usage: swr -r 111222333 Register user ally code for next operations',
 		handler: 'register'
 	},
 	{
 		id: 2,
 		key: '-cu',
-		description: 'usage: swr -cu Find units with weak mod collection',
+		description:
+			' ColorUp. Usage: swr -cu Find mods, wich after color up, could add more than 20 speed',
 		handler: 'colorUp'
 	},
 	{
 		id: 3,
 		key: '-lp',
-		description: 'usage: swr -lp Check Your progress to receive Legends',
+		description:
+			' LegendProgress. Usage: swr -lp Check Your progress to receive Legends',
 		handler: 'legendProgress'
+	},
+	{
+		id: 4,
+		key: '-gl',
+		description:
+			' GuildList. usage: swr -gl Return list of guild members with allycodes',
+		handler: 'guildList'
 	}
 ];
 
@@ -111,9 +121,7 @@ export const discordDispatcher = {
 		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
 		if (allyCode) {
 			const result = await modController.getColorUpMods(allyCode);
-			const stringResult = discordResultStringifier.colorUpModsStringify(
-				result
-			);
+			const stringResult = discordResultStringifier.colorUpMods(result);
 			channel.createMessage(stringResult);
 		} else {
 			channel.createMessage(
@@ -132,9 +140,22 @@ export const discordDispatcher = {
 		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
 		if (allyCode) {
 			const result = await playerController.getLegendProgress(allyCode);
-			const stringResult = discordResultStringifier.legendProgressStringify(
-				result
+			const stringResult = discordResultStringifier.legendProgress(result);
+			channel.createMessage(stringResult);
+		} else {
+			channel.createMessage(
+				'You are not registered yet.\n Try: \n swr -r allyCode.\n For help: \n swr -h'
 			);
+		}
+	},
+	guildList: async function (
+		channel: IDiscordChannel,
+		msg: IDiscordMessage
+	): Promise<void> {
+		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
+		if (allyCode) {
+			const result = await guildController.getGuildAll(parseInt(allyCode));
+			const stringResult = discordResultStringifier.guildList(result);
 			channel.createMessage(stringResult);
 		} else {
 			channel.createMessage(

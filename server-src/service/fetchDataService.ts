@@ -1,6 +1,11 @@
 import fetch from 'node-fetch';
 import { IMod } from '../@types/IMod';
 import { IPlayer } from '../@types/IPlayer';
+import { IGuild } from '../@types/IGuild';
+const ApiSwgohHelp = require('api-swgoh-help');
+import { config } from '../config/config';
+
+const swapi = new ApiSwgohHelp(config.swoghApiHelpCredentials);
 
 export const fetchDataService = {
 	async getAllHeroes(): Promise<number[]> {
@@ -25,5 +30,19 @@ export const fetchDataService = {
 		}
 		console.error('No such player data ', allyCode);
 		return { units: null, data: null, detail: null };
+	},
+	async getGuildPlayersCode(allyCode: number): Promise<IGuild> {
+		await swapi.connect();
+		const payload = { allyCode };
+		const { result, error, warning } = await swapi.fetchGuild(payload);
+		return {
+			name: result[0].name,
+			members: result[0].roster.map((member) => {
+				return {
+					name: member.name,
+					id: member.allyCode
+				};
+			})
+		};
 	}
 };

@@ -1,10 +1,10 @@
 import * as express from 'express';
 import { modController } from './controller/modController';
-import { guildController } from './controller/guildController';
 import { IFrontColorUpMod } from './@types/IFrontEnd';
 import { playerController } from './controller/playerController';
 import { ILegendProgress } from './@types/IGuild';
 import { discordMain } from './integration/discord/discordMain';
+import { fetchDataService } from './service/fetchDataService';
 const router = express.Router();
 const serverStartTime = new Date();
 
@@ -63,10 +63,12 @@ router
 	});
 
 router
-	.route('/guild/legendprogress')
+	.route('/guild/legendprogress/:id')
 	.get(async function (req: express.Request, res: express.Response) {
 		try {
-			const result = await guildController.getLegendProgress();
+			const result = await fetchDataService.getGuildPlayersCode(
+				parseInt(req.params.id)
+			);
 			res.json({ result });
 		} catch (e) {
 			console.error('ERROR ' + e + e.stack);
@@ -80,17 +82,6 @@ router
 			const result: ILegendProgress[] = await playerController.getLegendProgress(
 				req.params.id
 			);
-			res.json({ result });
-		} catch (e) {
-			console.error('ERROR ' + e + e.stack);
-		}
-	});
-
-router
-	.route('/guild/brazzers')
-	.get(async function (req: express.Request, res: express.Response) {
-		try {
-			const result = guildController.getGuild();
 			res.json({ result });
 		} catch (e) {
 			console.error('ERROR ' + e + e.stack);
