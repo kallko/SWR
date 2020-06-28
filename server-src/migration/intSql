@@ -1,0 +1,22 @@
+CREATE SCHEMA `swr` ;
+
+CREATE TABLE `swr`.`User` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `playerName` VARCHAR(64) NOT NULL,
+  `discordName` VARCHAR(64) NULL,
+  `discordId` VARCHAR(16) NULL,
+  `allyCode` VARCHAR(32) NOT NULL,
+  `rang` VARCHAR(16) NOT NULL DEFAULT 'hope',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  UNIQUE INDEX `allyCode_UNIQUE` (`allyCode` ASC) VISIBLE);
+
+
+
+ALTER TABLE `swr`.`User`
+ADD COLUMN `createdAt` DATETIME NOT NULL AFTER `rang`,
+ADD COLUMN `updatedAt` DATETIME NOT NULL AFTER `createdAt`;
+
+
+ALTER TABLE `swr`.`User`
+CHANGE COLUMN `discordId` `discordId` VARCHAR(32) NULL DEFAULT NULL ;

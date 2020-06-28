@@ -1,4 +1,5 @@
 import { splitGuildHistory } from '../server-src/migration/20200608splitGuildHistory';
+import { fillUsers } from '../server-src/migration/20200628fillSql';
 import { expect } from 'chai';
 import { readWriteService } from '../server-src/service/readWriteService';
 
@@ -9,5 +10,9 @@ describe('splitGuildHistory tests:', async function () {
 		let files: string[] = await readWriteService.readDirAsync('./files/arch');
 		const result = await splitGuildHistory.run();
 		expect(files.length).equal(8);
+	});
+	it.only('should create users from fil', async function () {
+		this.timeout(50000);
+		const result = await fillUsers();
 	});
 });
