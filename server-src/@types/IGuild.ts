@@ -4,6 +4,7 @@ export interface IGuild {
 }
 
 export interface IReqUnits {
+	id?: number;
 	base_id: string;
 	power: number;
 	relic?: number;

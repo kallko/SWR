@@ -20,3 +20,14 @@ ADD COLUMN `updatedAt` DATETIME NOT NULL AFTER `createdAt`;
 
 ALTER TABLE `swr`.`User`
 CHANGE COLUMN `discordId` `discordId` VARCHAR(32) NULL DEFAULT NULL ;
+
+
+CREATE TABLE `swr`.`LegendRequirements` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(32) NOT NULL,
+  `base_id` VARCHAR(32) NOT NULL,
+  `power` INT NOT NULL,
+  `relic` INT NULL,
+  `ship` TINYINT NULL,
+  `rarity` INT NULL,
+  PRIMARY KEY (`id`));
