@@ -121,3 +121,68 @@ LegendRequirements.init(
 		sequelize
 	}
 );
+
+export interface LegendProgressCreationAttributes
+	extends Optional<IReqUnits, 'id'> {
+	createdAt: Date;
+	allyCode: string;
+	isComplete: boolean;
+}
+
+export class LegendProgress extends Model<LegendProgressCreationAttributes>
+	implements IReqUnits {
+	public id!: number;
+	public base_id!: string;
+	public power: number;
+	public ship?: boolean;
+	public rarity?: number | null;
+	public relic?: number | null;
+	public createdAt: Date;
+	public allyCode: string;
+	public isComplete: boolean;
+}
+
+LegendProgress.init(
+	{
+		id: {
+			type: DataTypes.INTEGER.UNSIGNED,
+			autoIncrement: true,
+			primaryKey: true
+		},
+		allyCode: {
+			type: new DataTypes.STRING(32),
+			allowNull: false
+		},
+		base_id: {
+			type: new DataTypes.STRING(32),
+			allowNull: false
+		},
+		power: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
+		ship: {
+			type: DataTypes.BOOLEAN
+		},
+		rarity: {
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
+		relic: {
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
+		createdAt: {
+			type: DataTypes.DATE,
+			allowNull: false
+		},
+		isComplete: {
+			type: DataTypes.BOOLEAN
+		}
+	},
+	{
+		tableName: 'LegendProgress',
+		timestamps: false,
+		sequelize
+	}
+);

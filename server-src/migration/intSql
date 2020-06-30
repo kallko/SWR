@@ -31,3 +31,20 @@ CREATE TABLE `swr`.`LegendRequirements` (
   `ship` TINYINT NULL,
   `rarity` INT NULL,
   PRIMARY KEY (`id`));
+
+
+CREATE TABLE `swr`.`LegendProgress` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `base_id` VARCHAR(32) NOT NULL,
+  `power` INT NOT NULL,
+  `relic` INT NULL,
+  `ship` TINYINT NULL,
+  `rarity` INT NULL,
+  `allyCode` INT NOT NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `swr`.`LegendProgress`
+ADD COLUMN `isComplete` INT NULL AFTER `allyCode`;
+
+ALTER TABLE `swr`.`LegendProgress`
+ADD COLUMN `createdAt` DATETIME NOT NULL AFTER `isComplete`;

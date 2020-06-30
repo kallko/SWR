@@ -1,7 +1,8 @@
 import { splitGuildHistory } from '../server-src/migration/20200608splitGuildHistory';
 import {
 	fillLegendReq,
-	fillUsers
+	fillUsers,
+	fillLegendHistory
 } from '../server-src/migration/20200628fillSql';
 import { expect } from 'chai';
 import { readWriteService } from '../server-src/service/readWriteService';
@@ -21,5 +22,9 @@ describe('splitGuildHistory tests:', async function () {
 	xit('should create legend Requirements from const', async function () {
 		this.timeout(50000);
 		await fillLegendReq();
+	});
+	it.only('should create legend history from files', async function () {
+		this.timeout(50000);
+		await fillLegendHistory();
 	});
 });
