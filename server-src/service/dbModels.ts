@@ -25,7 +25,7 @@ export class User extends Model<IRegistration, UserCreationAttributes>
 	public id!: number;
 	public playerName!: string;
 	public discordId?: string | null;
-	public allyCode!: string;
+	public allyCode!: number;
 	public discordName?: string | null;
 	public rang: keyof typeof Rang;
 
@@ -62,7 +62,7 @@ User.init(
 		}
 	},
 	{
-		tableName: 'User',
+		tableName: 'Users',
 		sequelize
 	}
 );
@@ -184,5 +184,76 @@ LegendProgress.init(
 		tableName: 'LegendProgress',
 		timestamps: false,
 		sequelize
+	}
+);
+
+export interface IUnitSQLCreationAttributes {
+	id?: number;
+	baseId: string;
+	power: number;
+	relic: number;
+	combatType: number;
+	gearLevel: number;
+	name: string;
+	level: number;
+	rarity: number;
+	health: number;
+	speed: number;
+	damage: number;
+	damageSpecial: number;
+	defense: number;
+	criticalChance: number;
+	criticalChanceSpecial: number;
+	criticalDamage: number;
+	potency: number;
+	tenacity: number;
+	protection: number;
+	allyCode: number;
+	updatedAt: Date;
+}
+
+export class IUnitSQL extends Model<IUnitSQLCreationAttributes>
+	implements IUnitSQL {
+	public readonly updatedAt!: Date;
+}
+
+IUnitSQL.init(
+	{
+		id: { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
+		baseId: { type: DataTypes.STRING, allowNull: false },
+		power: { type: DataTypes.NUMBER, allowNull: false },
+		relic: { type: DataTypes.NUMBER, allowNull: false },
+		combatType: { type: DataTypes.NUMBER, allowNull: false },
+		gearLevel: { type: DataTypes.NUMBER, allowNull: false },
+		name: { type: DataTypes.STRING, allowNull: false },
+		level: { type: DataTypes.NUMBER, allowNull: false },
+		rarity: { type: DataTypes.NUMBER, allowNull: false },
+		health: { type: DataTypes.NUMBER, allowNull: false },
+		speed: { type: DataTypes.NUMBER, allowNull: false },
+		damage: { type: DataTypes.NUMBER, allowNull: false },
+		damageSpecial: { type: DataTypes.NUMBER, allowNull: false },
+		defense: { type: DataTypes.NUMBER, allowNull: false },
+		criticalChance: { type: DataTypes.NUMBER, allowNull: false },
+		criticalChanceSpecial: { type: DataTypes.NUMBER, allowNull: false },
+		criticalDamage: { type: DataTypes.NUMBER, allowNull: false },
+		potency: { type: DataTypes.NUMBER, allowNull: false },
+		tenacity: { type: DataTypes.NUMBER, allowNull: false },
+		protection: {
+			type: DataTypes.NUMBER,
+			allowNull: false
+		},
+		allyCode: {
+			type: DataTypes.NUMBER,
+			allowNull: false
+		},
+		updatedAt: {
+			type: DataTypes.DATE,
+			allowNull: false
+		}
+	},
+	{
+		sequelize,
+		tableName: 'Units',
+		timestamps: false
 	}
 );

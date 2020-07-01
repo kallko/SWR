@@ -23,7 +23,7 @@ describe('splitGuildHistory tests:', async function () {
 		this.timeout(50000);
 		await fillLegendReq();
 	});
-	it.only('should create legend history from files', async function () {
+	xit('should create legend history from files', async function () {
 		this.timeout(50000);
 		await fillLegendHistory();
 	});

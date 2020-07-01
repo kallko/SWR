@@ -48,3 +48,66 @@ ADD COLUMN `isComplete` INT NULL AFTER `allyCode`;
 
 ALTER TABLE `swr`.`LegendProgress`
 ADD COLUMN `createdAt` DATETIME NOT NULL AFTER `isComplete`;
+
+CREATE TABLE `swr`.`Units` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `base_id` VARCHAR(32) NOT NULL,
+  `power` INT NOT NULL,
+  `relic` INT NOT NULL,
+  `combatType` INT NOT NULL,
+  `gearLevel` INT NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
+  `level` INT NOT NULL,
+  `rarity` INT NOT NULL,
+  `health` INT NOT NULL,
+  `speed` INT NOT NULL,
+  `damage` INT NOT NULL,
+  `damageSpecial` INT NOT NULL,
+  `defense` INT NOT NULL,
+  `criticalChance` INT NOT NULL,
+  `criticalChanceSpecial` INT NOT NULL,
+  `criticalDamage` INT NOT NULL,
+  `potency` INT NOT NULL,
+  `tenacity` INT NOT NULL,
+  `protection` INT NOT NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `swr`.`User`
+RENAME TO  `swr`.`Users` ;
+
+
+ALTER TABLE `swr`.`Units`
+CHANGE COLUMN `base_id` `baseId` VARCHAR(32) NOT NULL ;
+
+ALTER TABLE `swr`.`Units`
+ADD COLUMN `allyCode` INT NOT NULL AFTER `protection`;
+
+ALTER TABLE `swr`.`Units`
+ADD COLUMN `updatedAt` DATETIME NULL AFTER `allyCode`;
+
+ALTER TABLE `swr`.`Units`
+CHANGE COLUMN `defense` `defense` DECIMAL(1) NOT NULL ,
+CHANGE COLUMN `criticalChance` `criticalChance` DECIMAL(2) NOT NULL ,
+CHANGE COLUMN `criticalChanceSpecial` `criticalChanceSpecial` DECIMAL(2) NOT NULL ;
+
+
+ALTER TABLE `swr`.`Units`
+CHANGE COLUMN `defense` `defense` DECIMAL(2,0) NOT NULL ;
+
+
+ALTER TABLE `swr`.`Units`
+CHANGE COLUMN `defense` `defense` DECIMAL(2,1) NOT NULL ,
+CHANGE COLUMN `criticalChance` `criticalChance` DECIMAL(2,2) NOT NULL ,
+CHANGE COLUMN `criticalChanceSpecial` `criticalChanceSpecial` DECIMAL(2,2) NOT NULL ;
+
+
+ALTER TABLE `swr`.`Units`
+CHANGE COLUMN `defense` `defense` DECIMAL(4,2) NOT NULL ,
+CHANGE COLUMN `criticalChance` `criticalChance` DECIMAL(4,2) NOT NULL ,
+CHANGE COLUMN `criticalChanceSpecial` `criticalChanceSpecial` DECIMAL(4,2) NOT NULL ;
+
+
+ALTER TABLE `swr`.`Units`
+CHANGE COLUMN `defense` `defense` DECIMAL(6,2) NOT NULL ,
+CHANGE COLUMN `criticalChance` `criticalChance` DECIMAL(6,2) NOT NULL ,
+CHANGE COLUMN `criticalChanceSpecial` `criticalChanceSpecial` DECIMAL(6,2) NOT NULL ;

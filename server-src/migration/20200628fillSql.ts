@@ -7,7 +7,7 @@ import {
 	LegendRequirementsCreationAttributes,
 	LegendProgressCreationAttributes
 } from '../service/dbModels';
-import { UnitService } from '../service/UnitService';
+import { LegendService } from '../service/LegendService';
 
 export async function fillUsers(): Promise<void> {
 	const usersResp = await readWriteService.readJson(
@@ -69,7 +69,7 @@ export async function fillLegendHistory(): Promise<void> {
 								archData[j].day
 							);
 							const data = archData[j].legend_progress[k].data[m];
-							const result = await UnitService.findUnitByOptions({
+							const result = await LegendService.findUnitsByOptions({
 								where: {
 									allyCode,
 									base_id: data.base_id,
@@ -87,7 +87,7 @@ export async function fillLegendHistory(): Promise<void> {
 									allyCode: allyCode,
 									isComplete: data.isComplete
 								};
-								const unit = await UnitService.create(options);
+								const unit = await LegendService.create(options);
 								console.info(
 									'Unit ',
 									unit.base_id,

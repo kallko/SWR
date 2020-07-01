@@ -22,7 +22,7 @@ export const guildController = {
 
 		for (let i: number = 0; i < players; i++) {
 			const result: ILegendProgress[] = await playerController.getLegendProgress(
-				guild.members[i].id.toString()
+				guild.members[i].id
 			);
 			guildResult.push({
 				player_name: guild.members[i].name,

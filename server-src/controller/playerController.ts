@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import {
 	ILegendPlayerProgress,
 	ILegendPlayerProgressArchiv,
@@ -14,13 +15,40 @@ import { LEGEND } from '../@const/legendRequirements';
 import { fetchDataService } from '../service/fetchDataService';
 import { readWriteService } from '../service/readWriteService';
 import { DateHelper } from '../helper/dateHelper';
+import { LegendService } from '../service/LegendService';
+import { LegendRequirementsService } from '../service/LegendRequirementsService';
+import {
+	IUnitSQL,
+	LegendRequirements
+} from '../service/dbModels';
+import { UnitService } from '../service/UnitService';
+const { Op } = require('sequelize');
+let LEGEND_REQUIREMENTS: LegendRequirements[];
+(async function f() {
+	LEGEND_REQUIREMENTS = await LegendRequirementsService.getAll();
+})();
 
 export const playerController = {
-	getLegendProgress: async function (id: string): Promise<ILegendProgress[]> {
+	updatePlayerUnits: async function (
+		allyCode: number,
+		forceUpdate: boolean = false
+	): Promise<boolean> {
+		if (forceUpdate || (await isPlayerUnitsNeedUpdate(allyCode))) {
+			let units: IUnit[] = (await fetchDataService.getPlayer(allyCode)).units;
+			for (let i: number = 0; i < units.length; i++) {
+				await UnitService.createOrUpdate(allyCode, units[i]);
+			}
+			return true;
+		}
+		return false;
+	},
+	getLegendProgress: async function (
+		allyCode: number
+	): Promise<ILegendProgress[]> {
 		let result: ILegendProgress[] = [];
-		let units: IUnit[] = (await fetchDataService.getPlayer(id)).units;
-		const mods: IMod[] = await fetchDataService.getAllMods(id);
-		const lastWeekDataPlayer = await getLastWeekPlayerData(id);
+		let units: IUnit[] = (await fetchDataService.getPlayer(allyCode)).units;
+		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
+		const lastWeekDataPlayer = await getLastWeekPlayerData(allyCode);
 		LEGEND.forEach((legend) => {
 			if (isExist(legend.name, units)) {
 				result.push({
@@ -99,14 +127,17 @@ export const playerController = {
 				});
 			}
 		});
-		await playerController.saveLegendProgress(id, result);
+		await playerController.saveLegendProgress(allyCode, result);
 		return result;
 	},
-	saveLegendProgress: async function (id: string, data: ILegendProgress[]) {
+	saveLegendProgress: async function (
+		allyCode: number,
+		data: ILegendProgress[]
+	) {
 		let playerArchiveData: ILegendPlayerProgressArchiv[];
 		try {
 			const playerArchiveDataResp: string = await readWriteService.readJson(
-				`arch/players/lp/${id}.json`
+				`arch/players/lp/${allyCode}.json`
 			);
 			playerArchiveData = await JSON.parse(playerArchiveDataResp);
 		} catch (e) {
@@ -130,11 +161,11 @@ export const playerController = {
 		}
 		await readWriteService.saveJson(
 			playerArchiveData,
-			`arch/players/lp/${id}.json`
+			`arch/players/lp/${allyCode}.json`
 		);
 	},
-	check: async function (id: string) {
-		let player = await fetchDataService.getPlayer(id);
+	check: async function (allyCode: number) {
+		let player = await fetchDataService.getPlayer(allyCode);
 		if (player.data && player.data.name) {
 		} else {
 			player.data = {
@@ -207,11 +238,11 @@ function getLastWeekProgress(lastWeekDataPlayer, legend) {
 }
 
 export async function getLastWeekPlayerData(
-	id: string
+	allyCode: number
 ): Promise<ILegendPlayerProgress> {
 	try {
 		const playerDataResp: string = await readWriteService.readJson(
-			`arch/players/lp/${id}.json`
+			`arch/players/lp/${allyCode}.json`
 		);
 		const playerData: ILegendPlayerProgressArchiv[] = await JSON.parse(
 			playerDataResp
@@ -243,4 +274,25 @@ function isTodayDataExist(data: ILegendPlayerProgressArchiv[]): boolean {
 		data[data.length - 1].month === currentMonth &&
 		data[data.length - 1].day === currentDate
 	);
+}
+
+export async function isTodayDataExist2(allyCode: number): Promise<boolean> {
+	const date = new Date().setUTCHours(0, 0, 0, 0);
+	const options = {
+		where: {
+			allyCode,
+			createdAt: {
+				[Op.gte]: date
+			}
+		}
+	};
+	const result = await LegendService.findUnitsByOptions(options);
+	return true;
+}
+
+export async function isPlayerUnitsNeedUpdate(
+	allyCode: number
+): Promise<boolean> {
+	const unit: IUnitSQL = await UnitService.getPlayerUnit(allyCode);
+	return moment(new Date()).diff(unit.updatedAt, 'days') > 1;
 }

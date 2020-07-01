@@ -65,13 +65,13 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<{}> {
-		const allyCode: string = getAllyCode(msg.content);
+		const allyCode: number = getAllyCode(msg.content);
 		if (!allyCode) {
 			return channel.createMessage(
 				'input ally code pls, like: swr -r 111222333'
 			);
 		}
-		if (allyCode.length !== 9) {
+		if (allyCode.toString().length !== 9) {
 			return channel.createMessage(
 				'input correct ally code pls, like: swr -r 111222333'
 			);
@@ -137,7 +137,7 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<void> {
-		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
+		const allyCode: number = await getAllyCodeForRegisteredUser(msg.author.id);
 		if (allyCode) {
 			const result = await playerController.getLegendProgress(allyCode);
 			const stringResult = discordResultStringifier.legendProgress(result);
@@ -154,7 +154,7 @@ export const discordDispatcher = {
 	): Promise<void> {
 		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
 		if (allyCode) {
-			const result = await guildController.getGuildAll(parseInt(allyCode));
+			const result = await guildController.getGuildAll(allyCode);
 			const stringResult = discordResultStringifier.guildList(result);
 			channel.createMessage(stringResult);
 		} else {
@@ -165,19 +165,21 @@ export const discordDispatcher = {
 	}
 };
 
-function getAllyCode(content: string): string {
-	return content
-		.toLowerCase()
-		.replace('swr -r', '')
-		.trim()
-		.split('-')
-		.join('')
-		.trim();
+function getAllyCode(content: string): number {
+	return parseInt(
+		content
+			.toLowerCase()
+			.replace('swr -r', '')
+			.trim()
+			.split('-')
+			.join('')
+			.trim()
+	);
 }
 
 async function getAllyCodeForRegisteredUser(
 	discordId: string
-): Promise<string> {
+): Promise<number> {
 	const allPlayersResp: string = await readWriteService.readJson(
 		'registration/registr.json'
 	);
@@ -185,5 +187,5 @@ async function getAllyCodeForRegisteredUser(
 	const existingPlayer: IRegistration = players.find(
 		(player) => player.discordId === discordId
 	);
-	return existingPlayer ? existingPlayer.allyCode : '';
+	return existingPlayer ? existingPlayer.allyCode : 0;
 }

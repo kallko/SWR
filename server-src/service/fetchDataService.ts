@@ -13,7 +13,7 @@ export const fetchDataService = {
 		const result = await fetch(url);
 		return await result.json();
 	},
-	async getAllMods(allyCode: string): Promise<IMod[]> {
+	async getAllMods(allyCode: number): Promise<IMod[]> {
 		const url = 'https://swgoh.gg/api/players/' + allyCode + '/mods/';
 		const result = await fetch(url);
 		if (result.status === 200) {
@@ -22,7 +22,7 @@ export const fetchDataService = {
 		}
 		return null;
 	},
-	async getPlayer(allyCode: string): Promise<IPlayer> {
+	async getPlayer(allyCode: number): Promise<IPlayer> {
 		const url = 'https://swgoh.gg/api/player/' + allyCode + '/';
 		const result = await fetch(url);
 		if (result.status === 200) {

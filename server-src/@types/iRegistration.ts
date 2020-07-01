@@ -8,7 +8,7 @@ export const Rang = {
 export interface IRegistration {
 	id?: number;
 	discordId?: string;
-	allyCode: string;
+	allyCode: number;
 	playerName: string;
 	discordName?: string;
 	rang: keyof typeof Rang;
