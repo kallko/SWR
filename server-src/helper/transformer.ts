@@ -3,7 +3,7 @@ import { ILegendPlayerProgress } from '../@types/IGuild';
 import { IMod } from '../@types/IMod';
 import { Sorter } from './sorter';
 import { IUnitSQLCreationAttributes } from '../service/dbModels';
-import { IUnit } from '../@types/IUnit';
+import { IImportUnit } from '../@types/IUnit';
 
 export const Transformer = {
 	transformColorUpMods(mods: IMod[]): IFrontColorUpMod[] {
@@ -39,7 +39,7 @@ export const Transformer = {
 		tableRey.sort(Sorter.sortByProgress);
 		return [tableKylo, tableRey];
 	},
-	fromGameToSQLDB(unit: IUnit, allyCode: number): IUnitSQLCreationAttributes {
+	fromGameToSQLDB(unit: IImportUnit, allyCode: number): IUnitSQLCreationAttributes {
 		return {
 			allyCode,
 			baseId: unit.data.base_id,

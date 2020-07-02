@@ -7,7 +7,7 @@ import {
 	ILegendReqUnit,
 	IReqUnits
 } from '../@types/IGuild';
-import { IUnit } from '../@types/IUnit';
+import { IImportUnit } from '../@types/IUnit';
 import { IMod } from '../@types/IMod';
 
 import { LEGEND } from '../@const/legendRequirements';
@@ -18,7 +18,7 @@ import { DateHelper } from '../helper/dateHelper';
 import { LegendService } from '../service/LegendService';
 import { LegendRequirementsService } from '../service/LegendRequirementsService';
 import {
-	IUnitSQL,
+	Unit,
 	LegendRequirements
 } from '../service/dbModels';
 import { UnitService } from '../service/UnitService';
@@ -34,7 +34,7 @@ export const playerController = {
 		forceUpdate: boolean = false
 	): Promise<boolean> {
 		if (forceUpdate || (await isPlayerUnitsNeedUpdate(allyCode))) {
-			let units: IUnit[] = (await fetchDataService.getPlayer(allyCode)).units;
+			let units: IImportUnit[] = (await fetchDataService.getPlayer(allyCode)).units;
 			for (let i: number = 0; i < units.length; i++) {
 				await UnitService.createOrUpdate(allyCode, units[i]);
 			}
@@ -46,7 +46,7 @@ export const playerController = {
 		allyCode: number
 	): Promise<ILegendProgress[]> {
 		let result: ILegendProgress[] = [];
-		let units: IUnit[] = (await fetchDataService.getPlayer(allyCode)).units;
+		let units: IImportUnit[] = (await fetchDataService.getPlayer(allyCode)).units;
 		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
 		const lastWeekDataPlayer = await getLastWeekPlayerData(allyCode);
 		LEGEND.forEach((legend) => {
@@ -62,7 +62,7 @@ export const playerController = {
 			} else {
 				let unitProgress: ILegendReqUnit[] = [];
 				legend.req_units.forEach((reqUnit): void => {
-					const playerUnit: IUnit | undefined =
+					const playerUnit: IImportUnit | undefined =
 						units &&
 						units.find((unit) => unit.data.base_id === reqUnit.base_id);
 					if (playerUnit) {
@@ -176,10 +176,10 @@ export const playerController = {
 	}
 };
 
-function isExist(name: string, units: IUnit[]) {
-	return units && units.some((unit: IUnit) => unit.data.base_id === name);
+function isExist(name: string, units: IImportUnit[]) {
+	return units && units.some((unit: IImportUnit) => unit.data.base_id === name);
 }
-function isComplete(playerUnit: IUnit, unit: IReqUnits) {
+function isComplete(playerUnit: IImportUnit, unit: IReqUnits) {
 	return (
 		playerUnit.data.relic_tier - 2 === unit.relic ||
 		playerUnit.data.rarity === unit.rarity
@@ -188,7 +188,7 @@ function isComplete(playerUnit: IUnit, unit: IReqUnits) {
 
 function getCorrectedPower(
 	unit: ILegendReqUnit,
-	playerUnits: IUnit[],
+	playerUnits: IImportUnit[],
 	mods: IMod[],
 	reqUnits: IReqUnits[]
 ) {
@@ -293,6 +293,6 @@ export async function isTodayDataExist2(allyCode: number): Promise<boolean> {
 export async function isPlayerUnitsNeedUpdate(
 	allyCode: number
 ): Promise<boolean> {
-	const unit: IUnitSQL = await UnitService.getPlayerUnit(allyCode);
+	const unit: Unit = await UnitService.getPlayerUnit(allyCode);
 	return moment(new Date()).diff(unit.updatedAt, 'days') > 1;
 }

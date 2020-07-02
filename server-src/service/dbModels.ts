@@ -212,12 +212,12 @@ export interface IUnitSQLCreationAttributes {
 	updatedAt: Date;
 }
 
-export class IUnitSQL extends Model<IUnitSQLCreationAttributes>
-	implements IUnitSQL {
+export class Unit extends Model<IUnitSQLCreationAttributes>
+	implements Unit {
 	public readonly updatedAt!: Date;
 }
 
-IUnitSQL.init(
+Unit.init(
 	{
 		id: { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
 		baseId: { type: DataTypes.STRING, allowNull: false },
