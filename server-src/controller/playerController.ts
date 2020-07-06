@@ -1,26 +1,20 @@
 import * as moment from 'moment';
+import * as lodash from 'lodash';
+
 import {
 	ILegendPlayerProgress,
 	ILegendPlayerProgressArchiv,
-	ILegendProgress,
-	ILegendRequirements,
-	ILegendReqUnit,
-	IReqUnits
+	ILegendProgress
 } from '../@types/IGuild';
 import { IImportUnit } from '../@types/IUnit';
 import { IMod } from '../@types/IMod';
-
-import { LEGEND } from '../@const/legendRequirements';
 
 import { fetchDataService } from '../service/fetchDataService';
 import { readWriteService } from '../service/readWriteService';
 import { DateHelper } from '../helper/dateHelper';
 import { LegendService } from '../service/LegendService';
 import { LegendRequirementsService } from '../service/LegendRequirementsService';
-import {
-	Unit,
-	LegendRequirements
-} from '../service/dbModels';
+import { Unit, LegendRequirements, LegendProgress } from '../service/dbModels';
 import { UnitService } from '../service/UnitService';
 const { Op } = require('sequelize');
 let LEGEND_REQUIREMENTS: LegendRequirements[];
@@ -34,7 +28,8 @@ export const playerController = {
 		forceUpdate: boolean = false
 	): Promise<boolean> {
 		if (forceUpdate || (await isPlayerUnitsNeedUpdate(allyCode))) {
-			let units: IImportUnit[] = (await fetchDataService.getPlayer(allyCode)).units;
+			const units: IImportUnit[] = (await fetchDataService.getPlayer(allyCode))
+				.units;
 			for (let i: number = 0; i < units.length; i++) {
 				await UnitService.createOrUpdate(allyCode, units[i]);
 			}
@@ -45,14 +40,32 @@ export const playerController = {
 	getLegendProgress: async function (
 		allyCode: number
 	): Promise<ILegendProgress[]> {
+		const unitsForLegends: LegendRequirements[] = await LegendService.getUnitsForLegends();
+		const legendsBaseIds: string[] = Object.keys(
+			lodash.groupBy(unitsForLegends, 'name')
+		);
 		let result: ILegendProgress[] = [];
-		let units: IImportUnit[] = (await fetchDataService.getPlayer(allyCode)).units;
+		if (await isPlayerUnitsNeedUpdate(allyCode)) {
+			await playerController.updatePlayerUnits(allyCode, true);
+		}
+		await UnitService.getPlayerUnitsByBaseId(allyCode, legendsBaseIds);
+		const units: Unit[] = await UnitService.getAllPlayerUnits(allyCode);
+		//todo update mods
 		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
-		const lastWeekDataPlayer = await getLastWeekPlayerData(allyCode);
-		LEGEND.forEach((legend) => {
-			if (isExist(legend.name, units)) {
+		const progress: {
+			createdAt: Date;
+		} = await LegendService.getDateForWeekUpdate(allyCode);
+		if (progress.createdAt) {
+		}
+		const lastWeekProgress: LegendProgress[] = await LegendService.getUnitsCreatedInTenSecondsInterval(
+			allyCode,
+			progress.createdAt
+		);
+		legendsBaseIds.forEach((legendBaseId) => {
+			if (isLegendExist(legendBaseId, units)) {
 				result.push({
-					legend_name: legend.name,
+					//todo take name no baseId
+					legend_name: legendBaseId,
 					display_data: {
 						display_status: 'EXIST',
 						sorting_data: 101,
@@ -60,110 +73,68 @@ export const playerController = {
 					}
 				});
 			} else {
-				let unitProgress: ILegendReqUnit[] = [];
-				legend.req_units.forEach((reqUnit): void => {
-					const playerUnit: IImportUnit | undefined =
-						units &&
-						units.find((unit) => unit.data.base_id === reqUnit.base_id);
-					if (playerUnit) {
-						if (isComplete(playerUnit, reqUnit)) {
-							unitProgress.push({
-								base_id: reqUnit.base_id,
-								isComplete: true,
-								need_power: reqUnit.power,
-								current_power: reqUnit.power,
-								previous_power: getLastWeekData(
-									lastWeekDataPlayer,
-									legend,
-									reqUnit.base_id
-								)
-							});
-						} else {
-							unitProgress.push({
-								base_id: reqUnit.base_id,
-								isComplete: false,
-								need_power: reqUnit.power,
-								current_power: playerUnit.data.power,
-								previous_power: getLastWeekData(
-									lastWeekDataPlayer,
-									legend,
-									reqUnit.base_id
-								)
-							});
-						}
-					} else {
-						unitProgress.push({
-							base_id: reqUnit.base_id,
-							isComplete: false,
-							need_power: reqUnit.power,
-							current_power: 0,
-							previous_power: 0
-						});
-					}
-				});
-				let progress: number = unitProgress.reduce(
-					(sum: number, unit: ILegendReqUnit) => {
-						return sum + getCorrectedPower(unit, units, mods, legend.req_units);
-					},
-					0
+				const unitsForThisLegend = unitsForLegends.filter(
+					(unitForLegend) => unitForLegend.name === legendBaseId
 				);
-				let maximum: number = legend.req_units.reduce(
-					(sum: number, rUnit) => sum + rUnit.power,
-					0
-				);
-				let playerLegendProgress: number = Math.round(
-					(progress / maximum) * 100
+				const progress: number = getLegendProgress(
+					unitsForThisLegend,
+					units,
+					mods
 				);
 				result.push({
-					legend_name: legend.name,
+					//todo take name no baseId
+					legend_name: legendBaseId,
 					display_data: {
-						display_status: '' + playerLegendProgress + '%',
-						sorting_data: playerLegendProgress,
+						display_status: '' + progress + '%',
+						sorting_data: progress,
 						last_week_add:
-							playerLegendProgress -
-							getLastWeekProgress(lastWeekDataPlayer, legend)
-					},
-					data: unitProgress
+							progress -
+							getLegendProgress(
+								unitsForThisLegend,
+								(lastWeekProgress as any) as Unit[],
+								mods
+							)
+					}
 				});
 			}
 		});
-		await playerController.saveLegendProgress(allyCode, result);
+
 		return result;
 	},
-	saveLegendProgress: async function (
-		allyCode: number,
-		data: ILegendProgress[]
-	) {
-		let playerArchiveData: ILegendPlayerProgressArchiv[];
-		try {
-			const playerArchiveDataResp: string = await readWriteService.readJson(
-				`arch/players/lp/${allyCode}.json`
-			);
-			playerArchiveData = await JSON.parse(playerArchiveDataResp);
-		} catch (e) {
-			playerArchiveData = [];
-		}
-		if (playerArchiveData.length > 0 && isTodayDataExist(playerArchiveData)) {
-			let todayData = playerArchiveData.find(
-				(entry) =>
-					entry.year === DateHelper.getYear() &&
-					entry.month === DateHelper.getMonth() &&
-					entry.day === DateHelper.getDate()
-			);
-			todayData.legend_progress = data;
-		} else {
-			playerArchiveData.push({
-				month: DateHelper.getMonth(),
-				day: DateHelper.getDate(),
-				year: DateHelper.getYear(),
-				legend_progress: data
-			});
-		}
-		await readWriteService.saveJson(
-			playerArchiveData,
-			`arch/players/lp/${allyCode}.json`
-		);
-	},
+	// saveLegendProgress: async function (
+	// 	allyCode: number,
+	// 	data: ILegendProgress[]
+	// ) {
+	// 	let playerArchiveData: ILegendPlayerProgressArchiv[];
+	// 	try {
+	// 		const playerArchiveDataResp: string = await readWriteService.readJson(
+	// 			`arch/players/lp/${allyCode}.json`
+	// 		);
+	// 		playerArchiveData = await JSON.parse(playerArchiveDataResp);
+	// 	} catch (e) {
+	// 		playerArchiveData = [];
+	// 	}
+	// 	if (playerArchiveData.length > 0 && isTodayDataExist(playerArchiveData)) {
+	// 		let todayData = playerArchiveData.find(
+	// 			(entry) =>
+	// 				entry.year === DateHelper.getYear() &&
+	// 				entry.month === DateHelper.getMonth() &&
+	// 				entry.day === DateHelper.getDate()
+	// 		);
+	// 		todayData.legend_progress = data;
+	// 	} else {
+	// 		playerArchiveData.push({
+	// 			month: DateHelper.getMonth(),
+	// 			day: DateHelper.getDate(),
+	// 			year: DateHelper.getYear(),
+	// 			legend_progress: data
+	// 		});
+	// 	}
+	// 	await readWriteService.saveJson(
+	// 		playerArchiveData,
+	// 		`arch/players/lp/${allyCode}.json`
+	// 	);
+	// },
 	check: async function (allyCode: number) {
 		let player = await fetchDataService.getPlayer(allyCode);
 		if (player.data && player.data.name) {
@@ -176,65 +147,40 @@ export const playerController = {
 	}
 };
 
-function isExist(name: string, units: IImportUnit[]) {
-	return units && units.some((unit: IImportUnit) => unit.data.base_id === name);
-}
-function isComplete(playerUnit: IImportUnit, unit: IReqUnits) {
+function isLegendExist(legendBaseId: string, units: Unit[]) {
 	return (
-		playerUnit.data.relic_tier - 2 === unit.relic ||
-		playerUnit.data.rarity === unit.rarity
+		legendBaseId &&
+		units &&
+		units.some((unit: Unit) => unit.baseId === legendBaseId)
+	);
+}
+function isComplete(legendUnit: LegendRequirements, unit: Unit) {
+	return (
+		unit.relic - 2 === legendUnit.relic ||
+		(legendUnit.ship && legendUnit.rarity === unit.rarity)
 	);
 }
 
 function getCorrectedPower(
-	unit: ILegendReqUnit,
-	playerUnits: IImportUnit[],
-	mods: IMod[],
-	reqUnits: IReqUnits[]
-) {
-	if (unit.isComplete || unit.current_power === 0) {
-		return unit.current_power;
-	}
-	let playerUnit = playerUnits.find(
-		(pUnit) => pUnit.data.base_id === unit.base_id
-	);
-	if (!playerUnit) {
-		return 0;
-	}
-	if (playerUnit.data.combat_type === 1) {
-		const unitMods = mods.filter((mod) => mod.character === unit.base_id)
-			.length;
-		const modsPower = 750 * unitMods;
-		return Math.min(unit.current_power - modsPower, unit.need_power * 0.99);
-	}
-	let reqUnit = reqUnits.find((rUnit) => rUnit.base_id === unit.base_id);
-	return Math.min(
-		(unit.current_power * playerUnit.data.rarity) / reqUnit.rarity,
-		unit.current_power
-	);
-}
-
-function getLastWeekData(
-	lastWeekData: ILegendPlayerProgress,
-	legend: ILegendRequirements,
-	base_id: string
+	legendUnit: LegendRequirements,
+	unit: Unit,
+	mods: IMod[]
 ): number {
-	if (!lastWeekData) {
+	if (!unit) {
 		return 0;
 	}
-	let index: number = legend.name === 'SUPREMELEADERKYLOREN' ? 0 : 1;
-	let unit = lastWeekData.legend_progress[index].data.find(
-		(unit) => unit.base_id === base_id
+	if (unit.isComplete || isComplete(legendUnit, unit)) {
+		return legendUnit.power;
+	}
+	if (!legendUnit.ship) {
+		const unitMods = mods.filter((mod) => mod.character === unit.baseId).length;
+		const modsPower = 750 * unitMods;
+		return Math.min(unit.power - modsPower, legendUnit.power * 0.99);
+	}
+	const rarity = unit.rarity || 4;
+	return Math.floor(
+		Math.min((unit.power * rarity) / legendUnit.rarity, unit.power)
 	);
-	return unit ? unit.current_power : 0;
-}
-
-function getLastWeekProgress(lastWeekDataPlayer, legend) {
-	if (!lastWeekDataPlayer) {
-		return 0;
-	}
-	let index: number = legend.name === 'SUPREMELEADERKYLOREN' ? 0 : 1;
-	return lastWeekDataPlayer.legend_progress[index].display_data.sorting_data;
 }
 
 export async function getLastWeekPlayerData(
@@ -276,23 +222,38 @@ function isTodayDataExist(data: ILegendPlayerProgressArchiv[]): boolean {
 	);
 }
 
-export async function isTodayDataExist2(allyCode: number): Promise<boolean> {
-	const date = new Date().setUTCHours(0, 0, 0, 0);
-	const options = {
-		where: {
-			allyCode,
-			createdAt: {
-				[Op.gte]: date
-			}
-		}
-	};
-	const result = await LegendService.findUnitsByOptions(options);
-	return true;
-}
+// export async function isTodayDataExist2(allyCode: number): Promise<boolean> {
+// 	const date = new Date().setUTCHours(0, 0, 0, 0);
+// 	const options = {
+// 		where: {
+// 			allyCode,
+// 			createdAt: {
+// 				[Op.gte]: date
+// 			}
+// 		}
+// 	};
+// 	const result = await LegendService.findUnitsByOptions(options);
+// 	return true;
+// }
 
 export async function isPlayerUnitsNeedUpdate(
 	allyCode: number
 ): Promise<boolean> {
 	const unit: Unit = await UnitService.getPlayerUnit(allyCode);
 	return moment(new Date()).diff(unit.updatedAt, 'days') > 1;
+}
+
+export function getLegendProgress(
+	legendUnits: LegendRequirements[],
+	units: Unit[],
+	mods: IMod[]
+): number {
+	let power = legendUnits.reduce((sum, lUnit) => {
+		const unit: Unit = units.find((playerUnit: Unit) => {
+			return playerUnit.baseId === lUnit.baseId;
+		});
+		return sum + getCorrectedPower(lUnit, unit, mods);
+	}, 0);
+	let needPower = legendUnits.reduce((sum, unit) => sum + unit.power, 0);
+	return Math.round((power * 100) / needPower);
 }

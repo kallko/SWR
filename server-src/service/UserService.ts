@@ -4,7 +4,7 @@ import { Rang } from '../@types/iRegistration';
 
 
 export const userService = {
-	createUser: async function(user){
+	createUser: async function (user) {
 		const newUser = await User.create({
 			playerName: user.playerName,
 			allyCode: user.allyCode,

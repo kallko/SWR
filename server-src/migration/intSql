@@ -111,3 +111,10 @@ ALTER TABLE `swr`.`Units`
 CHANGE COLUMN `defense` `defense` DECIMAL(6,2) NOT NULL ,
 CHANGE COLUMN `criticalChance` `criticalChance` DECIMAL(6,2) NOT NULL ,
 CHANGE COLUMN `criticalChanceSpecial` `criticalChanceSpecial` DECIMAL(6,2) NOT NULL ;
+
+ALTER TABLE `swr`.`LegendProgress`
+CHANGE COLUMN `base_id` `baseId` VARCHAR(32) NOT NULL ;
+
+
+ALTER TABLE `swr`.`LegendRequirements`
+CHANGE COLUMN `base_id` `baseId` VARCHAR(32) NOT NULL ;

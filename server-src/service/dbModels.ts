@@ -76,7 +76,7 @@ export class LegendRequirements
 	extends Model<LegendRequirementsCreationAttributes>
 	implements IReqUnits {
 	public id!: number;
-	public base_id!: string;
+	public baseId!: string;
 	public power: number;
 	public name: string;
 	public ship?: boolean;
@@ -91,7 +91,7 @@ LegendRequirements.init(
 			autoIncrement: true,
 			primaryKey: true
 		},
-		base_id: {
+		baseId: {
 			type: new DataTypes.STRING(32),
 			allowNull: false
 		},
@@ -132,7 +132,7 @@ export interface LegendProgressCreationAttributes
 export class LegendProgress extends Model<LegendProgressCreationAttributes>
 	implements IReqUnits {
 	public id!: number;
-	public base_id!: string;
+	public baseId!: string;
 	public power: number;
 	public ship?: boolean;
 	public rarity?: number | null;
@@ -153,7 +153,7 @@ LegendProgress.init(
 			type: new DataTypes.STRING(32),
 			allowNull: false
 		},
-		base_id: {
+		baseId: {
 			type: new DataTypes.STRING(32),
 			allowNull: false
 		},
@@ -212,9 +212,30 @@ export interface IUnitSQLCreationAttributes {
 	updatedAt: Date;
 }
 
-export class Unit extends Model<IUnitSQLCreationAttributes>
-	implements Unit {
-	public readonly updatedAt!: Date;
+export class Unit extends Model<IUnitSQLCreationAttributes> implements Unit {
+	public id!: number;
+	public baseId: string;
+	public power: number;
+	public relic: number;
+	public combatType: number;
+	public gearLevel: number;
+	public name: string;
+	public level: number;
+	public rarity: number;
+	public health: number;
+	public speed: number;
+	public damage: number;
+	public damageSpecial: number;
+	public defense: number;
+	public criticalChance: number;
+	public criticalChanceSpecial: number;
+	public criticalDamage: number;
+	public potency: number;
+	public tenacity: number;
+	public protection: number;
+	public allyCode: number;
+	public updatedAt: Date;
+	isComplete?: boolean;
 }
 
 Unit.init(

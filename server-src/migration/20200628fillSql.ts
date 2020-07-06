@@ -1,9 +1,8 @@
 import { readWriteService } from '../service/readWriteService';
-import { userService } from '../service/userService';
+import { userService } from '../service/UserService';
 import { LEGEND } from '../@const/legendRequirements';
 import { LegendRequirementsService } from '../service/LegendRequirementsService';
 import {
-	LegendProgress,
 	LegendRequirementsCreationAttributes,
 	LegendProgressCreationAttributes
 } from '../service/dbModels';
@@ -25,7 +24,7 @@ export async function fillLegendReq(): Promise<void> {
 		req.req_units.forEach((unit) => {
 			console.log(
 				req.name,
-				unit.base_id,
+				unit.baseId,
 				unit.power,
 				unit.relic,
 				unit.ship,
@@ -33,7 +32,7 @@ export async function fillLegendReq(): Promise<void> {
 			);
 			const options: LegendRequirementsCreationAttributes = {
 				name: req.name,
-				base_id: unit.base_id,
+				baseId: unit.baseId,
 				power: unit.power,
 				relic: unit.relic,
 				ship: unit.ship,
@@ -72,13 +71,13 @@ export async function fillLegendHistory(): Promise<void> {
 							const result = await LegendService.findUnitsByOptions({
 								where: {
 									allyCode,
-									base_id: data.base_id,
+									baseId: data.base_id,
 									createdAt
 								}
 							});
 							if (result?.length === 0) {
 								const options: LegendProgressCreationAttributes = {
-									base_id: data.base_id,
+									baseId: data.baseId,
 									power: data.current_power,
 									relic: data.relic || null,
 									ship: data.ship || null,
@@ -88,13 +87,7 @@ export async function fillLegendHistory(): Promise<void> {
 									isComplete: data.isComplete
 								};
 								const unit = await LegendService.create(options);
-								console.info(
-									'Unit ',
-									unit.base_id,
-									'for ',
-									allyCode,
-									'created'
-								);
+								console.info('Unit ', unit.baseId, 'for ', allyCode, 'created');
 							}
 						}
 					}

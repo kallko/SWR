@@ -1,6 +1,7 @@
 import { Unit, IUnitSQLCreationAttributes } from './dbModels';
 import { IImportUnit } from '../@types/IUnit';
 import { Transformer } from '../helper/transformer';
+import { Op } from 'sequelize';
 
 export const UnitService = {
 	create: async function (unit: IUnitSQLCreationAttributes): Promise<boolean> {
@@ -11,7 +12,6 @@ export const UnitService = {
 	},
 	createOrUpdate: async function (allyCode: number, unit: IImportUnit) {
 		const unitForDB = Transformer.fromGameToSQLDB(unit, allyCode);
-		console.log('Create, or update Unit ', unitForDB);
 		const existUnit = await Unit.findOne({
 			where: {
 				allyCode,
@@ -35,8 +35,29 @@ export const UnitService = {
 			}
 		});
 	},
+	getPlayerUnitsByBaseId: async function (
+		allyCode: number,
+		baseIds: string[]
+	): Promise<Unit[]> {
+		return await Unit.findAll({
+			where: {
+				allyCode,
+				baseId: { [Op.in]: baseIds
+				}
+			}
+		});
+	},
 	getPlayerUnit: async function (allyCode: number): Promise<Unit> {
 		return await Unit.findOne({
+			where: {
+				allyCode
+			},
+			raw: true,
+			nest: true
+		});
+	},
+	getAllPlayerUnits: async function (allyCode: number): Promise<Unit[]> {
+		return await Unit.findAll({
 			where: {
 				allyCode
 			},

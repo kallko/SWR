@@ -3318,5 +3318,214 @@
 				]
 			}
 		]
+	},
+	{
+		"month": 7,
+		"day": 2,
+		"year": 2020,
+		"legend_progress": [
+			{
+				"legend_name": "SUPREMELEADERKYLOREN",
+				"display_data": {
+					"display_status": "84%",
+					"sorting_data": 84,
+					"last_week_add": 3
+				},
+				"data": [
+					{
+						"base_id": "KYLORENUNMASKED",
+						"isComplete": false,
+						"need_power": 30429,
+						"current_power": 28525,
+						"previous_power": 28525
+					},
+					{
+						"base_id": "FIRSTORDERTROOPER",
+						"isComplete": false,
+						"need_power": 23248,
+						"current_power": 19903,
+						"previous_power": 18457
+					},
+					{
+						"base_id": "FIRSTORDEROFFICERMALE",
+						"isComplete": true,
+						"need_power": 21052,
+						"current_power": 21052,
+						"previous_power": 21052
+					},
+					{
+						"base_id": "KYLOREN",
+						"isComplete": false,
+						"need_power": 27448,
+						"current_power": 25726,
+						"previous_power": 25726
+					},
+					{
+						"base_id": "PHASMA",
+						"isComplete": true,
+						"need_power": 24033,
+						"current_power": 24033,
+						"previous_power": 24033
+					},
+					{
+						"base_id": "FIRSTORDEREXECUTIONER",
+						"isComplete": true,
+						"need_power": 21052,
+						"current_power": 21052,
+						"previous_power": 21052
+					},
+					{
+						"base_id": "SMUGGLERHAN",
+						"isComplete": false,
+						"need_power": 21984,
+						"current_power": 16011,
+						"previous_power": 13693
+					},
+					{
+						"base_id": "FOSITHTROOPER",
+						"isComplete": false,
+						"need_power": 24033,
+						"current_power": 20199,
+						"previous_power": 16078
+					},
+					{
+						"base_id": "FIRSTORDERSPECIALFORCESPILOT",
+						"isComplete": true,
+						"need_power": 19003,
+						"current_power": 19003,
+						"previous_power": 19003
+					},
+					{
+						"base_id": "GENERALHUX",
+						"isComplete": true,
+						"need_power": 24817,
+						"current_power": 24817,
+						"previous_power": 24817
+					},
+					{
+						"base_id": "FIRSTORDERTIEPILOT",
+						"isComplete": false,
+						"need_power": 21199,
+						"current_power": 23626,
+						"previous_power": 23626
+					},
+					{
+						"base_id": "EMPERORPALPATINE",
+						"isComplete": false,
+						"need_power": 30429,
+						"current_power": 23734,
+						"previous_power": 23734
+					},
+					{
+						"base_id": "CAPITALFINALIZER",
+						"isComplete": false,
+						"need_power": 30300,
+						"current_power": 39412,
+						"previous_power": 39412
+					}
+				]
+			},
+			{
+				"legend_name": "GLREY",
+				"display_data": {
+					"display_status": "5%",
+					"sorting_data": 5,
+					"last_week_add": 0
+				},
+				"data": [
+					{
+						"base_id": "REYJEDITRAINING",
+						"isComplete": false,
+						"need_power": 33409,
+						"current_power": 0,
+						"previous_power": 0
+					},
+					{
+						"base_id": "FINN",
+						"isComplete": false,
+						"need_power": 24033,
+						"current_power": 1014,
+						"previous_power": 1014
+					},
+					{
+						"base_id": "RESISTANCETROOPER",
+						"isComplete": false,
+						"need_power": 20842,
+						"current_power": 0,
+						"previous_power": 0
+					},
+					{
+						"base_id": "REY",
+						"isComplete": false,
+						"need_power": 27448,
+						"current_power": 1014,
+						"previous_power": 1014
+					},
+					{
+						"base_id": "RESISTANCEPILOT",
+						"isComplete": false,
+						"need_power": 18793,
+						"current_power": 9418,
+						"previous_power": 9418
+					},
+					{
+						"base_id": "POE",
+						"isComplete": false,
+						"need_power": 21627,
+						"current_power": 4656,
+						"previous_power": 4656
+					},
+					{
+						"base_id": "EPIXFINN",
+						"isComplete": false,
+						"need_power": 24033,
+						"current_power": 0,
+						"previous_power": 0
+					},
+					{
+						"base_id": "AMILYNHOLDO",
+						"isComplete": false,
+						"need_power": 24033,
+						"current_power": 0,
+						"previous_power": 0
+					},
+					{
+						"base_id": "ROSETICO",
+						"isComplete": false,
+						"need_power": 24033,
+						"current_power": 0,
+						"previous_power": 0
+					},
+					{
+						"base_id": "EPIXPOE",
+						"isComplete": false,
+						"need_power": 24033,
+						"current_power": 0,
+						"previous_power": 0
+					},
+					{
+						"base_id": "BB8",
+						"isComplete": false,
+						"need_power": 30429,
+						"current_power": 4656,
+						"previous_power": 4656
+					},
+					{
+						"base_id": "SMUGGLERCHEWBACCA",
+						"isComplete": false,
+						"need_power": 21984,
+						"current_power": 0,
+						"previous_power": 0
+					},
+					{
+						"base_id": "CAPITALRADDUS",
+						"isComplete": false,
+						"need_power": 30000,
+						"current_power": 0,
+						"previous_power": 0
+					}
+				]
+			}
+		]
 	}
 ]
