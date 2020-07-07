@@ -98,43 +98,8 @@ export const playerController = {
 				});
 			}
 		});
-
 		return result;
 	},
-	// saveLegendProgress: async function (
-	// 	allyCode: number,
-	// 	data: ILegendProgress[]
-	// ) {
-	// 	let playerArchiveData: ILegendPlayerProgressArchiv[];
-	// 	try {
-	// 		const playerArchiveDataResp: string = await readWriteService.readJson(
-	// 			`arch/players/lp/${allyCode}.json`
-	// 		);
-	// 		playerArchiveData = await JSON.parse(playerArchiveDataResp);
-	// 	} catch (e) {
-	// 		playerArchiveData = [];
-	// 	}
-	// 	if (playerArchiveData.length > 0 && isTodayDataExist(playerArchiveData)) {
-	// 		let todayData = playerArchiveData.find(
-	// 			(entry) =>
-	// 				entry.year === DateHelper.getYear() &&
-	// 				entry.month === DateHelper.getMonth() &&
-	// 				entry.day === DateHelper.getDate()
-	// 		);
-	// 		todayData.legend_progress = data;
-	// 	} else {
-	// 		playerArchiveData.push({
-	// 			month: DateHelper.getMonth(),
-	// 			day: DateHelper.getDate(),
-	// 			year: DateHelper.getYear(),
-	// 			legend_progress: data
-	// 		});
-	// 	}
-	// 	await readWriteService.saveJson(
-	// 		playerArchiveData,
-	// 		`arch/players/lp/${allyCode}.json`
-	// 	);
-	// },
 	check: async function (allyCode: number) {
 		let player = await fetchDataService.getPlayer(allyCode);
 		if (player.data && player.data.name) {
@@ -166,7 +131,7 @@ function getCorrectedPower(
 	unit: Unit,
 	mods: IMod[]
 ): number {
-	if (!unit) {
+	if (!unit || unit.power === 0) {
 		return 0;
 	}
 	if (unit.isComplete || isComplete(legendUnit, unit)) {
@@ -178,9 +143,7 @@ function getCorrectedPower(
 		return Math.min(unit.power - modsPower, legendUnit.power * 0.99);
 	}
 	const rarity = unit.rarity || 4;
-	return Math.floor(
-		Math.min((unit.power * rarity) / legendUnit.rarity, unit.power)
-	);
+	return Math.floor((legendUnit.power * rarity) / legendUnit.rarity);
 }
 
 export async function getLastWeekPlayerData(
@@ -221,20 +184,6 @@ function isTodayDataExist(data: ILegendPlayerProgressArchiv[]): boolean {
 		data[data.length - 1].day === currentDate
 	);
 }
-
-// export async function isTodayDataExist2(allyCode: number): Promise<boolean> {
-// 	const date = new Date().setUTCHours(0, 0, 0, 0);
-// 	const options = {
-// 		where: {
-// 			allyCode,
-// 			createdAt: {
-// 				[Op.gte]: date
-// 			}
-// 		}
-// 	};
-// 	const result = await LegendService.findUnitsByOptions(options);
-// 	return true;
-// }
 
 export async function isPlayerUnitsNeedUpdate(
 	allyCode: number
