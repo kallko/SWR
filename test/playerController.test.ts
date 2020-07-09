@@ -6,7 +6,7 @@ import {
 } from '../server-src/controller/playerController';
 
 describe('playerController tests:', async function () {
-	it.only('should load file with progress and compare it', async function () {
+	it('should load file with progress and compare it', async function () {
 		this.timeout(5000);
 		const result: any = await playerController.getLegendProgress(621723826);
 		expect(result.length).equal(2);
@@ -25,9 +25,9 @@ describe('playerController tests:', async function () {
 		const result: boolean = await isPlayerUnitsNeedUpdate(621723826);
 		console.log('Result ', result);
 	});
-	it('should check necessary of update players units', async function f() {
+	it('should update players units', async function f() {
 		this.timeout(10000);
-		const result: boolean = await playerController.updatePlayerUnits(
+		await playerController.updatePlayerUnits(
 			621723826,
 			true
 		);

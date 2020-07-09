@@ -16,7 +16,6 @@ import { LegendService } from '../service/LegendService';
 import { LegendRequirementsService } from '../service/LegendRequirementsService';
 import { Unit, LegendRequirements, LegendProgress } from '../service/dbModels';
 import { UnitService } from '../service/UnitService';
-const { Op } = require('sequelize');
 let LEGEND_REQUIREMENTS: LegendRequirements[];
 (async function f() {
 	LEGEND_REQUIREMENTS = await LegendRequirementsService.getAll();
@@ -176,20 +175,11 @@ export async function getLastWeekPlayerData(
 	}
 }
 
-function isTodayDataExist(data: ILegendPlayerProgressArchiv[]): boolean {
-	const currentDate = DateHelper.getDate();
-	const currentMonth = DateHelper.getMonth();
-	return (
-		data[data.length - 1].month === currentMonth &&
-		data[data.length - 1].day === currentDate
-	);
-}
-
 export async function isPlayerUnitsNeedUpdate(
 	allyCode: number
 ): Promise<boolean> {
 	const unit: Unit = await UnitService.getPlayerUnit(allyCode);
-	return moment(new Date()).diff(unit.updatedAt, 'days') > 1;
+	return unit && moment(new Date()).diff(unit.updatedAt, 'days') > 1;
 }
 
 export function getLegendProgress(

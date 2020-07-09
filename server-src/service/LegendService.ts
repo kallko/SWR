@@ -19,6 +19,9 @@ export const LegendService = {
 		});
 	},
 	findUnitsByOptions: async function (options): Promise<LegendProgress[]> {
+		if (!options.baseId) {
+			return null;
+		}
 		const findOptions = Object.assign(options, { raw: true, nest: true });
 		return await LegendProgress.findAll(findOptions);
 	},

@@ -32,14 +32,9 @@ export const fetchDataService = {
 		return { units: null, data: null, detail: null };
 	},
 	async getGuildPlayersCode(allyCode: number): Promise<IGuild> {
-		const token = await swapi.connect();
-		console.log('Token ', token);
+		await swapi.connect();
 		const payload = { allyCode };
-		console.log('AllyCode ', allyCode);
 		const { result, error, warning } = await swapi.fetchGuild(payload);
-		console.log('Result ', result);
-		console.log('error ', error);
-		console.log('warning ', warning);
 		return {
 			name: result[0].name,
 			members: result[0].roster.map((member) => {
