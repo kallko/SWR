@@ -32,6 +32,7 @@ export const playerController = {
 			for (let i: number = 0; i < units.length; i++) {
 				await UnitService.createOrUpdate(allyCode, units[i]);
 			}
+			await playerController.saveLegendProgress(allyCode);
 			return true;
 		}
 		return false;
@@ -108,6 +109,36 @@ export const playerController = {
 			};
 		}
 		return player.data.name;
+	},
+	async saveLegendProgress(allyCode: number): Promise<boolean> {
+		const legendBaseIds: string[] = LEGEND_REQUIREMENTS.map(
+			(unit) => unit.baseId
+		);
+		let freshLegendUnits = await UnitService.getPlayerUnitsByBaseId(
+			allyCode,
+			legendBaseIds
+		);
+		const createdAt: Date = new Date();
+		createdAt.setHours(0, 0, 0, 0);
+		for (let i: number = 0; i < legendBaseIds.length; i++) {
+			const existUnit = freshLegendUnits.find(
+				(unit) => unit.baseId === legendBaseIds[i]
+			);
+			const legendUnit = LEGEND_REQUIREMENTS.find(
+				(lUnit) => lUnit.baseId === legendBaseIds[i]
+			);
+			await LegendService.createOrUpdate({
+				baseId: legendBaseIds[i],
+				power: existUnit?.power || 0,
+				relic: existUnit?.relic || null,
+				ship: existUnit?.combatType === 2 || null,
+				rarity: existUnit?.rarity || null,
+				createdAt: createdAt,
+				allyCode: allyCode,
+				isComplete: existUnit?.isComplete || isComplete(legendUnit, existUnit)
+			});
+		}
+		return true;
 	}
 };
 
@@ -120,8 +151,9 @@ function isLegendExist(legendBaseId: string, units: Unit[]) {
 }
 function isComplete(legendUnit: LegendRequirements, unit: Unit) {
 	return (
-		unit.relic - 2 === legendUnit.relic ||
-		(legendUnit.ship && legendUnit.rarity === unit.rarity)
+		unit &&
+		(unit.relic - 2 === legendUnit.relic ||
+			(legendUnit.ship && legendUnit.rarity === unit.rarity))
 	);
 }
 
