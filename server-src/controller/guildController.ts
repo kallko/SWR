@@ -21,6 +21,7 @@ export const guildController = {
 		const players: number = Math.min(test, guild.members.length);
 
 		for (let i: number = 0; i < players; i++) {
+			console.log('NAME: ', guild.members[i].name);
 			const result: ILegendProgress[] = await playerController.getLegendProgress(
 				guild.members[i].id
 			);
