@@ -54,49 +54,49 @@ export const playerController = {
 		const progress: {
 			createdAt: Date;
 		} = await LegendService.getDateForWeekUpdate(allyCode);
-		if (progress.createdAt) {
+		if (progress?.createdAt) {
+			const lastWeekProgress: LegendProgress[] = await LegendService.getUnitsCreatedInTenSecondsInterval(
+				allyCode,
+				progress.createdAt
+			);
+			legendsBaseIds.forEach((legendBaseId) => {
+				if (isLegendExist(legendBaseId, units)) {
+					result.push({
+						//todo take name no baseId
+						legend_name: legendBaseId,
+						display_data: {
+							display_status: 'EXIST',
+							sorting_data: 101,
+							last_week_add: 0
+						}
+					});
+				} else {
+					const unitsForThisLegend = unitsForLegends.filter(
+						(unitForLegend) => unitForLegend.name === legendBaseId
+					);
+					const progress: number = getLegendProgress(
+						unitsForThisLegend,
+						units,
+						mods
+					);
+					result.push({
+						//todo take name no baseId
+						legend_name: legendBaseId,
+						display_data: {
+							display_status: '' + progress + '%',
+							sorting_data: progress,
+							last_week_add:
+								progress -
+								getLegendProgress(
+									unitsForThisLegend,
+									(lastWeekProgress as any) as Unit[],
+									mods
+								)
+						}
+					});
+				}
+			});
 		}
-		const lastWeekProgress: LegendProgress[] = await LegendService.getUnitsCreatedInTenSecondsInterval(
-			allyCode,
-			progress.createdAt
-		);
-		legendsBaseIds.forEach((legendBaseId) => {
-			if (isLegendExist(legendBaseId, units)) {
-				result.push({
-					//todo take name no baseId
-					legend_name: legendBaseId,
-					display_data: {
-						display_status: 'EXIST',
-						sorting_data: 101,
-						last_week_add: 0
-					}
-				});
-			} else {
-				const unitsForThisLegend = unitsForLegends.filter(
-					(unitForLegend) => unitForLegend.name === legendBaseId
-				);
-				const progress: number = getLegendProgress(
-					unitsForThisLegend,
-					units,
-					mods
-				);
-				result.push({
-					//todo take name no baseId
-					legend_name: legendBaseId,
-					display_data: {
-						display_status: '' + progress + '%',
-						sorting_data: progress,
-						last_week_add:
-							progress -
-							getLegendProgress(
-								unitsForThisLegend,
-								(lastWeekProgress as any) as Unit[],
-								mods
-							)
-					}
-				});
-			}
-		});
 		return result;
 	},
 	check: async function (allyCode: number) {
