@@ -83,7 +83,7 @@ export async function fillLegendHistory(): Promise<void> {
 									ship: data.ship || null,
 									rarity: data.rarity || null,
 									createdAt: createdAt,
-									allyCode: allyCode,
+									allyCode: Number(allyCode),
 									isComplete: data.isComplete
 								};
 								const unit = await LegendService.create(options);

@@ -25,7 +25,8 @@ describe('splitGuildHistory tests:', async function () {
 		this.timeout(50000);
 		await fillLegendReq();
 	});
-	it('should create legend history from files', async function () {
+	//depricated
+	xit('should create legend history from files', async function () {
 		this.timeout(50000);
 		await fillLegendHistory();
 	});

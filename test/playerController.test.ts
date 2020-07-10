@@ -27,9 +27,6 @@ describe('playerController tests:', async function () {
 	});
 	it('should update players units', async function f() {
 		this.timeout(10000);
-		await playerController.updatePlayerUnits(
-			621723826,
-			true
-		);
+		await playerController.updatePlayerUnits(621723826);
 	});
 });
