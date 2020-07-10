@@ -15,11 +15,13 @@ describe('splitGuildHistory tests:', async function () {
 		await splitGuildHistory.run();
 		expect(files.length).equal(8);
 	});
-	it('should create users from file', async function () {
+	//depricated
+	xit('should create users from file', async function () {
 		this.timeout(50000);
 		await fillUsers();
 	});
-	it('should create legend Requirements from const', async function () {
+	//depricated
+	xit('should create legend Requirements from const', async function () {
 		this.timeout(50000);
 		await fillLegendReq();
 	});

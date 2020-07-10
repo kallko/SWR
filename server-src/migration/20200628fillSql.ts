@@ -75,7 +75,7 @@ export async function fillLegendHistory(): Promise<void> {
 									createdAt
 								}
 							});
-							if (result?.length === 0) {
+							if (result && result.length === 0) {
 								const options: LegendProgressCreationAttributes = {
 									baseId: data.baseId,
 									power: data.current_power,
