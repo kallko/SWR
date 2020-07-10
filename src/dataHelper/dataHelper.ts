@@ -2,20 +2,20 @@ export const dataHelper = {
 	guildDataunite: function (guild: any) {
 		let kyloProgress = guild.map((member: any) => {
 			return {
-				player: member.player,
-				display: member.result[0].display_data.display_status,
-				sort: member.result[0].display_data.sorting_data,
-				weekProgress: member.result[0].display_data.last_week_add
+				player: member?.player,
+				display: member?.result[0]?.display_data?.display_status,
+				sort: member?.result[0]?.display_data?.sorting_data,
+				weekProgress: member?.result[0]?.display_data?.last_week_add
 			};
 		});
 		kyloProgress.sort(sortByProgress);
 		kyloProgress = addIndex(kyloProgress);
 		let reyProgress = guild.map((member: any) => {
 			return {
-				player: member.player,
-				display: member.result[1].display_data.display_status,
-				sort: member.result[1].display_data.sorting_data,
-				weekProgress: member.result[1].display_data.last_week_add
+				player: member?.player,
+				display: member?.result[1]?.display_data?.display_status,
+				sort: member?.result[1]?.display_data?.sorting_data,
+				weekProgress: member?.result[1]?.display_data?.last_week_add
 			};
 		});
 		reyProgress.sort(sortByProgress);

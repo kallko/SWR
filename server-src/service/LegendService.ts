@@ -18,6 +18,21 @@ export const LegendService = {
 			isComplete: options.isComplete
 		});
 	},
+	createOrUpdate: async function (
+		options: LegendProgressCreationAttributes
+	): Promise<object> {
+		const existUnit = await LegendProgress.findOne({
+			where: {
+				allyCode: options.allyCode,
+				baseId: options.baseId,
+				createdAt: options.createdAt
+			}
+		});
+		if (existUnit) {
+			return await existUnit.update(options);
+		}
+		return await LegendProgress.create(options);
+	},
 	findUnitsByOptions: async function (options): Promise<LegendProgress[]> {
 		if (!options.baseId) {
 			return null;

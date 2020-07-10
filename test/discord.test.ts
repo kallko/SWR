@@ -3,7 +3,7 @@ import { expect } from 'chai';
 const sinon = require('sinon');
 import { IDiscordMessage } from '../server-src/@types/IDiscord';
 
-xdescribe('discordDispatcher tests:', async function () {
+describe('discordDispatcher tests:', async function () {
 	this.timeout(500000);
 	it('msg with content swr -h should call help function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);

@@ -54,7 +54,7 @@ User.init(
 			allowNull: true
 		},
 		allyCode: {
-			type: new DataTypes.STRING(32),
+			type: new DataTypes.NUMBER,
 			allowNull: true
 		},
 		rang: {
@@ -126,7 +126,7 @@ LegendRequirements.init(
 export interface LegendProgressCreationAttributes
 	extends Optional<IReqUnits, 'id'> {
 	createdAt: Date;
-	allyCode: string;
+	allyCode: number;
 	isComplete: boolean;
 }
 
