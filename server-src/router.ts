@@ -40,7 +40,7 @@ router
 	.get(async function (req: express.Request, res: express.Response) {
 		try {
 			const result: IFrontColorUpMod[] = await modController.getColorUpMods(
-				req.params && req.params.id.toString()
+				req.params && Number(req.params.id)
 			);
 			res.json({ result });
 		} catch (e) {
@@ -53,7 +53,7 @@ router
 	.get(async function (req: express.Request, res: express.Response) {
 		try {
 			const result: any = await playerController.check(
-				req.params && req.params.id.toString()
+				req.params && Number(req.params.id)
 			);
 
 			res.json({ result });
@@ -80,7 +80,7 @@ router
 	.get(async function (req: express.Request, res: express.Response) {
 		try {
 			const result: ILegendProgress[] = await playerController.getLegendProgress(
-				req.params.id
+				Number(req.params.id)
 			);
 			res.json({ result });
 		} catch (e) {

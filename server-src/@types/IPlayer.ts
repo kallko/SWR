@@ -1,7 +1,7 @@
-import { IUnit } from './IUnit';
+import { IImportUnit } from './IUnit';
 
 export interface IPlayer {
-	units: IUnit[];
+	units: IImportUnit[];
 	detail: string;
 	data: {
 		name: string;
