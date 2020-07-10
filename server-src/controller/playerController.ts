@@ -179,7 +179,7 @@ export async function isPlayerUnitsNeedUpdate(
 	allyCode: number
 ): Promise<boolean> {
 	const unit: Unit = await UnitService.getPlayerUnit(allyCode);
-	return unit && moment(new Date()).diff(unit.updatedAt, 'days') > 1;
+	return !unit || moment(new Date()).diff(unit.updatedAt, 'days') > 1;
 }
 
 export function getLegendProgress(
