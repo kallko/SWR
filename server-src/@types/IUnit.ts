@@ -1,4 +1,4 @@
-export interface IUnit {
+export interface IImportUnit {
 	data: {
 		id: string;
 		relic_tier: number;

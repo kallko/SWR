@@ -6,9 +6,10 @@ export const Rang = {
 };
 
 export interface IRegistration {
-	discordId: string;
-	allyCode: string;
+	id?: number;
+	discordId?: string;
+	allyCode: number;
 	playerName: string;
-	discordName: string;
+	discordName?: string;
 	rang: keyof typeof Rang;
 }

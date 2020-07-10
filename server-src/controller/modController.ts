@@ -6,7 +6,7 @@ import { Sorter } from '../helper/sorter';
 import { Transformer } from '../helper/transformer';
 
 export const modController = {
-	async getColorUpMods(id: string = '452867287'): Promise<IFrontColorUpMod[]> {
+	async getColorUpMods(id: number = 452867287): Promise<IFrontColorUpMod[]> {
 		let playerMods: IMod[] = await fetchDataService.getAllMods(id);
 		let colorUpMods: IMod[] = playerMods.filter(
 			(mod) => mod.rarity === 5 && mod.slot !== 2

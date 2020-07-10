@@ -4,68 +4,68 @@ const KAYLO: ILegendRequirements = {
 	name: 'SUPREMELEADERKYLOREN',
 	req_units: [
 		{
-			base_id: 'KYLORENUNMASKED',
+			baseId: 'KYLORENUNMASKED',
 			power: 30429,
 			relic: 7
 		},
 		{
-			base_id: 'FIRSTORDERTROOPER',
+			baseId: 'FIRSTORDERTROOPER',
 			power: 23248,
 			relic: 5
 		},
 		{
-			base_id: 'FIRSTORDEROFFICERMALE',
+			baseId: 'FIRSTORDEROFFICERMALE',
 			power: 21052,
 			relic: 5
 		},
 		{
-			base_id: 'KYLOREN',
+			baseId: 'KYLOREN',
 			power: 27448,
 			relic: 7
 		},
 		{
-			base_id: 'PHASMA',
+			baseId: 'PHASMA',
 			power: 24033,
 			relic: 5
 		},
 		{
-			base_id: 'FIRSTORDEREXECUTIONER',
+			baseId: 'FIRSTORDEREXECUTIONER',
 			power: 21052,
 			relic: 5
 		},
 		{
-			base_id: 'SMUGGLERHAN',
+			baseId: 'SMUGGLERHAN',
 			power: 21984,
 			relic: 3
 		},
 		{
-			base_id: 'FOSITHTROOPER',
+			baseId: 'FOSITHTROOPER',
 			power: 24033,
 			relic: 5
 		},
 		{
-			base_id: 'FIRSTORDERSPECIALFORCESPILOT',
+			baseId: 'FIRSTORDERSPECIALFORCESPILOT',
 			power: 19003,
 			relic: 3
 		},
 		{
-			base_id: 'GENERALHUX',
+			baseId: 'GENERALHUX',
 			power: 24817,
 			relic: 5
 		},
 		{
-			base_id: 'FIRSTORDERTIEPILOT',
+			baseId: 'FIRSTORDERTIEPILOT',
 			power: 21199,
 			relic: 3
 		},
 		{
-			base_id: 'EMPERORPALPATINE',
+			baseId: 'EMPERORPALPATINE',
 			power: 30429,
 			relic: 7
 		},
 
 		{
-			base_id: 'CAPITALFINALIZER',
+			baseId: 'CAPITALFINALIZER',
 			power: 30300,
 			ship: true,
 			rarity: 5
@@ -77,68 +77,68 @@ const RAY: ILegendRequirements = {
 	name: 'GLREY',
 	req_units: [
 		{
-			base_id: 'REYJEDITRAINING',
+			baseId: 'REYJEDITRAINING',
 			power: 33409,
 			relic: 7
 		},
 		{
-			base_id: 'FINN',
+			baseId: 'FINN',
 			power: 24033,
 			relic: 5
 		},
 		{
-			base_id: 'RESISTANCETROOPER',
+			baseId: 'RESISTANCETROOPER',
 			power: 20842,
 			relic: 5
 		},
 		{
-			base_id: 'REY',
+			baseId: 'REY',
 			power: 27448,
 			relic: 7
 		},
 		{
-			base_id: 'RESISTANCEPILOT',
+			baseId: 'RESISTANCEPILOT',
 			power: 18793,
 			relic: 3
 		},
 		{
-			base_id: 'POE',
+			baseId: 'POE',
 			power: 21627,
 			relic: 5
 		},
 		{
-			base_id: 'EPIXFINN',
+			baseId: 'EPIXFINN',
 			power: 24033,
 			relic: 5
 		},
 		{
-			base_id: 'AMILYNHOLDO',
+			baseId: 'AMILYNHOLDO',
 			power: 24033,
 			relic: 5
 		},
 		{
-			base_id: 'ROSETICO',
+			baseId: 'ROSETICO',
 			power: 24033,
 			relic: 5
 		},
 		{
-			base_id: 'EPIXPOE',
+			baseId: 'EPIXPOE',
 			power: 24033,
 			relic: 5
 		},
 		{
-			base_id: 'BB8',
+			baseId: 'BB8',
 			power: 30429,
 			relic: 7
 		},
 		{
-			base_id: 'SMUGGLERCHEWBACCA',
+			baseId: 'SMUGGLERCHEWBACCA',
 			power: 21984,
 			relic: 3
 		},
 
 		{
-			base_id: 'CAPITALRADDUS',
+			baseId: 'CAPITALRADDUS',
 			power: 30000,
 			ship: true,
 			rarity: 5
