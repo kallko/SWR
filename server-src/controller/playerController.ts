@@ -16,6 +16,7 @@ import { LegendService } from '../service/LegendService';
 import { LegendRequirementsService } from '../service/LegendRequirementsService';
 import { Unit, LegendRequirements, LegendProgress } from '../service/dbModels';
 import { UnitService } from '../service/UnitService';
+
 let LEGEND_REQUIREMENTS: LegendRequirements[];
 (async function f() {
 	LEGEND_REQUIREMENTS = await LegendRequirementsService.getAll();
@@ -32,7 +33,6 @@ export const playerController = {
 			for (let i: number = 0; i < units.length; i++) {
 				await UnitService.createOrUpdate(allyCode, units[i]);
 			}
-			await playerController.saveLegendProgress(allyCode);
 			return true;
 		}
 		return false;
@@ -48,6 +48,7 @@ export const playerController = {
 		if (await isPlayerUnitsNeedUpdate(allyCode)) {
 			await playerController.updatePlayerUnits(allyCode, true);
 		}
+		await playerController.saveLegendProgress(allyCode);
 		await UnitService.getPlayerUnitsByBaseId(allyCode, legendsBaseIds);
 		const units: Unit[] = await UnitService.getAllPlayerUnits(allyCode);
 		//todo update mods
@@ -175,36 +176,6 @@ function getCorrectedPower(
 	}
 	const rarity = unit.rarity || 4;
 	return Math.floor((legendUnit.power * rarity) / legendUnit.rarity);
-}
-
-export async function getLastWeekPlayerData(
-	allyCode: number
-): Promise<ILegendPlayerProgress> {
-	try {
-		const playerDataResp: string = await readWriteService.readJson(
-			`arch/players/lp/${allyCode}.json`
-		);
-		const playerData: ILegendPlayerProgressArchiv[] = await JSON.parse(
-			playerDataResp
-		);
-		const currentDate = DateHelper.getDate();
-		const currentMonth = DateHelper.getMonth();
-		const result = playerData
-			.reverse()
-			.find(
-				(entry) =>
-					DateHelper.getDayDiff(
-						currentDate,
-						currentMonth,
-						entry.day,
-						entry.month
-					) >= 7
-			);
-		return result || playerData[0];
-	} catch (e) {
-		console.error('getLastWeekPlayerData', e);
-		return null;
-	}
 }
 
 export async function isPlayerUnitsNeedUpdate(
