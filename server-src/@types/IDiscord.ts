@@ -16,7 +16,7 @@ export interface IDiscordUser {
 export interface IDiscordChannel {
 	id?: number;
 	type: number;
-	createMessage?: (msg: string) => {};
+	createMessage?: (msg: string, channel?: any) => void;
 	lastMessageID?: string;
 	message?: any;
 	messages?: {
