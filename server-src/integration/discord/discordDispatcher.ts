@@ -123,8 +123,7 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<void> {
-		const existPlayer = await userService.getUser({ discordId: msg.author.id });
-		const allyCode = existPlayer?.allyCode;
+		const allyCode = await userService.getAllyCodeForDiscord(msg.author.id);
 		if (allyCode) {
 			const result = await modController.getColorUpMods(allyCode);
 			const stringResult = discordResultStringifier.colorUpMods(result);
@@ -143,8 +142,7 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<void> {
-		const existPlayer = await userService.getUser({ discordId: msg.author.id });
-		const allyCode = existPlayer?.allyCode;
+		const allyCode = await userService.getAllyCodeForDiscord(msg.author.id);
 		if (allyCode) {
 			const result = await playerController.getLegendProgress(allyCode);
 			const stringResult = discordResultStringifier.legendProgress(result);
@@ -159,8 +157,7 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<void> {
-		const existPlayer = await userService.getUser({ discordId: msg.author.id });
-		const allyCode = existPlayer?.allyCode;
+		const allyCode = await userService.getAllyCodeForDiscord(msg.author.id);
 		if (allyCode) {
 			const result = await guildController.getGuildAll(allyCode);
 			const stringResult = discordResultStringifier.guildList(result);
