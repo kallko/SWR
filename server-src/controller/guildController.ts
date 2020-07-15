@@ -15,13 +15,12 @@ export const guildController = {
 	getLegendProgress: async function (
 		allyCode: number
 	): Promise<IFrontLegendTable[][]> {
-		let guildResult: ILegendPlayerProgress[] = [];
+		const guildResult: ILegendPlayerProgress[] = [];
 		const test: number = process.env.NODE_ENV === 'PRODUCTION' ? 300 : 3;
 		const guild: IGuild = await fetchDataService.getGuildPlayersCode(allyCode);
 		const players: number = Math.min(test, guild.members.length);
 
 		for (let i: number = 0; i < players; i++) {
-			console.log('NAME: ', guild.members[i].name);
 			const result: ILegendProgress[] = await playerController.getLegendProgress(
 				guild.members[i].id
 			);
