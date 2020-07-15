@@ -1,17 +1,11 @@
 import * as moment from 'moment';
 import * as lodash from 'lodash';
 
-import {
-	ILegendPlayerProgress,
-	ILegendPlayerProgressArchiv,
-	ILegendProgress
-} from '../@types/IGuild';
+import { ILegendProgress } from '../@types/IGuild';
 import { IImportUnit } from '../@types/IUnit';
 import { IMod } from '../@types/IMod';
 
 import { fetchDataService } from '../service/fetchDataService';
-import { readWriteService } from '../service/readWriteService';
-import { DateHelper } from '../helper/dateHelper';
 import { LegendService } from '../service/LegendService';
 import { LegendRequirementsService } from '../service/LegendRequirementsService';
 import { Unit, LegendRequirements, LegendProgress } from '../service/dbModels';
@@ -153,8 +147,8 @@ function isLegendExist(legendBaseId: string, units: Unit[]) {
 function isComplete(legendUnit: LegendRequirements, unit: Unit) {
 	return (
 		unit &&
-		(unit.relic - 2 === legendUnit.relic ||
-			(legendUnit.ship && legendUnit.rarity === unit.rarity))
+		(unit.relic - 2 >= legendUnit.relic ||
+			(legendUnit.ship && legendUnit.rarity >= unit.rarity))
 	);
 }
 
