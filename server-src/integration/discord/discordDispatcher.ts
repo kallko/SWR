@@ -1,11 +1,15 @@
 import { IDiscordChannel, IDiscordMessage } from '../../@types/IDiscord';
+import { IRegistration, Rang } from '../../@types/iRegistration';
+
+import { userService } from '../../service/UserService';
+import { readWriteService } from '../../service/readWriteService';
+import { fetchDataService } from '../../service/fetchDataService';
+
 import { playerController } from '../../controller/playerController';
 import { modController } from '../../controller/modController';
-import { discordResultStringifier } from './discordResultStringifier';
-import { readWriteService } from '../../service/readWriteService';
-import { IRegistration, Rang } from '../../@types/iRegistration';
-import { fetchDataService } from '../../service/fetchDataService';
 import { guildController } from '../../controller/guildController';
+
+import { discordResultStringifier } from './discordResultStringifier';
 
 const discordConfig = [
 	{
@@ -18,28 +22,28 @@ const discordConfig = [
 		id: 1,
 		key: '-r',
 		description:
-			'   Register. Usage: swr -r 111222333 Register user ally code for next operations',
+			'   Registering. Usage: swr -r 111222333 Register your user ally code for next operations',
 		handler: 'register'
 	},
 	{
 		id: 2,
 		key: '-cu',
 		description:
-			' ColorUp. Usage: swr -cu Find mods, wich after color up, could add more than 20 speed',
+			' ColorUp. Usage: swr -cu Find mods, wich after color-up, could add more than 20 speed',
 		handler: 'colorUp'
 	},
 	{
 		id: 3,
 		key: '-lp',
 		description:
-			' LegendProgress. Usage: swr -lp Check Your progress to receive Legends',
+			' LegendProgress. Usage: swr -lp Check Your progress to receiving Legends',
 		handler: 'legendProgress'
 	},
 	{
 		id: 4,
 		key: '-gl',
 		description:
-			' GuildList. usage: swr -gl Return list of guild members with allycodes',
+			' GuildList. usage: swr -gl Returns list of guild members with allycodes, estimated response time 20 sec.',
 		handler: 'guildList'
 	}
 ];
@@ -64,48 +68,49 @@ export const discordDispatcher = {
 	register: async function (
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
-	): Promise<{}> {
+	): Promise<void> {
 		const allyCode: number = getAllyCode(msg.content);
-		if (!allyCode) {
-			return channel.createMessage(
+		if (!allyCode || allyCode.toString().length !== 9) {
+			await channel.createMessage(
 				'input ally code pls, like: swr -r 111222333'
 			);
+			return;
 		}
-		if (allyCode.toString().length !== 9) {
-			return channel.createMessage(
-				'input correct ally code pls, like: swr -r 111222333'
-			);
-		}
-		const allPlayersResp: string = await readWriteService.readJson(
-			'registration/registr.json'
-		);
-		let players: IRegistration[] = await JSON.parse(allPlayersResp);
-		const existingPlayer: IRegistration = players.find(
-			(player) => player.discordId === msg.author.id
-		);
+		const searchOptions = {
+			discordId: msg.author.id,
+			allyCode
+		};
+		const existPlayer = await userService.getUser(searchOptions);
 		const player = await fetchDataService.getPlayer(allyCode);
-		if (!player) {
-			return channel.createMessage(
+		if (!player?.data) {
+			await channel.createMessage(
 				'No player with such ally code registered on https://swgoh.gg/'
 			);
+			return;
 		}
-		if (existingPlayer) {
-			existingPlayer.allyCode = allyCode;
-			existingPlayer.discordName = msg.author.username;
-			existingPlayer.playerName = player.data.name;
+		if (existPlayer) {
+			const options = {
+				allyCode: allyCode,
+				discordName: msg.author.username,
+				playerName: player.data?.name
+			};
+			await userService.update(options);
+			await channel.createMessage(
+				`${player.data.name}, your data was updated \n https://swgoh.gg/p/${allyCode}/`
+			);
 		} else {
-			players.push({
+			const options = {
 				discordId: msg.author.id,
 				allyCode: allyCode,
 				playerName: player.data.name,
 				discordName: msg.author.username,
 				rang: Rang[Rang.hope]
-			});
+			};
+			await userService.createUser(options);
+			await channel.createMessage(
+				`You have been registered as ${player.data.name}, \n https://swgoh.gg/p/${allyCode}/`
+			);
 		}
-		await readWriteService.saveJson(players, 'registration/registr.json');
-		return channel.createMessage(
-			`You have been registered as ${player.data.name}, \n https://swgoh.gg/p/${allyCode}/`
-		);
 	},
 	help: async function (channel: IDiscordChannel): Promise<void> {
 		const resp: string = discordConfig.reduce(

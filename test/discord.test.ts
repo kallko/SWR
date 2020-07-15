@@ -1,7 +1,12 @@
-import { discordDispatcher } from '../server-src/integration/discord/discordDispatcher';
 import { expect } from 'chai';
 const sinon = require('sinon');
+
 import { IDiscordMessage } from '../server-src/@types/IDiscord';
+
+import { discordDispatcher } from '../server-src/integration/discord/discordDispatcher';
+
+import { fetchDataService } from '../server-src/service/fetchDataService';
+import { userService } from '../server-src/service/UserService';
 
 describe('discordDispatcher tests:', async function () {
 	this.timeout(500000);
@@ -65,5 +70,95 @@ describe('discordDispatcher tests:', async function () {
 		});
 		expect(result).equal(true);
 		stub.restore();
+	});
+	it("shouldn't register a user with wrong allyCode", async function () {
+		const spy = sinon.spy(fetchDataService, 'getPlayer');
+		const message: IDiscordMessage = {
+			content: 'swr -r 12312',
+			author: {
+				id: '590913433738936329',
+				username: 'triton',
+				bot: false
+			}
+		};
+		await discordDispatcher.dispatch(message, {
+			createMessage: (msg, channel) => {},
+			id: 100,
+			type: 0
+		});
+		expect(spy.callCount).equal(0);
+		spy.restore();
+	});
+	it('should register a user with new allyCode and new discordCode', async function () {
+		const stubCreate = sinon
+			.stub(userService, 'createUser')
+			.callsFake(() => true);
+		const stubFetch = sinon
+			.stub(fetchDataService, 'getPlayer')
+			.callsFake(() => {
+				return {
+					data: {
+						name: 'testName'
+					}
+				};
+			});
+		const message: IDiscordMessage = {
+			content: 'swr -r 111111111',
+			author: {
+				id: '111',
+				username: 'Test',
+				bot: false
+			}
+		};
+		await discordDispatcher.dispatch(message, {
+			createMessage: (msg, channel) => {},
+			id: 100,
+			type: 0
+		});
+		expect(stubCreate.callCount).equal(1);
+		stubCreate.restore();
+		stubFetch.restore();
+	});
+	it('should not register a user with wrong allyCode', async function () {
+		const stubCreate = sinon
+			.stub(userService, 'createUser')
+			.callsFake(() => true);
+		const message: IDiscordMessage = {
+			content: 'swr -r 111111111',
+			author: {
+				id: '111',
+				username: 'Test',
+				bot: false
+			}
+		};
+		await discordDispatcher.dispatch(message, {
+			createMessage: (msg, channel) => {},
+			id: 100,
+			type: 0
+		});
+		expect(stubCreate.callCount).equal(0);
+		stubCreate.restore();
+	});
+	it('should update a user with wrong existing discord code', async function () {
+		const stubCreate = sinon
+			.stub(userService, 'createUser')
+			.callsFake(() => true);
+		const stubUpdate = sinon.stub(userService, 'update').callsFake(() => true);
+		const message: IDiscordMessage = {
+			content: 'swr -r 621723826',
+			author: {
+				id: '590913433738936329',
+				username: 'Test',
+				bot: false
+			}
+		};
+		await discordDispatcher.dispatch(message, {
+			createMessage: (msg, channel) => {},
+			id: 100,
+			type: 0
+		});
+		expect(stubCreate.callCount).equal(0);
+		expect(stubUpdate.callCount).equal(1);
+		stubCreate.restore();
 	});
 });
