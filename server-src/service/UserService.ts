@@ -38,5 +38,15 @@ export const userService = {
 								]
 							}
 						});
+					},
+					getAllyCodeForDiscord: async function(discordId): Promise<number>{
+						return (await User.findOne({
+							where : {
+								discordId
+							},
+							attributes: [
+								'allycode'
+							]
+						}))?.allyCode
 					}
 				};
