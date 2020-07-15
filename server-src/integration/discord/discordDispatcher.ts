@@ -123,7 +123,8 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<void> {
-		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
+		const existPlayer = await userService.getUser({ discordId: msg.author.id });
+		const allyCode = existPlayer?.allyCode;
 		if (allyCode) {
 			const result = await modController.getColorUpMods(allyCode);
 			const stringResult = discordResultStringifier.colorUpMods(result);
@@ -142,7 +143,8 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<void> {
-		const allyCode: number = await getAllyCodeForRegisteredUser(msg.author.id);
+		const existPlayer = await userService.getUser({ discordId: msg.author.id });
+		const allyCode = existPlayer?.allyCode;
 		if (allyCode) {
 			const result = await playerController.getLegendProgress(allyCode);
 			const stringResult = discordResultStringifier.legendProgress(result);
@@ -157,7 +159,8 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<void> {
-		const allyCode = await getAllyCodeForRegisteredUser(msg.author.id);
+		const existPlayer = await userService.getUser({ discordId: msg.author.id });
+		const allyCode = existPlayer?.allyCode;
 		if (allyCode) {
 			const result = await guildController.getGuildAll(allyCode);
 			const stringResult = discordResultStringifier.guildList(result);
@@ -180,17 +183,4 @@ function getAllyCode(content: string): number {
 			.join('')
 			.trim()
 	);
-}
-
-async function getAllyCodeForRegisteredUser(
-	discordId: string
-): Promise<number> {
-	const allPlayersResp: string = await readWriteService.readJson(
-		'registration/registr.json'
-	);
-	const players: IRegistration[] = await JSON.parse(allPlayersResp);
-	const existingPlayer: IRegistration = players.find(
-		(player) => player.discordId === discordId
-	);
-	return existingPlayer ? existingPlayer.allyCode : 0;
 }
