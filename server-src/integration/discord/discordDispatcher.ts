@@ -1,8 +1,7 @@
 import { IDiscordChannel, IDiscordMessage } from '../../@types/IDiscord';
-import { IRegistration, Rang } from '../../@types/iRegistration';
+import { Rang } from '../../@types/iRegistration';
 
 import { userService } from '../../service/UserService';
-import { readWriteService } from '../../service/readWriteService';
 import { fetchDataService } from '../../service/fetchDataService';
 
 import { playerController } from '../../controller/playerController';
@@ -49,19 +48,33 @@ const discordConfig = [
 ];
 
 export const discordDispatcher = {
-	dispatch: function (msg: IDiscordMessage, channel?: IDiscordChannel): string {
+	dispatch: async function (
+		msg: IDiscordMessage,
+		channel?: IDiscordChannel
+	): Promise<string> {
 		//todo check message here
 		const option = discordConfig.find((entry) =>
 			msg.content.toLowerCase().replace('swr', '').trim().startsWith(entry.key)
 		);
-		if (option) {
+		const allyCode = await userService.getAllyCodeForDiscord(msg.author.id);
+		msg.author.allyCode = allyCode;
+		if ((option && allyCode) || option?.id === 1) {
 			return discordDispatcher[option.handler].call(
 				discordDispatcher,
 				channel,
 				msg
 			);
+		} else if (option && option.id !== 0 && !allyCode) {
+			await channel.createMessage(
+				msg.author.username +
+					', You are not registered yet.\n ' +
+					'Try: \n ' +
+					'swr -r allyCode.\n ' +
+					'For help: \n ' +
+					'swr -h'
+			);
 		}
-		if (msg.channel.type === 1 && !msg.author.bot) {
+		if (option?.id === 0 || (msg.channel.type === 1 && !msg.author.bot)) {
 			return discordDispatcher['help'].call(discordDispatcher, channel, msg);
 		}
 	},
@@ -112,10 +125,13 @@ export const discordDispatcher = {
 			);
 		}
 	},
-	help: async function (channel: IDiscordChannel): Promise<void> {
+	help: async function (
+		channel: IDiscordChannel,
+		msg: IDiscordMessage
+	): Promise<void> {
 		const resp: string = discordConfig.reduce(
 			(sum, entry) => sum + entry.key + ' ' + entry.description + '\n',
-			'Possible commands: \n'
+			'@' + msg.author.username + ' Possible commands: \n'
 		);
 		channel.createMessage(resp);
 	},
@@ -126,10 +142,13 @@ export const discordDispatcher = {
 		const allyCode = await userService.getAllyCodeForDiscord(msg.author.id);
 		if (allyCode) {
 			const result = await modController.getColorUpMods(allyCode);
-			const stringResult = discordResultStringifier.colorUpMods(result);
+			const stringResult =
+				'@' +
+				msg.author.username +
+				discordResultStringifier.colorUpMods(result);
 			channel.createMessage(stringResult);
 		} else {
-			channel.createMessage(
+			await channel.createMessage(
 				'You are not registered yet.\n ' +
 					'Try: \n ' +
 					'swr -r allyCode.\n ' +
@@ -145,7 +164,10 @@ export const discordDispatcher = {
 		const allyCode = await userService.getAllyCodeForDiscord(msg.author.id);
 		if (allyCode) {
 			const result = await playerController.getLegendProgress(allyCode);
-			const stringResult = discordResultStringifier.legendProgress(result);
+			const stringResult =
+				'@' +
+				msg.author.username +
+				discordResultStringifier.legendProgress(result);
 			channel.createMessage(stringResult);
 		} else {
 			channel.createMessage(
@@ -160,7 +182,8 @@ export const discordDispatcher = {
 		const allyCode = await userService.getAllyCodeForDiscord(msg.author.id);
 		if (allyCode) {
 			const result = await guildController.getGuildAll(allyCode);
-			const stringResult = discordResultStringifier.guildList(result);
+			const stringResult =
+				'@' + msg.author.username + discordResultStringifier.guildList(result);
 			channel.createMessage(stringResult);
 		} else {
 			channel.createMessage(
