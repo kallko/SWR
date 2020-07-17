@@ -10,9 +10,16 @@ import { userService } from '../server-src/service/UserService';
 
 describe('discordDispatcher tests:', async function () {
 	this.timeout(500000);
-	it('msg with content swr -h should call help function', async function () {
+	it('msg with content swr -h and correct discord id should call help function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
-		const message: IDiscordMessage = { content: 'swr -h' };
+		const message: IDiscordMessage = {
+			content: 'swr -h',
+			author: {
+				id: '590913433738936329',
+				username: 'test',
+				bot: false
+			}
+		};
 		let result: any = await discordDispatcher.dispatch(message, {
 			id: 100,
 			type: 0
@@ -20,9 +27,16 @@ describe('discordDispatcher tests:', async function () {
 		expect(result).equal(true);
 		stub.restore();
 	});
-	it('msg with content swr -h should call help function', async function () {
+	it('msg with content swr -h and not correct discord id should call help function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
-		const message: IDiscordMessage = { content: 'swr -h' };
+		const message: IDiscordMessage = {
+			content: 'swr -h',
+			author: {
+				id: '59091343373893632',
+				username: 'test',
+				bot: false
+			}
+		};
 		let result: any = await discordDispatcher.dispatch(message, {
 			id: 100,
 			type: 0
@@ -32,7 +46,14 @@ describe('discordDispatcher tests:', async function () {
 	});
 	it('msg with content swr -cu should call colorUp function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'colorUp').callsFake(() => true);
-		const message: IDiscordMessage = { content: 'swr -cu' };
+		const message: IDiscordMessage = {
+			content: 'swr -cu',
+			author: {
+				id: '590913433738936329',
+				username: 'test',
+				bot: false
+			}
+		};
 		let result: any = await discordDispatcher.dispatch(message, {
 			id: 100,
 			type: 0
@@ -44,7 +65,14 @@ describe('discordDispatcher tests:', async function () {
 		const stub = sinon
 			.stub(discordDispatcher, 'legendProgress')
 			.callsFake(() => true);
-		const message: IDiscordMessage = { content: 'swr -lp' };
+		const message: IDiscordMessage = {
+			content: 'swr -lp',
+			author: {
+				id: '590913433738936329',
+				username: 'test',
+				bot: false
+			}
+		};
 		let result: any = await discordDispatcher.dispatch(message, {
 			id: 100,
 			type: 0
