@@ -48,6 +48,6 @@ export const userService = {
 			raw: true,
 			nest: true
 		});
-		return Number(data.allyCode);
+		return data ? Number(data.allyCode) : null;
 	}
 };
