@@ -67,7 +67,7 @@ export const discordDispatcher = {
 		} else if (option && option.id !== 0 && !allyCode) {
 			await channel.createMessage(
 				msg.author.username +
-					', You are not registered yet.\n ' +
+					',\n You are not registered yet.\n ' +
 					'Try: \n ' +
 					'swr -r allyCode.\n ' +
 					'For help: \n ' +
@@ -131,7 +131,7 @@ export const discordDispatcher = {
 	): Promise<void> {
 		const resp: string = discordConfig.reduce(
 			(sum, entry) => sum + entry.key + ' ' + entry.description + '\n',
-			'@' + msg.author.username + ' Possible commands: \n'
+			'@' + msg.author.username + '\n Possible commands: \n'
 		);
 		channel.createMessage(resp);
 	},
@@ -145,6 +145,7 @@ export const discordDispatcher = {
 			const stringResult =
 				'@' +
 				msg.author.username +
+				',\n' +
 				discordResultStringifier.colorUpMods(result);
 			channel.createMessage(stringResult);
 		} else {
@@ -167,6 +168,7 @@ export const discordDispatcher = {
 			const stringResult =
 				'@' +
 				msg.author.username +
+				',\n' +
 				discordResultStringifier.legendProgress(result);
 			channel.createMessage(stringResult);
 		} else {
@@ -183,7 +185,10 @@ export const discordDispatcher = {
 		if (allyCode) {
 			const result = await guildController.getGuildAll(allyCode);
 			const stringResult =
-				'@' + msg.author.username + discordResultStringifier.guildList(result);
+				'@' +
+				msg.author.username +
+				', \n' +
+				discordResultStringifier.guildList(result);
 			channel.createMessage(stringResult);
 		} else {
 			channel.createMessage(
