@@ -3,6 +3,7 @@ export interface IDiscordMessage {
 	channel?: IDiscordChannel;
 	content?: string;
 	author?: {
+		allyCode?: number;
 		id: string;
 		username: string;
 		bot: boolean;
