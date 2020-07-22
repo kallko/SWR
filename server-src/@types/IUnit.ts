@@ -40,7 +40,7 @@ export interface IImportUnit {
 }
 
 export enum TopFieldList {
-	health,
+	health = 1,
 	speed,
 	power,
 	damage,

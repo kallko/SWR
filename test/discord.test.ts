@@ -263,6 +263,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 		it('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
@@ -281,6 +284,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 		it('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
@@ -299,6 +305,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 		it('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
@@ -317,6 +326,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 		it('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
@@ -335,6 +347,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 		it('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
@@ -353,6 +368,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 		it('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
@@ -371,6 +389,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 		it('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
@@ -389,6 +410,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 		it('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
@@ -407,6 +431,9 @@ describe('discordDispatcher tests:', async function () {
 				id: 100,
 				type: 0
 			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
 		});
 	});
 	it('should parse string with option', async function () {
