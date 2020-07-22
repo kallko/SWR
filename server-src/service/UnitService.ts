@@ -1,7 +1,9 @@
-import { Unit, IUnitSQLCreationAttributes } from './dbModels';
-import { IImportUnit } from '../@types/IUnit';
+import { Unit, IUnitSQLCreationAttributes, User } from './dbModels';
+import { IImportUnit, TopFieldList } from '../@types/IUnit';
 import { Transformer } from '../helper/transformer';
 import { Op } from 'sequelize';
+import { guildController } from '../controller/guildController';
+import { IGuild } from '../@types/IGuild';
 
 export const UnitService = {
 	create: async function (unit: IUnitSQLCreationAttributes): Promise<boolean> {
@@ -42,8 +44,7 @@ export const UnitService = {
 		return await Unit.findAll({
 			where: {
 				allyCode,
-				baseId: { [Op.in]: baseIds
-				}
+				baseId: { [Op.in]: baseIds }
 			}
 		});
 	},
@@ -64,5 +65,30 @@ export const UnitService = {
 			raw: true,
 			nest: true
 		});
+	},
+	getGuildTopByField: async function (
+		allyCode: number,
+		field: string
+	): Promise<any> {
+		const guild: IGuild = await guildController.getGuildAll(allyCode);
+		const guildIds = guild.members.map((member) => member.id);
+		const units = await Unit.findAll({
+			where: {
+				allyCode: {
+					[Op.in]: guildIds
+				},
+				combatType: 1
+			},
+			order: [[field, 'DESC']],
+			limit: 10,
+			raw: true,
+			nest: true
+		});
+		return units.map((unit) =>
+			Object.assign(unit, {
+				playerName: guild.members.find((member) => member.id === unit.allyCode)
+					.name
+			})
+		);
 	}
 };

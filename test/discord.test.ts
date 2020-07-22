@@ -7,6 +7,9 @@ import { discordDispatcher } from '../server-src/integration/discord/discordDisp
 
 import { fetchDataService } from '../server-src/service/fetchDataService';
 import { userService } from '../server-src/service/UserService';
+import { discordHelper } from '../server-src/integration/discord/discordHelper';
+import { UnitService } from '../server-src/service/UnitService';
+import { discordResultStringifier } from '../server-src/integration/discord/discordResultStringifier';
 
 describe('discordDispatcher tests:', async function () {
 	this.timeout(500000);
@@ -178,6 +181,9 @@ describe('discordDispatcher tests:', async function () {
 				id: '590913433738936329',
 				username: 'Test',
 				bot: false
+			},
+			channel: {
+				type: 1
 			}
 		};
 		await discordDispatcher.dispatch(message, {
@@ -188,5 +194,230 @@ describe('discordDispatcher tests:', async function () {
 		expect(stubCreate.callCount).equal(0);
 		expect(stubUpdate.callCount).equal(1);
 		stubCreate.restore();
+	});
+	it('should update a user with wrong existing discord code', async function () {
+		const message: IDiscordMessage = {
+			content: 'swr -gth',
+			author: {
+				id: '590913433738936329',
+				username: 'Test',
+				bot: false
+			},
+			channel: {
+				type: 1
+			}
+		};
+		await discordDispatcher.dispatch(message, {
+			createMessage: (msg, channel) => {},
+			id: 100,
+			type: 0
+		});
+	});
+	describe('guild top list:', async function () {
+		let spyGetGuildTop, spyGetGuildTopByField, spyStringGuildTop;
+		beforeEach(function () {
+			spyGetGuildTop = sinon.spy(discordDispatcher, 'guildTop');
+			spyGetGuildTopByField = sinon.spy(UnitService, 'getGuildTopByField');
+			spyStringGuildTop = sinon.spy(discordResultStringifier, 'guildTop');
+		});
+		afterEach(function () {
+			spyGetGuildTop.restore();
+			spyGetGuildTopByField.restore();
+			spyStringGuildTop.restore();
+		});
+		it('should return units with top-speed for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=speed',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(1);
+			expect(spyStringGuildTop.callCount).equal(1);
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=power',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=health',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=defense',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=damage',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=defense',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=potency',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=tenacity',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=protection',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = {
+				content: 'swr -gtu -rank=blablabla',
+				author: {
+					id: '590913433738936329',
+					username: 'Test',
+					bot: false
+				},
+				channel: {
+					type: 1
+				}
+			};
+			await discordDispatcher.dispatch(message, {
+				createMessage: (msg, channel) => {},
+				id: 100,
+				type: 0
+			});
+		});
+	});
+	it('should parse string with option', async function () {
+		const result = discordHelper.getParameters('-gtu -rank=health ', '-gtu');
+		expect(result).deep.equal({ rank: 'health' });
+	});
+	it('should parse string with several options', async function () {
+		const result = discordHelper.getParameters(
+			'-gtu -rank=health -sort=desc',
+			'-gtu'
+		);
+		expect(result).deep.equal({ rank: 'health', sort: 'desc' });
 	});
 });
