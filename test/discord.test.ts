@@ -246,7 +246,7 @@ describe('discordDispatcher tests:', async function () {
 			expect(spyGetGuildTopByField.callCount).equal(1);
 			expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		it('should return units with top-power for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=power',
 				author: {
@@ -288,7 +288,7 @@ describe('discordDispatcher tests:', async function () {
 			expect(spyGetGuildTopByField.callCount).equal(1);
 			expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		it('should return units with top-defense for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=defense',
 				author: {
@@ -309,7 +309,7 @@ describe('discordDispatcher tests:', async function () {
 			expect(spyGetGuildTopByField.callCount).equal(1);
 			expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		it('should return units with top-damage for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=damage',
 				author: {
@@ -330,7 +330,7 @@ describe('discordDispatcher tests:', async function () {
 			expect(spyGetGuildTopByField.callCount).equal(1);
 			expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		it('should return units with top-defense for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=defense',
 				author: {
@@ -351,7 +351,7 @@ describe('discordDispatcher tests:', async function () {
 			expect(spyGetGuildTopByField.callCount).equal(1);
 			expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		it('should return units with top-potency for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=potency',
 				author: {
@@ -372,7 +372,7 @@ describe('discordDispatcher tests:', async function () {
 			expect(spyGetGuildTopByField.callCount).equal(1);
 			expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		it('should return units with top-tenacity for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=tenacity',
 				author: {
@@ -393,7 +393,7 @@ describe('discordDispatcher tests:', async function () {
 			expect(spyGetGuildTopByField.callCount).equal(1);
 			expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		it('should return units with top-protection for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=protection',
 				author: {
@@ -414,7 +414,7 @@ describe('discordDispatcher tests:', async function () {
 			expect(spyGetGuildTopByField.callCount).equal(1);
 			expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		it('should not return results for wrong rank for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=blablabla',
 				author: {
@@ -432,8 +432,8 @@ describe('discordDispatcher tests:', async function () {
 				type: 0
 			});
 			expect(spyGetGuildTop.callCount).equal(1);
-			expect(spyGetGuildTopByField.callCount).equal(1);
-			expect(spyStringGuildTop.callCount).equal(1);
+			expect(spyGetGuildTopByField.callCount).equal(0);
+			expect(spyStringGuildTop.callCount).equal(0);
 		});
 	});
 	it('should parse string with option', async function () {

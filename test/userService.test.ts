@@ -3,7 +3,10 @@ import { userService } from '../server-src/service/UserService';
 const sinon = require('sinon');
 describe('UserService tests:', async function () {
 	it('return null if User not registered', async function () {
-		const result = await userService.getUser({ allyCode: 1111 });
+		const result = await userService.getUser({
+			allyCode: 1111,
+			discordId: 23232
+		});
 		expect(result).eq(null);
 	});
 });

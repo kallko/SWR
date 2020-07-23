@@ -46,5 +46,6 @@ export enum TopFieldList {
 	damage,
 	defense,
 	potency,
-	tenacity
+	tenacity,
+	protection
 }
