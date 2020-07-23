@@ -1,6 +1,8 @@
 import { IGuild, ILegendProgress } from '../../@types/IGuild';
 import { IFrontColorUpMod } from '../../@types/IFrontEnd';
 import { MOD_OPTIONS } from '../../@const/modOptions';
+import { Unit } from '../../service/dbModels';
+import { TopFieldList } from '../../@types/IUnit';
 export const discordResultStringifier = {
 	legendProgress(result: ILegendProgress[]): string {
 		return (
@@ -33,6 +35,22 @@ export const discordResultStringifier = {
 					(sum += index + 1 + '.  ' + member.name + ' ' + member.id + '\n'),
 				''
 			)
+		);
+	},
+	guildTop(units: Unit[], field: TopFieldList): string {
+		return units.reduce(
+			(sum, unit, index) =>
+				(sum +=
+					index +
+					1 +
+					'.  ' +
+					unit.playerName +
+					' ' +
+					unit.name +
+					' = ' +
+					unit[field] +
+					'\n'),
+			''
 		);
 	}
 };

@@ -28,7 +28,7 @@ export class User extends Model<IRegistration, UserCreationAttributes>
 	public discordId?: string | null;
 	public allyCode!: number;
 	public discordName?: string | null;
-	public rang: keyof typeof Rang;
+	public rang: Rang;
 
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
@@ -236,7 +236,8 @@ export class Unit extends Model<IUnitSQLCreationAttributes> implements Unit {
 	public protection: number;
 	public allyCode: number;
 	public updatedAt: Date;
-	isComplete?: boolean;
+	public isComplete?: boolean;
+	public playerName?: string;
 }
 
 Unit.init(
