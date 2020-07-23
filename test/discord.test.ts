@@ -447,4 +447,22 @@ describe('discordDispatcher tests:', async function () {
 		);
 		expect(result).deep.equal({ rank: 'health', sort: 'desc' });
 	});
+	xit('should create idea in db', async function () {
+		const message: IDiscordMessage = {
+			content: 'swr -i hi, I am idea',
+			author: {
+				id: '590913433738936329',
+				username: 'Test',
+				bot: false
+			},
+			channel: {
+				type: 1
+			}
+		};
+		await discordDispatcher.dispatch(message, {
+			createMessage: (msg, channel) => {},
+			id: 100,
+			type: 0
+		});
+	});
 });
