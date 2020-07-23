@@ -54,7 +54,7 @@ User.init(
 			allowNull: true
 		},
 		allyCode: {
-			type: new DataTypes.NUMBER,
+			type: new DataTypes.NUMBER(),
 			allowNull: true
 		},
 		rang: {
@@ -277,6 +277,34 @@ Unit.init(
 	{
 		sequelize,
 		tableName: 'Units',
+		timestamps: false
+	}
+);
+
+export interface IIdeaCreationAttributes {
+	id?: number;
+	text: string;
+	allyCode: number;
+	discordId: number;
+}
+
+export class Idea extends Model<IIdeaCreationAttributes> implements Idea {
+	id!: number;
+	text: string;
+	allyCode: number;
+	discordId: number;
+}
+
+Idea.init(
+	{
+		id: { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
+		text: { type: DataTypes.STRING, allowNull: false },
+		allyCode: { type: DataTypes.NUMBER, allowNull: true },
+		discordId: { type: DataTypes.NUMBER, allowNull: false }
+	},
+	{
+		sequelize,
+		tableName: 'Idea',
 		timestamps: false
 	}
 );

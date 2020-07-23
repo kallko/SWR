@@ -13,6 +13,7 @@ import { UnitService } from '../../service/UnitService';
 import { TopFieldList } from '../../@types/IUnit';
 import { discordHelper } from './discordHelper';
 import { discordConfig } from './discordConfig';
+import { ideaService } from '../../service/IdeaService';
 
 export const discordDispatcher = {
 	dispatch: async function (
@@ -28,10 +29,17 @@ export const discordDispatcher = {
 		msg.author.greeting = userService.getGreeting(user, msg);
 
 		if ((option && user?.allyCode) || option?.id < 10) {
-			const parameters = discordHelper.getParameters(
-				msg.content.toLowerCase().replace('swr', '').trim(),
-				option.key
-			);
+			const parameters =
+				option?.id >= 10
+					? discordHelper.getParameters(
+							msg.content.toLowerCase().replace('swr', '').trim(),
+							option.key
+					  )
+					: msg.content
+							.toLowerCase()
+							.replace('swr', '')
+							.trim()
+							.replace(option.key, '');
 			return discordDispatcher[option.handler].call(
 				discordDispatcher,
 				channel,
@@ -182,6 +190,24 @@ export const discordDispatcher = {
 		} else {
 			channel.createMessage(
 				msg.author.greeting + ', check command spelling, please.'
+			);
+		}
+	},
+	idea: async function (channel: IDiscordChannel, msg: IDiscordMessage, text) {
+		if (text?.length > 10) {
+			const idea = await ideaService.create({
+				discordId: msg.author.id,
+				allyCode: msg.author.allyCode,
+				text: '!' + text
+			});
+			channel.createMessage(
+				`${msg.author.greeting} thank You for Idea. We have already ${
+					idea.id + 1
+				} ideas from our users.`
+			);
+		} else {
+			channel.createMessage(
+				`${msg.author.greeting} thank You for Idea, but description is to short. Please, give to us more context`
 			);
 		}
 	}

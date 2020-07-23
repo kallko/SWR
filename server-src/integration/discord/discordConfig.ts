@@ -13,8 +13,15 @@ export const discordConfig: IDiscordOption[] = [
 	{
 		id: 0,
 		key: '-h',
-		description: '   Help. Usage: swr - h Help about acceptable commands',
+		description: '   Help. Usage: swr -h Help about acceptable commands',
 		handler: 'help'
+	},
+	{
+		id: 1,
+		key: '-i',
+		description:
+			'   Idea. Usage: swr -i find weak point of my GA Enemy Any idea about how this bot could help You. \n Also, you could describe bugs with this option.',
+		handler: 'idea'
 	},
 	{
 		id: 9,
@@ -27,7 +34,7 @@ export const discordConfig: IDiscordOption[] = [
 		id: 10,
 		key: '-cu',
 		description:
-			' ColorUp. Usage: swr -cu Find mods, wich after color-up, could add more than 20 speed',
+			' ColorUp. Usage: swr -cu Find mods, which after color-up, could add more than 20 speed',
 		handler: 'colorUp'
 	},
 	{
@@ -43,7 +50,7 @@ export const discordConfig: IDiscordOption[] = [
 		minimalRang: Rang.officer,
 		retry: 24 * 7,
 		description:
-			' GuildList. usage: swr -gl Returns list of guild members with allycodes, estimated response time 20 sec.',
+			' GuildList. Usage: swr -gl Returns list of guild members with allycodes, estimated response time 20 sec.',
 		handler: 'guildList'
 	},
 	{
@@ -52,7 +59,7 @@ export const discordConfig: IDiscordOption[] = [
 		minimalRang: Rang.officer,
 		retry: 24 * 7,
 		description:
-			' Guild Top Units. usage: swr -gth -rank=health Returns top units of guild by Health.(Possible ranks: health, speed, power, damage, defence, potency, tenacity, protection)',
+			' Guild Top Units. Usage: swr -gth -rank=health Returns top units of guild by Health.(Possible ranks: health, speed, power, damage, defence, potency, tenacity, protection)',
 		handler: 'guildTop'
 	}
 ];
