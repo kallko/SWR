@@ -1,9 +1,9 @@
-export const Rang = {
-	hope: 'hope',
-	officer: 'officer',
-	lord: 'lord',
-	emperor: 'emperor'
-};
+export enum Rang {
+	'hope',
+	'officer',
+	'lord',
+	'emperor'
+}
 
 export interface IRegistration {
 	id?: number;
@@ -11,5 +11,5 @@ export interface IRegistration {
 	allyCode: number;
 	playerName: string;
 	discordName?: string;
-	rang: keyof typeof Rang;
+	rang: Rang;
 }

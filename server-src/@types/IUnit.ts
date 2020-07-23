@@ -38,3 +38,14 @@ export interface IImportUnit {
 		rarity: number;
 	};
 }
+
+export enum TopFieldList {
+	health = 1,
+	speed,
+	power,
+	damage,
+	defense,
+	potency,
+	tenacity,
+	protection
+}

@@ -7,6 +7,8 @@ export interface IDiscordMessage {
 		id: string;
 		username: string;
 		bot: boolean;
+		greeting?: string;
+		guildName?: string;
 	};
 }
 
