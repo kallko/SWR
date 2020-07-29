@@ -1,6 +1,11 @@
-import { IDiscordChannel, IDiscordMessage } from '../../@types/IDiscord';
+import {
+	IDiscordChannel,
+	IDiscordEmbed,
+	IDiscordMessage
+} from '../../@types/IDiscord';
 import { config } from '../../config/config';
 import { discordDispatcher } from './discordDispatcher';
+import { discordResultEmbed } from './discordResultEmbed';
 let masterChannel: IDiscordChannel;
 const eris = require('eris');
 
@@ -14,23 +19,35 @@ bot.on('ready', async () => {
 	await bot.editStatus('online', { name: 'swr -h', type: 0 });
 });
 
-bot.on('messageCreate', async (msg: IDiscordMessage) => {
-	const botWasMentioned = msg.mentions.find(
-		(mentionedUser) => mentionedUser.id === bot.user.id
-	);
-
-	if (botWasMentioned) {
-		try {
-			return await msg.channel.createMessage('swr -h for help');
-		} catch (err) {
-			console.warn('Failed to respond to mention.');
-			return console.warn(err);
+bot.on(
+	'messageCreate',
+	async (msg: IDiscordMessage): Promise<void> => {
+		const botWasMentioned = msg.mentions.find(
+			(mentionedUser) => mentionedUser.id === bot.user.id
+		);
+		if (botWasMentioned) {
+			try {
+				const embedMessage = discordResultEmbed.help(msg);
+				return bot.createMessage(String(msg.channel.id), {
+					embed: embedMessage
+				});
+			} catch (err) {
+				console.warn('Failed to respond to mention.');
+				return console.warn(err);
+			}
+		}
+		const channel =
+			process.env.NODE_ENV === 'PRODUCTION' ? msg.channel : masterChannel;
+		if (!msg.author.bot) {
+			const embedMessage: IDiscordEmbed = await discordDispatcher.dispatch(
+				bot,
+				msg,
+				channel
+			);
+			return bot.createMessage(String(channel.id), { embed: embedMessage });
 		}
 	}
-	const channel =
-		process.env.NODE_ENV === 'PRODUCTION' ? msg.channel : masterChannel;
-	return await discordDispatcher.dispatch(msg, channel);
-});
+);
 
 bot.on('error', (err) => {
 	console.warn(err);

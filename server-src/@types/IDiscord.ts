@@ -2,6 +2,7 @@ export interface IDiscordMessage {
 	mentions?: IDiscordUser[];
 	channel?: IDiscordChannel;
 	content?: string;
+	embeds?: IDiscordEmbed[];
 	author?: {
 		allyCode?: number;
 		id: string;
@@ -31,4 +32,23 @@ export interface IDiscordChannel {
 			};
 		};
 	}[];
+}
+export interface IDiscordEmbed {
+	title: string;
+	description: string;
+	author: {
+		name: string;
+		icon_url?: string;
+	};
+	color: string;
+	fields: IDiscordEmbedField[];
+	footer: {
+		text: string;
+	};
+}
+
+export interface IDiscordEmbedField {
+	name: string;
+	value: string;
+	inline: boolean;
 }
