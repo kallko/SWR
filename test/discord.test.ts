@@ -9,7 +9,7 @@ import { fetchDataService } from '../server-src/service/fetchDataService';
 import { userService } from '../server-src/service/UserService';
 import { discordHelper } from '../server-src/integration/discord/discordHelper';
 import { UnitService } from '../server-src/service/UnitService';
-import { discordResultStringifier } from '../server-src/integration/discord/discordResultStringifier';
+import { discordResultEmbed } from '../server-src/integration/discord/discordResultEmbed';
 
 describe('discordDispatcher tests:', async function () {
 	this.timeout(500000);
@@ -218,7 +218,7 @@ describe('discordDispatcher tests:', async function () {
 		beforeEach(function () {
 			spyGetGuildTop = sinon.spy(discordDispatcher, 'guildTop');
 			spyGetGuildTopByField = sinon.spy(UnitService, 'getGuildTopByField');
-			spyStringGuildTop = sinon.spy(discordResultStringifier, 'guildTop');
+			spyStringGuildTop = sinon.spy(discordResultEmbed, 'guildTop');
 		});
 		afterEach(function () {
 			spyGetGuildTop.restore();

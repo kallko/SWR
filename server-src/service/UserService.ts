@@ -26,7 +26,7 @@ export const userService = {
 				allyCode: user.allyCode
 			}
 		});
-		await existUser.update(user);
+		return await existUser.update(user);
 	},
 	getUser: async function (options) {
 		return await User.findOne({
