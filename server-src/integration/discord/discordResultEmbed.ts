@@ -101,16 +101,6 @@ export const discordResultEmbed = {
 			result[1].display_data.display_status
 		);
 	},
-	// colorUpMods(result: IFrontColorUpMod[]): string {
-	// 	if (result.length === 0) {
-	// 		return 'You made your best. Nothing to upgrade.';
-	// 	}
-	// 	return result.reduce(
-	// 		(sum, entry) =>
-	// 			sum + entry.character + ' - ' + MOD_OPTIONS.form[entry.slot] + '\n',
-	// 		'These mods after upgrade could add more than 20 speed: \n'
-	// 	);
-	// },
 	guildList(guild: IGuild, msg: IDiscordMessage): IDiscordEmbed {
 		const value0 = guild.members
 			.filter((member, id) => id < 10)
