@@ -5,16 +5,16 @@ import { TopFieldList } from '../../@types/IUnit';
 import { IDiscordEmbed, IDiscordMessage } from '../../@types/IDiscord';
 import { discordConfig } from './discordConfig';
 const footer = {
-	text: `Support SWR Bot on patron`
+	text: `Support SWR Bot on patreon https://www.patreon.com/kalko`
 };
 const author = {
 	name: `SWR Bot`
 };
 
 export const discordResultEmbed = {
-	notRegistered(description?: string) {
+	notRegistered(msg: IDiscordMessage, description?: string) {
 		return {
-			title: 'Stranger',
+			title: msg.author.username,
 			description:
 				description ||
 				'You are not registered yet. ' +

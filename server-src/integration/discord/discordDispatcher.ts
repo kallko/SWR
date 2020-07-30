@@ -65,7 +65,7 @@ export const discordDispatcher = {
 		const allyCode: number = getAllyCode(msg.content);
 		if (!allyCode || allyCode.toString().length !== 9) {
 			const text = 'input ally code pls, like: swr -r 111222333';
-			return discordResultEmbed.notRegistered(text);
+			return discordResultEmbed.notRegistered(msg, text);
 		}
 		const searchOptions = {
 			discordId: msg.author.id,
@@ -76,7 +76,7 @@ export const discordDispatcher = {
 		if (!player?.data) {
 			const text =
 				'No player with such ally code registered on https://swgoh.gg/';
-			return discordResultEmbed.notRegistered(text);
+			return discordResultEmbed.notRegistered(msg, text);
 		}
 		if (existPlayer) {
 			const options = {
@@ -112,7 +112,7 @@ export const discordDispatcher = {
 			const result = await modController.getColorUpMods(msg.author.allyCode);
 			return discordResultEmbed.colorUpMods(result, msg);
 		} else {
-			return discordResultEmbed.notRegistered();
+			return discordResultEmbed.notRegistered(msg);
 		}
 	},
 	legendProgress: async function (
@@ -125,7 +125,7 @@ export const discordDispatcher = {
 			);
 			return discordResultEmbed.legendProgress(result, msg);
 		} else {
-			return discordResultEmbed.notRegistered();
+			return discordResultEmbed.notRegistered(msg);
 		}
 	},
 	guildList: async function (
@@ -136,7 +136,7 @@ export const discordDispatcher = {
 			const result = await guildController.getGuildAll(msg.author.allyCode);
 			return discordResultEmbed.guildList(result, msg);
 		} else {
-			return discordResultEmbed.notRegistered();
+			return discordResultEmbed.notRegistered(msg);
 		}
 	},
 	guildTop: async function (
@@ -151,7 +151,7 @@ export const discordDispatcher = {
 			);
 			return discordResultEmbed.guildTop(result, parameter.rank, msg);
 		} else {
-			return discordResultEmbed.notRegistered();
+			return discordResultEmbed.notRegistered(msg);
 		}
 	},
 	idea: async function (channel: IDiscordChannel, msg: IDiscordMessage, text) {
