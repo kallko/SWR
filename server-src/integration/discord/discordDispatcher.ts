@@ -110,7 +110,7 @@ export const discordDispatcher = {
 	): Promise<IDiscordEmbed> {
 		if (msg.author.allyCode) {
 			const result = await modController.getColorUpMods(msg.author.allyCode);
-			return discordResultEmbed.colorUpModsE(result, msg);
+			return discordResultEmbed.colorUpMods(result, msg);
 		} else {
 			return discordResultEmbed.notRegistered();
 		}
