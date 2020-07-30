@@ -1,5 +1,4 @@
 import { IGuild, ILegendProgress } from '../../@types/IGuild';
-import { IFrontColorUpMod } from '../../@types/IFrontEnd';
 import { MOD_OPTIONS } from '../../@const/modOptions';
 import { IIdeaCreationAttributes, Unit } from '../../service/dbModels';
 import { TopFieldList } from '../../@types/IUnit';
@@ -100,16 +99,6 @@ export const discordResultEmbed = {
 			result[1].legend_name +
 			' ' +
 			result[1].display_data.display_status
-		);
-	},
-	colorUpMods(result: IFrontColorUpMod[]): string {
-		if (result.length === 0) {
-			return 'You made your best. Nothing to upgrade.';
-		}
-		return result.reduce(
-			(sum, entry) =>
-				sum + entry.character + ' - ' + MOD_OPTIONS.form[entry.slot] + '\n',
-			'These mods after upgrade could add more than 20 speed: \n'
 		);
 	},
 	guildList(guild: IGuild, msg: IDiscordMessage): IDiscordEmbed {
@@ -243,16 +232,20 @@ export const discordResultEmbed = {
 			footer
 		};
 	},
-	colorUpModsE(result, msg: IDiscordMessage): IDiscordEmbed {
+	colorUpMods(result, msg: IDiscordMessage): IDiscordEmbed {
 		let description;
-		if (result.length === 0) {
-			description = 'You made your best. Nothing to upgrade.';
-		}
-		const value = result.reduce(
-			(sum, entry) =>
-				sum + entry.character + ' - ' + MOD_OPTIONS.form[entry.slot] + '\n',
-			''
-		);
+		const value =
+			result.length === 0
+				? 'You made your best. Nothing to upgrade.'
+				: result.reduce(
+						(sum, entry) =>
+							sum +
+							entry.character +
+							' - ' +
+							MOD_OPTIONS.form[entry.slot] +
+							'\n',
+						''
+				  );
 		return {
 			title: msg.author.greeting || msg.author.username,
 			description:
@@ -262,7 +255,7 @@ export const discordResultEmbed = {
 			fields: [
 				{
 					name: 'Mods:',
-					value,
+					value: value,
 					inline: true
 				}
 			],
