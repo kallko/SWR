@@ -51,7 +51,7 @@ export const discordDispatcher = {
 				msg,
 				parameters
 			);
-		} else if (option && option.id !== 0 && !user.allyCode) {
+		} else if (option && option.id !== 0 && !user) {
 			return discordResultEmbed.notRegistered();
 		}
 		if (msg.channel.type === 1 && !msg.author.bot) {
