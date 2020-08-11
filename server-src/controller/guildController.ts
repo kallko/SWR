@@ -35,12 +35,14 @@ export const guildController = {
 	},
 	getGuildAll: async function (allyCode: number): Promise<IGuild> {
 		let guildId = await guildService.getGuildId(allyCode);
-		let guildName = await guildService.getGuildName(guildId);
+		let guildName = '';
+		let player;
 		if (!guildId) {
-			const player = await fetchDataService.getPlayer(allyCode);
+			player = await fetchDataService.getPlayer(allyCode);
 			guildId = player.data.guild_id;
-			guildName = player.data.guild_name;
 		}
+		guildName =
+			(await guildService.getGuildName(guildId)) || player.data.guild_name;
 		const guild = await guildService.getGuildMembers(guildId);
 		const members = guild.map((member) => {
 			return { id: member.allyCode, name: member.name };
