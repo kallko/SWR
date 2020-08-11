@@ -11,7 +11,6 @@ import { playerController } from './playerController';
 
 import { Transformer } from '../helper/transformer';
 import { guildService } from '../service/guildService';
-import { GuildMembers } from '../service/dbModels';
 
 export const guildController = {
 	getLegendProgress: async function (
@@ -35,7 +34,11 @@ export const guildController = {
 		return Transformer.transformLegendProgress(guildResult);
 	},
 	getGuildAll: async function (allyCode: number): Promise<IGuild> {
-		const guildId = await guildService.getGuildId(allyCode);
+		let guildId = await guildService.getGuildId(allyCode);
+		if (!guildId) {
+			const player = await fetchDataService.getPlayer(allyCode);
+			guildId = player.data.guild_id;
+		}
 		const guildName = await guildService.getGuildName(guildId);
 		const guild = await guildService.getGuildMembers(guildId);
 		const members = guild.map((member) => {
@@ -45,7 +48,6 @@ export const guildController = {
 			members,
 			name: guildName
 		};
-
 	},
 	updateGuild: async function (guildId: number, guild: IGuild) {
 		// todo update guild
@@ -68,13 +70,13 @@ export const guildController = {
 			await guildService.removeMember(member);
 		}
 		await guildService.updateGuildName(guildId, guild.name);
-	},
-	getGuildId: async function (allyCode: number) {
-		const member = await GuildMembers.findOne({
-			where: {
-				allyCode
-			}
-		});
-		return member.guildId;
 	}
+	// getGuildId: async function (allyCode: number) {
+	// 	const member = await GuildMembers.findOne({
+	// 		where: {
+	// 			allyCode
+	// 		}
+	// 	});
+	// 	return member.guildId;
+	// }
 };

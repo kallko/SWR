@@ -54,6 +54,6 @@ export const guildService = {
 	},
 	getGuildId: async function (allyCode: number) {
 		const member = await GuildMembers.findOne({ where: { allyCode } });
-		return member.guildId;
+		return member?.guildId;
 	}
 };
