@@ -5,5 +5,17 @@ export interface IPlayer {
 	detail: string;
 	data: {
 		name: string;
+		guild_id: number;
+		guild_name: string;
+		arena_rank: number;
+		fleet_arena: {
+			leader: string;
+			rank: number;
+		};
+		arena: {
+			leader: string;
+			rank: number;
+		};
+		galactic_power: number;
 	};
 }

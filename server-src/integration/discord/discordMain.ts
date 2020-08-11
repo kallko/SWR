@@ -38,7 +38,7 @@ bot.on(
 		}
 		const channel =
 			process.env.NODE_ENV === 'PRODUCTION' ? msg.channel : masterChannel;
-		if (!msg.author.bot) {
+		if (!msg.author.bot && msg.content.toLowerCase().startsWith('swr')) {
 			const embedMessage: IDiscordEmbed = await discordDispatcher.dispatch(
 				bot,
 				msg,
