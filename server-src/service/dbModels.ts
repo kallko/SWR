@@ -308,3 +308,57 @@ Idea.init(
 		timestamps: false
 	}
 );
+
+export interface IGuildCreationAttributes {
+	id?: number;
+	name: string;
+	guildId: number;
+}
+
+export class Guild extends Model<IGuildCreationAttributes> implements Guild {
+	id!: number;
+	name: string;
+	guildId: number;
+}
+
+Guild.init(
+	{
+		id: { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
+		name: { type: DataTypes.STRING, allowNull: false },
+		guildId: { type: DataTypes.NUMBER, allowNull: false }
+	},
+	{
+		sequelize,
+		tableName: 'Guilds',
+		timestamps: false
+	}
+);
+
+export interface IGuildMembersCreationAttributes {
+	id?: number;
+	allyCode: number;
+	guildId: number;
+	name: string;
+}
+
+export class GuildMembers extends Model<IGuildMembersCreationAttributes>
+	implements GuildMembers {
+	id!: number;
+	allyCode: number;
+	guildId: number;
+	name: string;
+}
+
+GuildMembers.init(
+	{
+		id: { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
+		allyCode: { type: DataTypes.NUMBER, allowNull: true },
+		guildId: { type: DataTypes.NUMBER, allowNull: false },
+		name: { type: DataTypes.STRING, allowNull: false }
+	},
+	{
+		sequelize,
+		tableName: 'GuildMembers',
+		timestamps: false
+	}
+);

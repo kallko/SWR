@@ -52,7 +52,7 @@ export const discordDispatcher = {
 				parameters
 			);
 		} else if (option && option.id !== 0 && !user) {
-			return discordResultEmbed.notRegistered();
+			return discordResultEmbed.notRegistered(msg);
 		}
 		if (msg.channel.type === 1 && !msg.author.bot) {
 			return discordDispatcher['help'].call(discordDispatcher, channel, msg);

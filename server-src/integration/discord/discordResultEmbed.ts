@@ -5,7 +5,7 @@ import { TopFieldList } from '../../@types/IUnit';
 import { IDiscordEmbed, IDiscordMessage } from '../../@types/IDiscord';
 import { discordConfig } from './discordConfig';
 const footer = {
-	text: `Support SWR Bot on patreon https://www.patreon.com/kalko`
+	text: `Support SWR Bot on patreon: https://www.patreon.com/kalko`
 };
 const author = {
 	name: `SWR Bot`
@@ -47,7 +47,7 @@ export const discordResultEmbed = {
 		return {
 			author,
 			color: '16768350',
-			title: msg.author.username,
+			title: msg.author.greeting || msg.author.username,
 			description: `All commands should start with: swr and then some key, like -lp and then options
 			\n For example:
 			\n swr -r 111111111
@@ -88,18 +88,6 @@ export const discordResultEmbed = {
 			],
 			footer
 		};
-	},
-	legendProgressOld(result: ILegendProgress[]): string {
-		return (
-			'Your progress for Legends: \n' +
-			result[0].legend_name +
-			' ' +
-			result[0].display_data.display_status +
-			'\n' +
-			result[1].legend_name +
-			' ' +
-			result[1].display_data.display_status
-		);
 	},
 	guildList(guild: IGuild, msg: IDiscordMessage): IDiscordEmbed {
 		const value0 = guild.members
@@ -220,12 +208,20 @@ export const discordResultEmbed = {
 			fields: [
 				{
 					name: 'Kylo Progress',
-					value: result[0].display_data.display_status,
+					value:
+						result[0].display_data.display_status +
+						'\n' +
+						'From last week: ' +
+						result[0].display_data.last_week_add,
 					inline: true
 				},
 				{
 					name: 'Rey Progress',
-					value: result[1].display_data.display_status,
+					value:
+						result[1].display_data.display_status +
+						'\n' +
+						'From last week: ' +
+						result[1].display_data.last_week_add,
 					inline: true
 				}
 			],

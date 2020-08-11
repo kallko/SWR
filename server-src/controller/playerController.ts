@@ -97,13 +97,7 @@ export const playerController = {
 	},
 	check: async function (allyCode: number) {
 		let player = await fetchDataService.getPlayer(allyCode);
-		if (player.data && player.data.name) {
-		} else {
-			player.data = {
-				name: player.detail
-			};
-		}
-		return player.data.name;
+		return player?.data?.name || player.detail;
 	},
 	async saveLegendProgress(allyCode: number): Promise<boolean> {
 		const legendBaseIds: string[] = LEGEND_REQUIREMENTS.map(

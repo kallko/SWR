@@ -44,5 +44,14 @@ export const fetchDataService = {
 				};
 			})
 		};
+	},
+	async getPlayer2(allyCode) {
+		await swapi.connect();
+		const payload = { allyCode };
+		const { result, error, warning } = await swapi.fetchPlayer(
+			payload,
+			'units'
+		);
+		return result;
 	}
 };
