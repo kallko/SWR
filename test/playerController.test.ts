@@ -4,7 +4,7 @@ import {
 	isPlayerUnitsNeedUpdate
 } from '../server-src/controller/playerController';
 
-describe('playerController tests:', async function () {
+xdescribe('playerController tests:', async function () {
 	it('should legend progress for Kylo and Rey', async function () {
 		this.timeout(5000);
 		const result: any = await playerController.getLegendProgress(621723826);

@@ -1,6 +1,9 @@
 export interface IGuild {
 	name: string;
-	members: { id: number; name: string }[];
+	members: {
+		id: number;
+		name: string;
+	}[];
 }
 
 export interface IReqUnits {
