@@ -27,4 +27,9 @@ describe.only('guildController tests:', async function () {
 		const result: IGuild = await guildController.getGuildAll(621723826);
 		console.log('Guild test ', result);
 	});
+	it.only('update guild', async function () {
+		this.timeout(500000);
+		const result = await guildController.updateData();
+		console.log('Guild test ', result);
+	});
 });

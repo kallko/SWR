@@ -59,5 +59,12 @@ export const userService = {
 		return `@${msg.author.username}, \n (${
 			user?.playerName || 'unknown player'
 		})\n`;
+	},
+	getUsersAllyCode: async function () {
+		return await User.findAll({
+			attributes: ['allyCode'],
+			raw: true,
+			nest: true
+		});
 	}
 };
