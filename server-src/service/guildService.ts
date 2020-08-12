@@ -9,7 +9,7 @@ export const guildService = {
 		};
 		return await Guild.create(createOptions);
 	},
-	getGuildMembers: async function (guildId: number) {
+	getGuildMembers: async function (guildId: number): Promise<GuildMembers[]> {
 		return await GuildMembers.findAll({
 			where: { guildId },
 			nest: true,
@@ -55,5 +55,43 @@ export const guildService = {
 	getGuildId: async function (allyCode: number) {
 		const member = await GuildMembers.findOne({ where: { allyCode } });
 		return member?.guildId;
+	},
+	getGuildIds: async function () {
+		return await Guild.findAll({
+			group: ['guildId'],
+			attributes: ['guildId'],
+			raw: true,
+			nest: true
+		});
+	},
+	getAll: async function () {
+		return await GuildMembers.findAll({
+			attributes: ['allyCode'],
+			raw: true,
+			nest: true
+		});
+	},
+	updateGuildMember: async function (
+		allyCode: number,
+		guildId: number,
+		name: string
+	) {
+		const member = await GuildMembers.findOne({
+			where: {
+				allyCode
+			}
+		});
+		if (member) {
+			await member.update({
+				name,
+				guildId
+			});
+		} else {
+			await GuildMembers.create({
+				allyCode,
+				guildId,
+				name
+			});
+		}
 	}
 };

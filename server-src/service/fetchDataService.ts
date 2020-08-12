@@ -29,7 +29,7 @@ export const fetchDataService = {
 			return await result.json();
 		}
 		console.error('No such player data ', allyCode);
-		return { units: null, data: null, detail: null };
+		return { units: null, data: null, detail: null, ally_code: null };
 	},
 	async getGuildPlayersCode(allyCode: number): Promise<IGuild> {
 		await swapi.connect();

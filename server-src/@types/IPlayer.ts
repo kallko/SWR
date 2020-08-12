@@ -18,4 +18,5 @@ export interface IPlayer {
 		};
 		galactic_power: number;
 	};
+	ally_code: number;
 }
