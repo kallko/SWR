@@ -11,7 +11,9 @@ import { playerController } from './playerController';
 
 import { Transformer } from '../helper/transformer';
 import { guildService } from '../service/guildService';
-import { GuildMembers } from '../service/dbModels';
+import { userService } from '../service/UserService';
+import { GuildMembers, User } from '../service/dbModels';
+import { UnitService } from '../service/UnitService';
 
 export const guildController = {
 	getLegendProgress: async function (
@@ -35,8 +37,14 @@ export const guildController = {
 		return Transformer.transformLegendProgress(guildResult);
 	},
 	getGuildAll: async function (allyCode: number): Promise<IGuild> {
-		const guildId = await guildService.getGuildId(allyCode);
-		const guildName = await guildService.getGuildName(guildId);
+		let guildId = await guildService.getGuildId(allyCode);
+		let player;
+		if (!guildId) {
+			player = await fetchDataService.getPlayer(allyCode);
+			guildId = player.data.guild_id;
+		}
+		let guildName =
+			(await guildService.getGuildName(guildId)) || player.data.guild_name;
 		const guild = await guildService.getGuildMembers(guildId);
 		const members = guild.map((member) => {
 			return { id: member.allyCode, name: member.name };
@@ -45,36 +53,59 @@ export const guildController = {
 			members,
 			name: guildName
 		};
-
 	},
-	updateGuild: async function (guildId: number, guild: IGuild) {
-		// todo update guild
-		// const guildMembers = await fetchDataService.getGuildPlayersCode(allyCode);
-		// const member = await fetchDataService.getPlayer(guildMembers.members[0].id);
-		// await guildController.updateGuild(guildId, guildMembers);
-		const oldGuildMembers = await guildService.getGuildMembers(guildId);
-		const joinedMembers = guild.members.filter(
-			(member) =>
-				!oldGuildMembers.some((oMember) => oMember.allyCode === member.id)
-		);
-		const deletedMembers = oldGuildMembers.filter(
-			(oMember) =>
-				!guild.members.some((member) => member.id === oMember.allyCode)
-		);
-		for (const member of joinedMembers) {
-			await guildService.addGuildMember(member, guildId);
-		}
-		for (const member of deletedMembers) {
-			await guildService.removeMember(member);
-		}
-		await guildService.updateGuildName(guildId, guild.name);
-	},
-	getGuildId: async function (allyCode: number) {
-		const member = await GuildMembers.findOne({
-			where: {
-				allyCode
+	updateData: async function () {
+		const guildMembers: Partial<GuildMembers[]> = await guildService.getAll();
+		const players: Partial<User[]> = await userService.getUsersAllyCode();
+		players.forEach((player) => {
+			if (!guildMembers.some((member) => member.allyCode === player.allyCode)) {
+				guildMembers.push(player as any);
 			}
 		});
-		return member.guildId;
+		for (const member of guildMembers) {
+			const player = await fetchDataService.getPlayer(member.allyCode);
+			if (player.units) {
+				await guildService.updateGuildMember(
+					member.allyCode,
+					player.data.guild_id,
+					player.data.name
+				);
+				await guildService.updateGuildName(
+					player.data.guild_id,
+					player.data.guild_name
+				);
+				for (const unit of player.units) {
+					await UnitService.createOrUpdate(member.allyCode, unit);
+				}
+			}
+		}
+		const guildIds = await guildService.getGuildIds();
+		for (const guild of guildIds) {
+			const members: GuildMembers[] = await guildService.getGuildMembers(
+				guild.guildId
+			);
+			let updatedMembers = [];
+			for (const member of members) {
+				if (
+					!updatedMembers.some(
+						(updatedMember) => updatedMember.allyCode === member.allyCode
+					)
+				) {
+					const freshGuild = await fetchDataService.getGuildPlayersCode(
+						member.allyCode
+					);
+					const freshMember = await fetchDataService.getPlayer(member.allyCode);
+					const freshGuildId = freshMember.data.guild_id;
+					for (const fMember of freshGuild.members) {
+						updatedMembers.push({ allyCode: fMember.id });
+						await guildService.updateGuildMember(
+							fMember.id,
+							freshGuildId,
+							fMember.name
+						);
+					}
+				}
+			}
+		}
 	}
 };

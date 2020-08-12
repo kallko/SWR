@@ -135,27 +135,27 @@ export const discordResultEmbed = {
 			fields: [
 				{
 					name: '1',
-					value: value0,
+					value: value0 || 'no data',
 					inline: false
 				},
 				{
 					name: '2',
-					value: value1,
+					value: value1 || 'no data',
 					inline: false
 				},
 				{
 					name: '3',
-					value: value2,
+					value: value2 || 'no data',
 					inline: false
 				},
 				{
 					name: '4',
-					value: value3,
+					value: value3 || 'no data',
 					inline: false
 				},
 				{
 					name: '5',
-					value: value4,
+					value: value4 || 'no data',
 					inline: false
 				}
 			],
@@ -189,7 +189,7 @@ export const discordResultEmbed = {
 			fields: [
 				{
 					name: rank.toString().toUpperCase() + ':',
-					value,
+					value: value || 'no data',
 					inline: false
 				}
 			],

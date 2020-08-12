@@ -72,10 +72,11 @@ export const UnitService = {
 	): Promise<any> {
 		const guild: IGuild = await guildController.getGuildAll(allyCode);
 		const guildIds = guild.members.map((member) => member.id);
+		const allyCodes = guildIds || [allyCode];
 		const units = await Unit.findAll({
 			where: {
 				allyCode: {
-					[Op.in]: guildIds
+					[Op.in]: allyCodes
 				},
 				combatType: 1
 			},
