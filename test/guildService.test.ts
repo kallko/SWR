@@ -3,7 +3,7 @@ import { fetchDataService } from '../server-src/service/fetchDataService';
 import { expect } from 'chai';
 import { userService } from '../server-src/service/UserService';
 
-describe.only('GuildService tests:', async function () {
+xdescribe('GuildService tests:', async function () {
 	it('first test', async function () {
 		// const result = await userService.getUser({
 		//     allyCode: 1111,

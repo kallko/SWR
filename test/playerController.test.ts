@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import {
 	playerController,
-	isPlayerUnitsNeedUpdate
+	isPlayerUnitsNeedUpdate,
+	getLegendProgressByInterval
 } from '../server-src/controller/playerController';
 
-xdescribe('playerController tests:', async function () {
+describe('playerController tests:', async function () {
 	it('should legend progress for Kylo and Rey', async function () {
 		this.timeout(5000);
 		const result: any = await playerController.getLegendProgress(621723826);
@@ -29,8 +30,16 @@ xdescribe('playerController tests:', async function () {
 		const result: boolean = await isPlayerUnitsNeedUpdate(621723826);
 		console.log('Result ', result);
 	});
-	it('should update players units', async function f() {
+	it('should update players units', async function () {
 		this.timeout(10000);
 		await playerController.updatePlayerUnits(621723826, true);
+	});
+	it.only('Get legends by id', async function () {
+		const result = await getLegendProgressByInterval(
+			'SUPREMELEADERKYLOREN',
+			100,
+			621723826,
+			[]
+		);
 	});
 });

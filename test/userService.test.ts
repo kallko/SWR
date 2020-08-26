@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { userService } from '../server-src/service/UserService';
-describe('UserService tests:', async function () {
+xdescribe('UserService tests:', async function () {
 	it('return null if User not registered', async function () {
 		const result = await userService.getUser({
 			allyCode: 1111,

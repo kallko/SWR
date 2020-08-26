@@ -42,20 +42,15 @@ export const playerController = {
 		if (await isPlayerUnitsNeedUpdate(allyCode)) {
 			await playerController.updatePlayerUnits(allyCode, true);
 		}
-		await playerController.saveLegendProgress(allyCode);
-		await UnitService.getPlayerUnitsByBaseId(allyCode, legendsBaseIds);
 		const units: Unit[] = await UnitService.getAllPlayerUnits(allyCode);
+		await playerController.saveLegendProgress(allyCode);
 		//todo update mods
 		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
 		const progress: {
 			createdAt: Date;
-		} = await LegendService.getDateForWeekUpdate(allyCode);
+		} = await LegendService.getDateFromPastInterval(allyCode, 7);
 		if (progress?.createdAt) {
-			const lastWeekProgress: LegendProgress[] = await LegendService.getUnitsCreatedInTenSecondsInterval(
-				allyCode,
-				progress.createdAt
-			);
-			legendsBaseIds.forEach((legendBaseId) => {
+			for (const legendBaseId of legendsBaseIds) {
 				if (isLegendExist(legendBaseId, units)) {
 					result.push({
 						//todo take name no baseId
@@ -75,23 +70,23 @@ export const playerController = {
 						units,
 						mods
 					);
+					const progressLastWeek = await getLegendProgressByInterval(
+						legendBaseId,
+						7,
+						allyCode,
+						mods
+					);
 					result.push({
 						//todo take name no baseId
 						legend_name: legendBaseId,
 						display_data: {
 							display_status: '' + progress + '%',
 							sorting_data: progress,
-							last_week_add:
-								progress -
-								getLegendProgress(
-									unitsForThisLegend,
-									(lastWeekProgress as any) as Unit[],
-									mods
-								)
+							last_week_add: progress - progressLastWeek
 						}
 					});
 				}
-			});
+			}
 		}
 		return result;
 	},
@@ -186,4 +181,23 @@ export function getLegendProgress(
 	}, 0);
 	let needPower = legendUnits.reduce((sum, unit) => sum + unit.power, 0);
 	return Math.round((power * 100) / needPower);
+}
+
+export async function getLegendProgressByInterval(
+	legendBaseId: string,
+	interval: number,
+	allyCode: number,
+	mods: IMod[]
+): Promise<number> {
+	const unitsForLegend = await LegendService.getUnitsForLegendsByName(
+		legendBaseId
+	);
+	const date: {
+		createdAt: Date;
+	} = await LegendService.getDateFromPastInterval(allyCode, interval);
+	const pastUnits: LegendProgress[] = await LegendService.getUnitsCreatedInTenSecondsInterval(
+		allyCode,
+		date.createdAt
+	);
+	return getLegendProgress(unitsForLegend, (pastUnits as any) as Unit[], mods);
 }
