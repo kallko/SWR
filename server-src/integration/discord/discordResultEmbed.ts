@@ -218,9 +218,7 @@ export const discordResultEmbed = {
 						(result[0].display_data.estimated_date
 							? '\n' +
 							  'Receiving: ' +
-							  moment(result[0].display_data.estimated_date).format(
-									'DD:MM:YYYY'
-							  )
+							  transformEstimatedDate(result[0].display_data.estimated_date)
 							: ''),
 					inline: true
 				},
@@ -234,9 +232,7 @@ export const discordResultEmbed = {
 						(result[1].display_data.estimated_date
 							? '\n' +
 							  'Receiving: ' +
-							  moment(result[1].display_data.estimated_date).format(
-									'DD:MM:YYYY'
-							  )
+							  transformEstimatedDate(result[1].display_data.estimated_date)
 							: ''),
 					inline: true
 				}
@@ -300,3 +296,14 @@ export const discordResultEmbed = {
 		};
 	}
 };
+
+function transformEstimatedDate(date: Date): string {
+	let result = moment(date).format('DD:MM:YYYY');
+	if (moment(date).isSame('1970-01-01')) {
+		result = 'Maybe never';
+	}
+	if (moment(date).isSame('1980-01-01')) {
+		result = 'Not enough data';
+	}
+	return result;
+}

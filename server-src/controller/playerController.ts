@@ -234,11 +234,11 @@ export async function getEstimatedDate(
 		result = moment().add(11, 'day');
 	} else {
 		if (diffDays < 7) {
-			result = moment().add(-11, 'day');
+			result = result = moment('1980-01-01');
 		} else {
 			const averageDayProgress = (currentProgress - progress) / diffDays;
 			if (averageDayProgress === 0) {
-				result = result = moment().add(500, 'day');
+				result = moment('1970-01-01');
 			} else {
 				const dayToFinish =
 					11 + Math.round((100 - currentProgress) / averageDayProgress);
