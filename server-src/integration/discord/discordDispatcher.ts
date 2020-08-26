@@ -44,8 +44,8 @@ export const discordDispatcher = {
 							.toLowerCase()
 							.replace('swr', '')
 							.trim()
-							.replace(option.key, '');
-			return discordDispatcher[option.handler].call(
+							.replace(option?.key, '');
+			return discordDispatcher[option?.handler].call(
 				discordDispatcher,
 				channel,
 				msg,
