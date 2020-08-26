@@ -37,6 +37,7 @@ export interface ILegendProgress {
 		display_week_progress?: string;
 		sorting_data: number;
 		last_week_add: number;
+		estimated_date?: Date;
 	};
 	data?: ILegendReqUnit[];
 }

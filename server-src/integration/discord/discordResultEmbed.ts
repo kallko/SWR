@@ -4,6 +4,8 @@ import { IIdeaCreationAttributes, Unit } from '../../service/dbModels';
 import { TopFieldList } from '../../@types/IUnit';
 import { IDiscordEmbed, IDiscordMessage } from '../../@types/IDiscord';
 import { discordConfig } from './discordConfig';
+import * as moment from 'moment';
+
 const footer = {
 	text: `Support SWR Bot on patreon: https://www.patreon.com/kalko`
 };
@@ -212,7 +214,14 @@ export const discordResultEmbed = {
 						result[0].display_data.display_status +
 						'\n' +
 						'From last week: ' +
-						result[0].display_data.last_week_add,
+						result[0].display_data.last_week_add +
+						(result[0].display_data.estimated_date
+							? '\n' +
+							  'Receiving: ' +
+							  moment(result[0].display_data.estimated_date).format(
+									'DD:MM:YYYY'
+							  )
+							: ''),
 					inline: true
 				},
 				{
@@ -221,7 +230,14 @@ export const discordResultEmbed = {
 						result[1].display_data.display_status +
 						'\n' +
 						'From last week: ' +
-						result[1].display_data.last_week_add,
+						result[1].display_data.last_week_add +
+						(result[1].display_data.estimated_date
+							? '\n' +
+							  'Receiving: ' +
+							  moment(result[1].display_data.estimated_date).format(
+									'DD:MM:YYYY'
+							  )
+							: ''),
 					inline: true
 				}
 			],

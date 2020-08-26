@@ -2,7 +2,8 @@ import { expect } from 'chai';
 import {
 	playerController,
 	isPlayerUnitsNeedUpdate,
-	getLegendProgressByInterval
+	getLegendProgressByInterval,
+	getEstimatedDate
 } from '../server-src/controller/playerController';
 
 describe('playerController tests:', async function () {
@@ -34,12 +35,22 @@ describe('playerController tests:', async function () {
 		this.timeout(10000);
 		await playerController.updatePlayerUnits(621723826, true);
 	});
-	it.only('Get legends by id', async function () {
+	it('Get legends by id', async function () {
 		const result = await getLegendProgressByInterval(
 			'SUPREMELEADERKYLOREN',
 			100,
 			621723826,
 			[]
 		);
+	});
+	it.only('Get legends by id', async function () {
+		const result = await getEstimatedDate(
+			'SUPREMELEADERKYLOREN',
+			100,
+			621723826,
+			[],
+			100
+		);
+		console.log('Result ', result);
 	});
 });

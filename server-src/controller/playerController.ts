@@ -82,7 +82,14 @@ export const playerController = {
 						display_data: {
 							display_status: '' + progress + '%',
 							sorting_data: progress,
-							last_week_add: progress - progressLastWeek
+							last_week_add: progress - progressLastWeek,
+							estimated_date: await getEstimatedDate(
+								legendBaseId,
+								30,
+								allyCode,
+								mods,
+								progress
+							)
 						}
 					});
 				}
@@ -200,4 +207,44 @@ export async function getLegendProgressByInterval(
 		date.createdAt
 	);
 	return getLegendProgress(unitsForLegend, (pastUnits as any) as Unit[], mods);
+}
+
+export async function getEstimatedDate(
+	legendBaseId: string,
+	interval: number,
+	allyCode: number,
+	mods: IMod[],
+	currentProgress: number
+): Promise<Date> {
+	let result;
+	const progress = await getLegendProgressByInterval(
+		legendBaseId,
+		interval,
+		allyCode,
+		mods
+	);
+	const date: {
+		createdAt: Date;
+	} = await LegendService.getDateFromPastInterval(allyCode, interval);
+	const diffDays: number = moment(new Date()).diff(
+		moment(date.createdAt),
+		'days'
+	);
+	if (currentProgress === 100) {
+		result = moment().add(11, 'day');
+	} else {
+		if (diffDays < 7) {
+			result = moment().add(-11, 'day');
+		} else {
+			const averageDayProgress = (currentProgress - progress) / diffDays;
+			if (averageDayProgress === 0) {
+				result = result = moment().add(500, 'day');
+			} else {
+				const dayToFinish =
+					11 + Math.round((100 - currentProgress) / averageDayProgress);
+				result = moment().add(dayToFinish, 'day');
+			}
+		}
+	}
+	return result;
 }
