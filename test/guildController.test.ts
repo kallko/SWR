@@ -3,7 +3,7 @@ import { guildController } from '../server-src/controller/guildController';
 import { IGuild } from '../server-src/@types/IGuild';
 import { IFrontLegendTable } from '../server-src/@types/IFrontEnd';
 
-describe.only('guildController tests:', async function () {
+xdescribe('guildController tests:', async function () {
 	xit('receive allyCode for all players of Guild', async function () {
 		this.timeout(500000);
 		const result: IGuild = await guildController.getGuildAll(621723826);

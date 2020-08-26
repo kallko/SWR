@@ -5,7 +5,7 @@ import {
 import { expect } from 'chai';
 import { fetchDataService } from '../server-src/service/fetchDataService';
 
-describe.only('fetchDataService tests:', async function () {
+xdescribe('fetchDataService tests:', async function () {
 	it('should update players units', async function () {
 		this.timeout(10000);
 		const result = await fetchDataService.getPlayer2(621723826);

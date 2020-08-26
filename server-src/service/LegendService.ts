@@ -40,14 +40,15 @@ export const LegendService = {
 		const findOptions = Object.assign(options, { raw: true, nest: true });
 		return await LegendProgress.findAll(findOptions);
 	},
-	getDateForWeekUpdate: async function (
-		allyCode: number
+	getDateFromPastInterval: async function (
+		allyCode: number,
+		interval: number
 	): Promise<{ createdAt: Date }> {
 		return await LegendProgress.findOne({
 			where: {
 				allyCode,
 				createdAt: {
-					[Op.lte]: new Date().setDate(new Date().getDate() - 7)
+					[Op.lte]: new Date().setDate(new Date().getDate() - interval)
 				}
 			},
 			raw: true,
@@ -75,6 +76,17 @@ export const LegendService = {
 	},
 	getUnitsForLegends: async function (): Promise<LegendRequirements[]> {
 		return await LegendRequirements.findAll({
+			raw: true,
+			nest: true
+		});
+	},
+	getUnitsForLegendsByName: async function (
+		name: string
+	): Promise<LegendRequirements[]> {
+		return await LegendRequirements.findAll({
+			where: {
+				name
+			},
 			raw: true,
 			nest: true
 		});

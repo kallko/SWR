@@ -7,7 +7,7 @@ import {
 import { expect } from 'chai';
 import { readWriteService } from '../server-src/service/readWriteService';
 
-describe('splitGuildHistory tests:', async function () {
+xdescribe('splitGuildHistory tests:', async function () {
 	//depricated
 	xit('should load file with guild info n times', async function () {
 		this.timeout(50000);

@@ -4,6 +4,8 @@ import { IIdeaCreationAttributes, Unit } from '../../service/dbModels';
 import { TopFieldList } from '../../@types/IUnit';
 import { IDiscordEmbed, IDiscordMessage } from '../../@types/IDiscord';
 import { discordConfig } from './discordConfig';
+import * as moment from 'moment';
+
 const footer = {
 	text: `Support SWR Bot on patreon: https://www.patreon.com/kalko`
 };
@@ -212,7 +214,12 @@ export const discordResultEmbed = {
 						result[0].display_data.display_status +
 						'\n' +
 						'From last week: ' +
-						result[0].display_data.last_week_add,
+						result[0].display_data.last_week_add +
+						(result[0].display_data.estimated_date
+							? '\n' +
+							  'Receiving: ' +
+							  transformEstimatedDate(result[0].display_data.estimated_date)
+							: ''),
 					inline: true
 				},
 				{
@@ -221,7 +228,12 @@ export const discordResultEmbed = {
 						result[1].display_data.display_status +
 						'\n' +
 						'From last week: ' +
-						result[1].display_data.last_week_add,
+						result[1].display_data.last_week_add +
+						(result[1].display_data.estimated_date
+							? '\n' +
+							  'Receiving: ' +
+							  transformEstimatedDate(result[1].display_data.estimated_date)
+							: ''),
 					inline: true
 				}
 			],
@@ -284,3 +296,14 @@ export const discordResultEmbed = {
 		};
 	}
 };
+
+function transformEstimatedDate(date: Date): string {
+	let result = moment(date).format('DD:MM:YYYY');
+	if (moment(date).isSame('1970-01-01')) {
+		result = 'Maybe never';
+	}
+	if (moment(date).isSame('1980-01-01')) {
+		result = 'Not enough data';
+	}
+	return result;
+}
