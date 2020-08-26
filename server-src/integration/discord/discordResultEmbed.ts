@@ -131,7 +131,8 @@ export const discordResultEmbed = {
 		return {
 			title: msg.author.greeting,
 			description:
-				'Your guild ' + msg.author.guildName || 'will be add in next version',
+				'Your guild: ' +
+				(msg.author.guildName || 'will be add in next version'),
 			author,
 			color: '16768350',
 			fields: [
