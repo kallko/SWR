@@ -46,53 +46,50 @@ export const playerController = {
 		await playerController.saveLegendProgress(allyCode);
 		//todo update mods
 		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
-		const progress: {
+		const history: {
 			createdAt: Date;
 		} = await LegendService.getDateFromPastInterval(allyCode, 7);
-		if (progress?.createdAt) {
-			for (const legendBaseId of legendsBaseIds) {
-				if (isLegendExist(legendBaseId, units)) {
-					result.push({
-						//todo take name no baseId
-						legend_name: legendBaseId,
-						display_data: {
-							display_status: 'EXIST',
-							sorting_data: 101,
-							last_week_add: 0
-						}
-					});
-				} else {
-					const unitsForThisLegend = unitsForLegends.filter(
-						(unitForLegend) => unitForLegend.name === legendBaseId
-					);
-					const progress: number = getLegendProgress(
-						unitsForThisLegend,
-						units,
-						mods
-					);
-					const progressLastWeek = await getLegendProgressByInterval(
-						legendBaseId,
-						7,
-						allyCode,
-						mods
-					);
-					result.push({
-						//todo take name no baseId
-						legend_name: legendBaseId,
-						display_data: {
-							display_status: '' + progress + '%',
-							sorting_data: progress,
-							last_week_add: progress - progressLastWeek,
-							estimated_date: await getEstimatedDate(
-								legendBaseId,
-								30,
-								allyCode,
-								mods,
-								progress
-							)
-						}
-					});
-				}
+		for (const legendBaseId of legendsBaseIds) {
+			if (isLegendExist(legendBaseId, units)) {
+				result.push({
+					//todo take name no baseId
+					legend_name: legendBaseId,
+					display_data: {
+						display_status: 'EXIST',
+						sorting_data: 101,
+						last_week_add: 0
+					}
+				});
+			} else {
+				const unitsForThisLegend = unitsForLegends.filter(
+					(unitForLegend) => unitForLegend.name === legendBaseId
+				);
+				const progress: number = getLegendProgress(
+					unitsForThisLegend,
+					units,
+					mods
+				);
+				const progressLastWeek = history?.createdAt
+					? await getLegendProgressByInterval(legendBaseId, 7, allyCode, mods)
+					: progress;
+				result.push({
+					//todo take name no baseId
+					legend_name: legendBaseId,
+					display_data: {
+						display_status: '' + progress + '%',
+						sorting_data: progress,
+						last_week_add: progress - progressLastWeek,
+						estimated_date: history?.createdAt
+							? await getEstimatedDate(
+									legendBaseId,
+									30,
+									allyCode,
+									mods,
+									progress
+							  )
+							: moment('1990-01-01').toDate()
+					}
+				});
 			}
 		}
 		return result;
@@ -234,7 +231,7 @@ export async function getEstimatedDate(
 		result = moment().add(11, 'day');
 	} else {
 		if (diffDays < 7) {
-			result = result = moment('1980-01-01');
+			result = moment('1980-01-01');
 		} else {
 			const averageDayProgress = (currentProgress - progress) / diffDays;
 			if (averageDayProgress === 0) {

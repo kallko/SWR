@@ -29,6 +29,16 @@ export const discordResultEmbed = {
 			footer
 		};
 	},
+	noParameter(msg: IDiscordMessage) {
+		return {
+			title: msg.author.username,
+			description: ` Input parameter pls, for example: \n swr -gtu -rank=speed \n (Possible ranks: health, speed, power, damage, defense, potency, tenacity, protection)`,
+			author,
+			color: '16711735',
+			fields: [],
+			footer
+		};
+	},
 	registered(title: string, allyCode: number) {
 		return {
 			title,
@@ -131,7 +141,8 @@ export const discordResultEmbed = {
 		return {
 			title: msg.author.greeting,
 			description:
-				'Your guild ' + msg.author.guildName || 'will be add in next version',
+				'Your guild: ' +
+				(msg.author.guildName || 'will be add in next version'),
 			author,
 			color: '16768350',
 			fields: [
@@ -304,6 +315,9 @@ function transformEstimatedDate(date: Date): string {
 	}
 	if (moment(date).isSame('1980-01-01')) {
 		result = 'Not enough data';
+	}
+	if (moment(date).isSame('1990-01-01')) {
+		result = 'Not enough data, try in a week';
 	}
 	return result;
 }
