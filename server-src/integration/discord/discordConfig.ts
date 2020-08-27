@@ -58,7 +58,7 @@ export const discordConfig: IDiscordOption[] = [
 		minimalRang: Rang.officer,
 		retry: 24 * 7,
 		description:
-			'Guild Top Units. \nReturns top units of guild by possible rank.\n(Possible ranks: health, speed, power, damage, defence, potency, tenacity, protection)',
+			'Guild Top Units. \nReturns top units of guild by possible rank.\n(Possible ranks: health, speed, power, damage, defense, potency, tenacity, protection)',
 		handler: 'guildTop'
 	}
 ];

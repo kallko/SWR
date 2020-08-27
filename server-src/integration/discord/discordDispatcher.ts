@@ -144,6 +144,9 @@ export const discordDispatcher = {
 		msg: IDiscordMessage,
 		parameter
 	): Promise<IDiscordEmbed> {
+		if (!parameter?.rank) {
+			return discordResultEmbed.noParameter(msg);
+		}
 		if (msg.author.allyCode && TopFieldList[parameter.rank]) {
 			const result = await UnitService.getGuildTopByField(
 				msg.author.allyCode,

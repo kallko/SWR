@@ -29,6 +29,16 @@ export const discordResultEmbed = {
 			footer
 		};
 	},
+	noParameter(msg: IDiscordMessage) {
+		return {
+			title: msg.author.username,
+			description: ` Input parameter pls, for example: \n swr -gtu -rank=speed \n (Possible ranks: health, speed, power, damage, defense, potency, tenacity, protection)`,
+			author,
+			color: '16711735',
+			fields: [],
+			footer
+		};
+	},
 	registered(title: string, allyCode: number) {
 		return {
 			title,
