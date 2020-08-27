@@ -83,7 +83,8 @@ export const discordDispatcher = {
 			const options = {
 				allyCode: allyCode,
 				discordName: msg.author.username,
-				playerName: player.data?.name
+				playerName: player.data?.name,
+				discordId: msg.author.id
 			};
 			const newPlayer = await userService.update(options);
 			return discordResultEmbed.registered(newPlayer.playerName, allyCode);
