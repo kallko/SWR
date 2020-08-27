@@ -19,6 +19,7 @@ import { discordHelper } from './discordHelper';
 import { discordConfig } from './discordConfig';
 import { ideaService } from '../../service/IdeaService';
 import { IIdeaCreationAttributes } from '../../service/dbModels';
+import { guildService } from '../../service/guildService';
 
 export const discordDispatcher = {
 	dispatch: async function (
@@ -95,6 +96,15 @@ export const discordDispatcher = {
 				rang: Rang[Rang.hope]
 			};
 			await userService.createUser(options);
+			await guildService.updateGuildMember(
+				allyCode,
+				player.data.guild_id,
+				player.data.name
+			);
+			setTimeout(async function () {
+				await guildController.updateData();
+				await guildController.updateData();
+			}, 100);
 			return discordResultEmbed.registered(player.data.name, allyCode);
 		}
 	},
