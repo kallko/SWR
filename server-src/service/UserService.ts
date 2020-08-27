@@ -1,4 +1,4 @@
-import { User } from './dbModels';
+import { GuildMembers, User } from './dbModels';
 import { Rang } from '../@types/iRegistration';
 import { Op } from 'sequelize';
 import { IDiscordMessage } from '../@types/IDiscord';
@@ -21,12 +21,13 @@ export const userService = {
 		}
 	},
 	update: async function (user) {
+		const { discordId, allyCode } = user;
 		const existUser = await User.findOne({
 			where: {
-				allyCode: user.allyCode
+				discordId
 			}
 		});
-		return await existUser.update(user);
+		return await existUser.update({ allyCode });
 	},
 	getUser: async function (options) {
 		return await User.findOne({

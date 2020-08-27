@@ -35,15 +35,17 @@ export const fetchDataService = {
 		await swapi.connect();
 		const payload = { allyCode };
 		const { result, error, warning } = await swapi.fetchGuild(payload);
-		return {
-			name: result[0].name,
-			members: result[0].roster.map((member) => {
-				return {
-					name: member.name,
-					id: member.allyCode
-				};
-			})
-		};
+		return result
+			? {
+					name: result[0].name,
+					members: result[0].roster.map((member) => {
+						return {
+							name: member.name,
+							id: member.allyCode
+						};
+					})
+			  }
+			: null;
 	},
 	async getPlayer2(allyCode) {
 		await swapi.connect();

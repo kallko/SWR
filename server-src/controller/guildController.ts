@@ -45,10 +45,20 @@ export const guildController = {
 		}
 		let guildName =
 			(await guildService.getGuildName(guildId)) || player.data.guild_name;
-		const guild = await guildService.getGuildMembers(guildId);
-		const members = guild.map((member) => {
-			return { id: member.allyCode, name: member.name };
-		});
+		let guild = await guildService.getGuildMembers(guildId);
+		let members;
+		if (guild?.length === 0) {
+			const fetchedGuild = await fetchDataService.getGuildPlayersCode(allyCode);
+			members = fetchedGuild
+				? fetchedGuild.members.map((member) => {
+						return { id: member.id, name: member.name };
+				  })
+				: [];
+		} else {
+			members = guild.map((member) => {
+				return { id: member.allyCode, name: member.name };
+			});
+		}
 		return {
 			members,
 			name: guildName

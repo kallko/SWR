@@ -19,6 +19,7 @@ import { discordHelper } from './discordHelper';
 import { discordConfig } from './discordConfig';
 import { ideaService } from '../../service/IdeaService';
 import { IIdeaCreationAttributes } from '../../service/dbModels';
+import { guildService } from '../../service/guildService';
 
 export const discordDispatcher = {
 	dispatch: async function (
@@ -44,8 +45,8 @@ export const discordDispatcher = {
 							.toLowerCase()
 							.replace('swr', '')
 							.trim()
-							.replace(option.key, '');
-			return discordDispatcher[option.handler].call(
+							.replace(option?.key, '');
+			return discordDispatcher[option?.handler].call(
 				discordDispatcher,
 				channel,
 				msg,
@@ -82,7 +83,8 @@ export const discordDispatcher = {
 			const options = {
 				allyCode: allyCode,
 				discordName: msg.author.username,
-				playerName: player.data?.name
+				playerName: player.data?.name,
+				discordId: msg.author.id
 			};
 			const newPlayer = await userService.update(options);
 			return discordResultEmbed.registered(newPlayer.playerName, allyCode);
@@ -95,6 +97,15 @@ export const discordDispatcher = {
 				rang: Rang[Rang.hope]
 			};
 			await userService.createUser(options);
+			await guildService.updateGuildMember(
+				allyCode,
+				player.data.guild_id,
+				player.data.name
+			);
+			setTimeout(async function () {
+				await guildController.updateData();
+				await guildController.updateData();
+			}, 100);
 			return discordResultEmbed.registered(player.data.name, allyCode);
 		}
 	},
@@ -144,6 +155,9 @@ export const discordDispatcher = {
 		msg: IDiscordMessage,
 		parameter
 	): Promise<IDiscordEmbed> {
+		if (!parameter?.rank) {
+			return discordResultEmbed.noParameter(msg);
+		}
 		if (msg.author.allyCode && TopFieldList[parameter.rank]) {
 			const result = await UnitService.getGuildTopByField(
 				msg.author.allyCode,
