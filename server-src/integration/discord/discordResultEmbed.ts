@@ -306,5 +306,8 @@ function transformEstimatedDate(date: Date): string {
 	if (moment(date).isSame('1980-01-01')) {
 		result = 'Not enough data';
 	}
+	if (moment(date).isSame('1990-01-01')) {
+		result = 'Not enough data, try in a week';
+	}
 	return result;
 }
