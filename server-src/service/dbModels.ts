@@ -1,17 +1,6 @@
-import {
-	Sequelize,
-	Model,
-	DataTypes,
-	HasManyGetAssociationsMixin,
-	HasManyAddAssociationMixin,
-	HasManyHasAssociationMixin,
-	Association,
-	HasManyCountAssociationsMixin,
-	HasManyCreateAssociationMixin,
-	Optional
-} from 'sequelize';
+import { Sequelize, Model, DataTypes, Optional } from 'sequelize';
 import { IRegistration, Rang } from '../@types/iRegistration';
-import { ILegendRequirements, IReqUnits } from '../@types/IGuild';
+import { IReqUnits } from '../@types/IGuild';
 import { config } from '../config/config';
 
 const sequelize = new Sequelize('swr', 'root', config.MySQL.password, {

@@ -99,9 +99,17 @@ export const playerController = {
 		return player?.data?.name || player.detail;
 	},
 	async saveLegendProgress(allyCode: number): Promise<boolean> {
-		const legendBaseIds: string[] = LEGEND_REQUIREMENTS.map(
-			(unit) => unit.baseId
+		const legendNames = await LegendService.getLegendNames();
+		const existLegends = await UnitService.getPlayerUnitsByBaseId(
+			allyCode,
+			legendNames.map((legend) => legend.name)
 		);
+
+		let legendBaseIds: string[] = LEGEND_REQUIREMENTS.map((unit) => {
+			if (!existLegends.some((legend) => legend.baseId === unit.name)) {
+				return unit.baseId;
+			}
+		}).filter((unit) => unit);
 		let freshLegendUnits = await UnitService.getPlayerUnitsByBaseId(
 			allyCode,
 			legendBaseIds

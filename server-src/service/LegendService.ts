@@ -90,5 +90,13 @@ export const LegendService = {
 			raw: true,
 			nest: true
 		});
+	},
+	getLegendNames: async function (): Promise<any[]> {
+		return await LegendRequirements.findAll({
+			group: ['name'],
+			attributes: ['name'],
+			raw: true,
+			nest: true
+		});
 	}
 };
