@@ -14,7 +14,7 @@ describe('playerController tests:', async function () {
 	});
 	it('should load file with progress', async function () {
 		this.timeout(50000);
-		const result: any = await playerController.getLegendProgress(621723826);
+		const result: any = await playerController.getLegendProgress(715883665);
 		expect(result[0].hasOwnProperty('legend_name')).equal(true);
 		expect(result[0].hasOwnProperty('display_data')).equal(true);
 		expect(result[0].display_data.hasOwnProperty('display_status')).equal(true);
@@ -43,7 +43,7 @@ describe('playerController tests:', async function () {
 			[]
 		);
 	});
-	it.only('Get legends by id', async function () {
+	it('Get legends by id', async function () {
 		const result = await getEstimatedDate(
 			'SUPREMELEADERKYLOREN',
 			100,
