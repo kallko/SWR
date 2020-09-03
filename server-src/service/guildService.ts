@@ -93,5 +93,13 @@ export const guildService = {
 				name
 			});
 		}
+	},
+	async getMemberGuildIds() {
+		return await GuildMembers.findAll({
+			group: ['guildId'],
+			attributes: ['guildId'],
+			raw: true,
+			nest: true
+		});
 	}
 };

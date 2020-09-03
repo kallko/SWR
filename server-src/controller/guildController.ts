@@ -90,6 +90,14 @@ export const guildController = {
 			}
 		}
 		const guildIds = await guildService.getGuildIds();
+		const memberGuildIds = await guildService.getMemberGuildIds();
+		memberGuildIds.forEach((guild) => {
+			if (
+				!guildIds.some((existGuild) => existGuild.guildId === guild.guildId)
+			) {
+				guildIds.push(guild);
+			}
+		});
 		for (const guild of guildIds) {
 			const members: GuildMembers[] = await guildService.getGuildMembers(
 				guild.guildId

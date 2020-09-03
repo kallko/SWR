@@ -3,7 +3,7 @@ import { guildController } from '../server-src/controller/guildController';
 import { IGuild } from '../server-src/@types/IGuild';
 import { IFrontLegendTable } from '../server-src/@types/IFrontEnd';
 
-xdescribe('guildController tests:', async function () {
+describe('guildController tests:', async function () {
 	xit('receive allyCode for all players of Guild', async function () {
 		this.timeout(500000);
 		const result: IGuild = await guildController.getGuildAll(621723826);
@@ -22,7 +22,7 @@ xdescribe('guildController tests:', async function () {
 		expect(result[0][0].hasOwnProperty('sort')).equal(true);
 		expect(result[0][0].hasOwnProperty('display')).equal(true);
 	});
-	it('check guild', async function () {
+	xit('check guild', async function () {
 		this.timeout(500000);
 		const result: IGuild = await guildController.getGuildAll(621723826);
 		console.log('Guild test ', result);
