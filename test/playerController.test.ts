@@ -5,6 +5,7 @@ import {
 	getLegendProgressByInterval,
 	getEstimatedDate
 } from '../server-src/controller/playerController';
+import { LegendService } from '../server-src/service/LegendService';
 
 describe('playerController tests:', async function () {
 	it('should legend progress for Kylo and Rey', async function () {
@@ -51,6 +52,14 @@ describe('playerController tests:', async function () {
 			[],
 			100
 		);
+		console.log('Result ', result);
+	});
+	it.only('Get legends names', async function () {
+		const result = await LegendService.getLegendNames();
+		console.log('Result ', result);
+	});
+	it.only('Save legend Progress', async function () {
+		const result = await playerController.saveLegendProgress(621723826);
 		console.log('Result ', result);
 	});
 });
