@@ -54,12 +54,15 @@ describe('playerController tests:', async function () {
 		);
 		console.log('Result ', result);
 	});
-	it.only('Get legends names', async function () {
+	it('Get legends names', async function () {
 		const result = await LegendService.getLegendNames();
 		console.log('Result ', result);
 	});
-	it.only('Save legend Progress', async function () {
+	it('Save legend Progress', async function () {
 		const result = await playerController.saveLegendProgress(621723826);
 		console.log('Result ', result);
+	});
+	xit('Save legend Progress', async function () {
+		const result = await LegendService.clearOldData();
 	});
 });

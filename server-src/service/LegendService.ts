@@ -98,5 +98,14 @@ export const LegendService = {
 			raw: true,
 			nest: true
 		});
+	},
+	clearOldData: async function (): Promise<void> {
+		await LegendProgress.destroy({
+			where: {
+				createdAt: {
+					[Op.lte]: new Date().setDate(new Date().getDate() - 60)
+				}
+			}
+		});
 	}
 };
