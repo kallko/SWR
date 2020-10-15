@@ -13,7 +13,6 @@ import { Transformer } from '../helper/transformer';
 import { guildService } from '../service/guildService';
 import { userService } from '../service/UserService';
 import { GuildMembers, User } from '../service/dbModels';
-import { UnitService } from '../service/UnitService';
 
 export const guildController = {
 	getLegendProgress: async function (
@@ -64,66 +63,64 @@ export const guildController = {
 			name: guildName
 		};
 	},
-	updateData: async function () {
+	updateData: async function (): Promise<void> {
+		const guildMembers: GuildMembers[] = await guildController.getAllAllyCodes();
+		for (const member of guildMembers) {
+			const next = await playerController.updatePlayerUnits(
+				member.allyCode,
+				true
+			);
+			if (!next) {
+				await sleep(30000);
+			}
+		}
+	},
+	getAllAllyCodes: async function (): Promise<Partial<GuildMembers[]>> {
 		const guildMembers: Partial<GuildMembers[]> = await guildService.getAll();
 		const players: Partial<User[]> = await userService.getUsersAllyCode();
+		//todo check format allyCode
+		// todo check format guildMembers (s in the end);
 		players.forEach((player) => {
-			if (!guildMembers.some((member) => member.allyCode === player.allyCode)) {
-				guildMembers.push(player as any);
+			if (
+				!guildMembers.some(
+					(member) => member.allyCode.toString() === player.allyCode.toString()
+				)
+			) {
+				guildMembers.push({
+					allyCode: parseInt(String(player.allyCode))
+				} as any);
 			}
 		});
+		return guildMembers;
+	},
+	updateGuilds: async function (guildMembers: GuildMembers[]): Promise<void> {
+		let allMembers = [];
 		for (const member of guildMembers) {
-			const player = await fetchDataService.getPlayer(member.allyCode);
-			if (player.units) {
-				await guildService.updateGuildMember(
-					member.allyCode,
-					player.data.guild_id,
-					player.data.name
+			if (!allMembers.some((cm) => cm.id === member.allyCode)) {
+				const guild = await fetchDataService.getGuildPlayersCode(
+					member.allyCode
 				);
-				await guildService.updateGuildName(
-					player.data.guild_id,
-					player.data.guild_name
-				);
-				for (const unit of player.units) {
-					await UnitService.createOrUpdate(member.allyCode, unit);
+				if (guild?.members) {
+					allMembers = allMembers.concat(guild.members);
+				} else {
+					allMembers = allMembers.concat({
+						id: member.allyCode,
+						name: member.name
+					});
 				}
 			}
 		}
-		const guildIds = await guildService.getGuildIds();
-		const memberGuildIds = await guildService.getMemberGuildIds();
-		memberGuildIds.forEach((guild) => {
-			if (
-				!guildIds.some((existGuild) => existGuild.guildId === guild.guildId)
-			) {
-				guildIds.push(guild);
-			}
-		});
-		for (const guild of guildIds) {
-			const members: GuildMembers[] = await guildService.getGuildMembers(
-				guild.guildId
-			);
-			let updatedMembers = [];
-			for (const member of members) {
-				if (
-					!updatedMembers.some(
-						(updatedMember) => updatedMember.allyCode === member.allyCode
-					)
-				) {
-					const freshGuild = await fetchDataService.getGuildPlayersCode(
-						member.allyCode
-					);
-					const freshMember = await fetchDataService.getPlayer(member.allyCode);
-					const freshGuildId = freshMember.data.guild_id;
-					for (const fMember of freshGuild.members) {
-						updatedMembers.push({ allyCode: fMember.id });
-						await guildService.updateGuildMember(
-							fMember.id,
-							freshGuildId,
-							fMember.name
-						);
-					}
-				}
-			}
+		await guildController.updateGuildMembers(allMembers);
+	},
+	updateGuildMembers: async function (members) {
+		for (const member of members) {
+			await guildService.updateGuildMember(member.id);
 		}
 	}
 };
+
+function sleep(ms) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, ms);
+	});
+}
