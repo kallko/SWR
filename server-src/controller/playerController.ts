@@ -10,6 +10,7 @@ import { LegendService } from '../service/LegendService';
 import { LegendRequirementsService } from '../service/LegendRequirementsService';
 import { Unit, LegendRequirements, LegendProgress } from '../service/dbModels';
 import { UnitService } from '../service/UnitService';
+import { IPlayer } from '../@types/IPlayer';
 
 let LEGEND_REQUIREMENTS: LegendRequirements[];
 (async function f() {
@@ -17,19 +18,28 @@ let LEGEND_REQUIREMENTS: LegendRequirements[];
 })();
 
 export const playerController = {
+	getPlayer: async function (allyCode: number): Promise<IPlayer> {
+		let player = await fetchDataService.getPlayer(allyCode);
+		if (!player.data) {
+			player = await fetchDataService.getPlayer2(allyCode);
+		}
+		return player;
+	},
 	updatePlayerUnits: async function (
 		allyCode: number,
 		forceUpdate: boolean = false
 	): Promise<boolean> {
+		let player: IPlayer;
 		if (forceUpdate || (await isPlayerUnitsNeedUpdate(allyCode))) {
-			const units: IImportUnit[] = (await fetchDataService.getPlayer(allyCode))
-				.units;
-			for (let i: number = 0; i < units.length; i++) {
-				await UnitService.createOrUpdate(allyCode, units[i]);
+			player = await playerController.getPlayer(allyCode);
+			if (player) {
+				const units: IImportUnit[] = player.units;
+				for (let i: number = 0; i < units.length; i++) {
+					await UnitService.createOrUpdate(allyCode, units[i]);
+				}
 			}
-			return true;
 		}
-		return false;
+		return !!player.units[0].data.stats;
 	},
 	getLegendProgress: async function (
 		allyCode: number
@@ -79,15 +89,16 @@ export const playerController = {
 						display_status: '' + progress + '%',
 						sorting_data: progress,
 						last_week_add: progress - progressLastWeek,
-						estimated_date: history?.createdAt
-							? await getEstimatedDate(
-									legendBaseId,
-									30,
-									allyCode,
-									mods,
-									progress
-							  )
-							: moment('1990-01-01').toDate()
+						estimated_date:
+							history?.createdAt && progress !== progress - progressLastWeek
+								? await getEstimatedDate(
+										legendBaseId,
+										30,
+										allyCode,
+										mods,
+										progress
+								  )
+								: moment('1990-01-01').toDate()
 					}
 				});
 			}

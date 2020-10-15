@@ -71,10 +71,11 @@ export const guildService = {
 			nest: true
 		});
 	},
+	// todo refactoring for 1 argument
 	updateGuildMember: async function (
 		allyCode: number,
-		guildId: number,
-		name: string
+		guildId?: number,
+		name?: string
 	) {
 		const member = await GuildMembers.findOne({
 			where: {
@@ -83,14 +84,14 @@ export const guildService = {
 		});
 		if (member) {
 			await member.update({
-				name,
-				guildId
+				name: name || member.name,
+				guildId: guildId || member.guildId
 			});
 		} else {
 			await GuildMembers.create({
 				allyCode,
-				guildId,
-				name
+				guildId: guildId || null,
+				name: name || ''
 			});
 		}
 	},

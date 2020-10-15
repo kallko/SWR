@@ -231,7 +231,7 @@ export const discordResultEmbed = {
 							  'Receiving: ' +
 							  transformEstimatedDate(result[0].display_data.estimated_date)
 							: ''),
-					inline: true
+					inline: false
 				},
 				{
 					name: 'Rey Progress',
@@ -244,6 +244,34 @@ export const discordResultEmbed = {
 							? '\n' +
 							  'Receiving: ' +
 							  transformEstimatedDate(result[1].display_data.estimated_date)
+							: ''),
+					inline: true
+				},
+				{
+					name: 'Palpatin Progress',
+					value:
+						result[2].display_data.display_status +
+						'\n' +
+						'From last week: ' +
+						result[2].display_data.last_week_add +
+						(result[2].display_data.estimated_date
+							? '\n' +
+							  'Receiving: ' +
+							  transformEstimatedDate(result[2].display_data.estimated_date)
+							: ''),
+					inline: false
+				},
+				{
+					name: 'Luke Progress',
+					value:
+						result[3].display_data.display_status +
+						'\n' +
+						'From last week: ' +
+						result[3].display_data.last_week_add +
+						(result[3].display_data.estimated_date
+							? '\n' +
+							  'Receiving: ' +
+							  transformEstimatedDate(result[3].display_data.estimated_date)
 							: ''),
 					inline: true
 				}

@@ -22,14 +22,6 @@ export async function fillLegendReq(): Promise<void> {
 	const Requirements = LEGEND;
 	Requirements.forEach((req) => {
 		req.req_units.forEach((unit) => {
-			console.log(
-				req.name,
-				unit.baseId,
-				unit.power,
-				unit.relic,
-				unit.ship,
-				unit.rarity
-			);
 			const options: LegendRequirementsCreationAttributes = {
 				name: req.name,
 				baseId: unit.baseId,
