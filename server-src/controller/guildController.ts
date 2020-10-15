@@ -70,6 +70,7 @@ export const guildController = {
 				member.allyCode,
 				true
 			);
+			await playerController.saveLegendProgress(member.allyCode);
 			if (!next) {
 				await sleep(30000);
 			}
