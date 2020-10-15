@@ -54,6 +54,41 @@ export const fetchDataService = {
 			payload,
 			'units'
 		);
-		return result;
+		return result ? transformData(result[0]) : null;
 	}
 };
+
+function transformData(player): IPlayer {
+	return {
+		units: player.roster.map((unit) => {
+			return {
+				data: {
+					relic_tier: unit.combatType === 1 ? unit.relic.currentTier : 1,
+					power: unit.gp,
+					combat_type: unit.combatType,
+					base_id: unit.defId,
+					gear_level: unit.gear,
+					level: unit.level,
+					rarity: unit.rarity
+				}
+			};
+		}),
+		detail: player.name,
+		data: {
+			name: player.name,
+			guild_id: null,
+			guild_name: player.guildName,
+			arena_rank: player.arena.char.rank,
+			fleet_arena: {
+				leader: player.arena.ship.squad[0].defId,
+				rank: player.arena.ship.rank
+			},
+			arena: {
+				leader: player.arena.char.squad[0].defId,
+				rank: player.arena.char.rank
+			},
+			galactic_power: null
+		},
+		ally_code: player.allyCode
+	};
+}

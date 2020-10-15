@@ -236,23 +236,23 @@ Unit.init(
 		power: { type: DataTypes.NUMBER, allowNull: false },
 		relic: { type: DataTypes.NUMBER, allowNull: false },
 		combatType: { type: DataTypes.NUMBER, allowNull: false },
-		gearLevel: { type: DataTypes.NUMBER, allowNull: false },
-		name: { type: DataTypes.STRING, allowNull: false },
-		level: { type: DataTypes.NUMBER, allowNull: false },
-		rarity: { type: DataTypes.NUMBER, allowNull: false },
-		health: { type: DataTypes.NUMBER, allowNull: false },
-		speed: { type: DataTypes.NUMBER, allowNull: false },
-		damage: { type: DataTypes.NUMBER, allowNull: false },
-		damageSpecial: { type: DataTypes.NUMBER, allowNull: false },
-		defense: { type: DataTypes.NUMBER, allowNull: false },
-		criticalChance: { type: DataTypes.NUMBER, allowNull: false },
-		criticalChanceSpecial: { type: DataTypes.NUMBER, allowNull: false },
-		criticalDamage: { type: DataTypes.NUMBER, allowNull: false },
-		potency: { type: DataTypes.NUMBER, allowNull: false },
-		tenacity: { type: DataTypes.NUMBER, allowNull: false },
+		gearLevel: { type: DataTypes.NUMBER, allowNull: true },
+		name: { type: DataTypes.STRING, allowNull: true },
+		level: { type: DataTypes.NUMBER, allowNull: true },
+		rarity: { type: DataTypes.NUMBER, allowNull: true },
+		health: { type: DataTypes.NUMBER, allowNull: true },
+		speed: { type: DataTypes.NUMBER, allowNull: true },
+		damage: { type: DataTypes.NUMBER, allowNull: true },
+		damageSpecial: { type: DataTypes.NUMBER, allowNull: true },
+		defense: { type: DataTypes.NUMBER, allowNull: true },
+		criticalChance: { type: DataTypes.NUMBER, allowNull: true },
+		criticalChanceSpecial: { type: DataTypes.NUMBER, allowNull: true },
+		criticalDamage: { type: DataTypes.NUMBER, allowNull: true },
+		potency: { type: DataTypes.NUMBER, allowNull: true },
+		tenacity: { type: DataTypes.NUMBER, allowNull: true },
 		protection: {
 			type: DataTypes.NUMBER,
-			allowNull: false
+			allowNull: true
 		},
 		allyCode: {
 			type: DataTypes.NUMBER,
@@ -342,7 +342,7 @@ GuildMembers.init(
 	{
 		id: { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
 		allyCode: { type: DataTypes.NUMBER, allowNull: true },
-		guildId: { type: DataTypes.NUMBER, allowNull: false },
+		guildId: { type: DataTypes.NUMBER, allowNull: true },
 		name: { type: DataTypes.STRING, allowNull: false }
 	},
 	{

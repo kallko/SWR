@@ -35,11 +35,34 @@ export const Transformer = {
 				};
 			}
 		);
+		const tablePalp: IFrontLegendTable[] = legendPlayerProgresses.map(
+			(progress) => {
+				return {
+					player: progress.player_name,
+					sort: progress.legend_progress[2].display_data.sorting_data,
+					display: progress.legend_progress[2].display_data.display_status
+				};
+			}
+		);
+		const tableLuke: IFrontLegendTable[] = legendPlayerProgresses.map(
+			(progress) => {
+				return {
+					player: progress.player_name,
+					sort: progress.legend_progress[3].display_data.sorting_data,
+					display: progress.legend_progress[3].display_data.display_status
+				};
+			}
+		);
 		tableKylo.sort(Sorter.sortByProgress);
 		tableRey.sort(Sorter.sortByProgress);
-		return [tableKylo, tableRey];
+		tablePalp.sort(Sorter.sortByProgress);
+		tableLuke.sort(Sorter.sortByProgress);
+		return [tableKylo, tableRey, tablePalp, tableLuke];
 	},
-	fromGameToSQLDB(unit: IImportUnit, allyCode: number): IUnitSQLCreationAttributes {
+	fromGameToSQLDB(
+		unit: IImportUnit,
+		allyCode: number
+	): IUnitSQLCreationAttributes {
 		return {
 			allyCode,
 			baseId: unit.data.base_id,
@@ -47,20 +70,24 @@ export const Transformer = {
 			relic: unit.data.relic_tier,
 			combatType: unit.data.combat_type,
 			gearLevel: unit.data.gear_level,
-			name: unit.data.name,
-			level: unit.data.level,
+			name: unit.data.name ? unit.data.name : 'noname',
+			level: unit.data.level ? unit.data.level : null,
 			rarity: unit.data.rarity,
-			health: unit.data.stats['1'],
-			speed: unit.data.stats['5'],
-			damage: unit.data.stats['6'],
-			damageSpecial: unit.data.stats['7'],
-			defense: +unit.data.stats['8'].toFixed(1),
-			criticalChance: +unit.data.stats['14'].toFixed(2),
-			criticalChanceSpecial: +unit.data.stats['15'].toFixed(2),
-			criticalDamage: unit.data.stats['16'] * 100,
-			potency: unit.data.stats['17'] * 100,
-			tenacity: unit.data.stats['18'] * 100,
-			protection: unit.data.stats['28'],
+			health: unit.data.stats ? unit.data.stats['1'] : null,
+			speed: unit.data.stats ? unit.data.stats['5'] : null,
+			damage: unit.data.stats ? unit.data.stats['6'] : null,
+			damageSpecial: unit.data.stats ? unit.data.stats['7'] : null,
+			defense: unit.data.stats ? +unit.data.stats['8'].toFixed(1) : null,
+			criticalChance: unit.data.stats
+				? +unit.data.stats['14'].toFixed(2)
+				: null,
+			criticalChanceSpecial: unit.data.stats
+				? +unit.data.stats['15'].toFixed(2)
+				: null,
+			criticalDamage: unit.data.stats ? unit.data.stats['16'] * 100 : null,
+			potency: unit.data.stats ? unit.data.stats['17'] * 100 : null,
+			tenacity: unit.data.stats ? unit.data.stats['18'] * 100 : null,
+			protection: unit.data.stats ? unit.data.stats['28'] : null,
 			updatedAt: new Date()
 		};
 	}

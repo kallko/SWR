@@ -8,10 +8,10 @@ import {
 import { LegendService } from '../server-src/service/LegendService';
 
 describe('playerController tests:', async function () {
-	it('should legend progress for Kylo and Rey', async function () {
+	it.only('should legend progress for Kylo and Rey', async function () {
 		this.timeout(5000);
 		const result: any = await playerController.getLegendProgress(621723826);
-		expect(result.length).equal(2);
+		expect(result.length).equal(3);
 	});
 	it('should load file with progress', async function () {
 		this.timeout(50000);
@@ -32,9 +32,10 @@ describe('playerController tests:', async function () {
 		const result: boolean = await isPlayerUnitsNeedUpdate(621723826);
 		console.log('Result ', result);
 	});
-	it('should update players units', async function () {
-		this.timeout(10000);
-		await playerController.updatePlayerUnits(621723826, true);
+	xit('should update players units', async function () {
+		this.timeout(1000000);
+		console.log('Start Test');
+		await playerController.updatePlayerUnits(115685251, true);
 	});
 	it('Get legends by id', async function () {
 		const result = await getLegendProgressByInterval(
