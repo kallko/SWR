@@ -39,7 +39,7 @@ export const playerController = {
 				}
 			}
 		}
-		return !!player.units[0].data.stats;
+		return !!player?.units[0]?.data?.stats;
 	},
 	getLegendProgress: async function (
 		allyCode: number
@@ -56,10 +56,14 @@ export const playerController = {
 		await playerController.saveLegendProgress(allyCode);
 		//todo update mods
 		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
-		const history: {
-			createdAt: Date;
-		} = await LegendService.getDateFromPastInterval(allyCode, 7);
 		for (const legendBaseId of legendsBaseIds) {
+			const history: {
+				createdAt: Date;
+			} = await LegendService.getDateFromPastInterval(
+				allyCode,
+				7,
+				legendBaseId
+			);
 			if (isLegendExist(legendBaseId, units)) {
 				result.push({
 					//todo take name no baseId
@@ -217,7 +221,11 @@ export async function getLegendProgressByInterval(
 	);
 	const date: {
 		createdAt: Date;
-	} = await LegendService.getDateFromPastInterval(allyCode, interval);
+	} = await LegendService.getDateFromPastInterval(
+		allyCode,
+		interval,
+		legendBaseId
+	);
 	const pastUnits: LegendProgress[] = await LegendService.getUnitsCreatedInTenSecondsInterval(
 		allyCode,
 		date.createdAt
@@ -233,18 +241,31 @@ export async function getEstimatedDate(
 	currentProgress: number
 ): Promise<Date> {
 	let result;
+	let date: {
+		createdAt: Date;
+	} = await LegendService.getDateFromPastInterval(
+		allyCode,
+		interval,
+		legendBaseId
+	);
+	let diffDays: number = moment(new Date()).diff(
+		moment(date.createdAt),
+		'days'
+	);
+	if (diffDays < 30) {
+		interval = diffDays;
+		date = await LegendService.getDateFromPastInterval(
+			allyCode,
+			interval,
+			legendBaseId
+		);
+		diffDays = moment(new Date()).diff(moment(date.createdAt), 'days');
+	}
 	const progress = await getLegendProgressByInterval(
 		legendBaseId,
 		interval,
 		allyCode,
 		mods
-	);
-	const date: {
-		createdAt: Date;
-	} = await LegendService.getDateFromPastInterval(allyCode, interval);
-	const diffDays: number = moment(new Date()).diff(
-		moment(date.createdAt),
-		'days'
 	);
 	if (currentProgress === 100) {
 		result = moment().add(11, 'day');

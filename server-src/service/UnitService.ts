@@ -1,5 +1,5 @@
-import { Unit, IUnitSQLCreationAttributes, User } from './dbModels';
-import { IImportUnit, TopFieldList } from '../@types/IUnit';
+import { Unit, IUnitSQLCreationAttributes } from './dbModels';
+import { IImportUnit } from '../@types/IUnit';
 import { Transformer } from '../helper/transformer';
 import { Op } from 'sequelize';
 import { guildController } from '../controller/guildController';
