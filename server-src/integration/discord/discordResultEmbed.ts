@@ -10,7 +10,7 @@ const footer = {
 	text: `Support SWR Bot on patreon: https://www.patreon.com/kalko`
 };
 const author = {
-	name: `SWR Bot v1.5.1`
+	name: `SWR Bot v1.5.2`
 };
 
 export const discordResultEmbed = {
