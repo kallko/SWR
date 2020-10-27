@@ -10,7 +10,7 @@ const footer = {
 	text: `Support SWR Bot on patreon: https://www.patreon.com/kalko`
 };
 const author = {
-	name: `SWR Bot`
+	name: `SWR Bot v1.5.1`
 };
 
 export const discordResultEmbed = {
@@ -280,7 +280,6 @@ export const discordResultEmbed = {
 		};
 	},
 	colorUpMods(result, msg: IDiscordMessage): IDiscordEmbed {
-		let description;
 		const value =
 			result.length === 0
 				? 'You made your best. Nothing to upgrade.'
@@ -295,8 +294,7 @@ export const discordResultEmbed = {
 				  );
 		return {
 			title: msg.author.greeting || msg.author.username,
-			description:
-				description || 'These mods after upgrade could add more than 20 speed:',
+			description: 'These mods after upgrade could add more than 20 speed:',
 			author,
 			color: '16768350',
 			fields: [

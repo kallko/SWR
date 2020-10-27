@@ -4,6 +4,7 @@ import {
 	LegendRequirements
 } from './dbModels';
 import { Op } from 'sequelize';
+import { LegendRequirementsService } from './LegendRequirementsService';
 
 export const LegendService = {
 	create: async function (options: LegendProgressCreationAttributes) {
@@ -42,19 +43,25 @@ export const LegendService = {
 	},
 	getDateFromPastInterval: async function (
 		allyCode: number,
-		interval: number
+		interval: number,
+		legendBaseId: string
 	): Promise<{ createdAt: Date }> {
+		const LEGEND_REQUIREMENTS = await LegendRequirementsService.getAll();
+		const legendDBUnits: LegendRequirements[] = LEGEND_REQUIREMENTS.filter(
+			(LR) => LR.name === legendBaseId
+		);
 		return await LegendProgress.findOne({
 			where: {
+				baseId: legendDBUnits[1].baseId,
 				allyCode,
 				createdAt: {
-					[Op.lte]: new Date().setDate(new Date().getDate() - interval)
+					[Op.gte]: new Date().setDate(new Date().getDate() - interval)
 				}
 			},
 			raw: true,
 			nest: true,
 			attributes: ['createdAt'],
-			order: [['createdAt', 'DESC']],
+			order: [['createdAt', 'ASC']],
 			group: ['createdAt']
 		});
 	},
