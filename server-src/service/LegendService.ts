@@ -52,7 +52,7 @@ export const LegendService = {
 		);
 		return await LegendProgress.findOne({
 			where: {
-				baseId: legendDBUnits[1].baseId,
+				baseId: legendDBUnits[2].baseId,
 				allyCode,
 				createdAt: {
 					[Op.gte]: new Date().setDate(new Date().getDate() - interval)
