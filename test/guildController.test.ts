@@ -3,7 +3,6 @@ import { guildController } from '../server-src/controller/guildController';
 import { IGuild } from '../server-src/@types/IGuild';
 import { IFrontLegendTable } from '../server-src/@types/IFrontEnd';
 import * as lodash from 'lodash';
-import { fetchDataService } from '../server-src/service/fetchDataService';
 
 describe('guildController tests:', async function () {
 	xit('receive allyCode for all players of Guild', async function () {
