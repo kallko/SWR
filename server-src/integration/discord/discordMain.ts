@@ -39,6 +39,7 @@ bot.on(
 		const channel =
 			process.env.NODE_ENV === 'PRODUCTION' ? msg.channel : masterChannel;
 		if (!msg.author.bot && msg.content.toLowerCase().startsWith('swr')) {
+			msg.addReaction('👍');
 			const embedMessage: IDiscordEmbed = await discordDispatcher.dispatch(
 				bot,
 				msg,
