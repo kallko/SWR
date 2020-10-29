@@ -193,6 +193,14 @@ export const discordDispatcher = {
 			);
 			return embedResult;
 		}
+	},
+	arenaMods: async function (
+		channel: IDiscordChannel,
+		msg: IDiscordMessage
+	): Promise<IDiscordEmbed> {
+		// const result = await modController.creator(msg.author.allyCode);
+		// todo make not fake function
+		return discordResultEmbed.help(msg);
 	}
 };
 
