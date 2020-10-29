@@ -5,12 +5,13 @@ import { TopFieldList } from '../../@types/IUnit';
 import { IDiscordEmbed, IDiscordMessage } from '../../@types/IDiscord';
 import { discordConfig } from './discordConfig';
 import * as moment from 'moment';
+const version = process.env.npm_package_version;
 
 const footer = {
 	text: `Support SWR Bot on patreon: https://www.patreon.com/kalko`
 };
 const author = {
-	name: `SWR Bot v1.5.2`
+	name: `SWR Bot v${version}`
 };
 
 export const discordResultEmbed = {
@@ -327,6 +328,47 @@ export const discordResultEmbed = {
 					name: 'Idea:',
 					value: idea.text,
 					inline: false
+				}
+			],
+			footer
+		};
+	},
+	arenaMods(result, msg: IDiscordMessage): IDiscordEmbed {
+		return {
+			title: msg.author.greeting || msg.author.username,
+			description: 'For Your Arena team',
+			author,
+			color: '16768350',
+			fields: [
+				{
+					name: 'Mod Set Options:',
+					value: 'trulala',
+					inline: true
+				},
+				{
+					name: 'Unit 1:',
+					value: 'trulala',
+					inline: true
+				},
+				{
+					name: 'Unit 2:',
+					value: 'trulala',
+					inline: true
+				},
+				{
+					name: 'Unit 3:',
+					value: 'trulala',
+					inline: true
+				},
+				{
+					name: 'Unit 4:',
+					value: 'trulala',
+					inline: true
+				},
+				{
+					name: 'Unit 5:',
+					value: 'trulala',
+					inline: true
 				}
 			],
 			footer

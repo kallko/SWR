@@ -198,9 +198,8 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<IDiscordEmbed> {
-		// const result = await modController.creator(msg.author.allyCode);
-		// todo make not fake function
-		return discordResultEmbed.help(msg);
+		const result = await modController.creator(msg.author.allyCode);
+		return discordResultEmbed.arenaMods(result, msg);
 	}
 };
 
