@@ -1,5 +1,9 @@
 export interface IImportUnit {
 	data: {
+		newPotency: number;
+		newOffense: number;
+		newProtection: number;
+		newHealth: number;
 		id: string;
 		relic_tier: number;
 		power: number;
@@ -36,6 +40,8 @@ export interface IImportUnit {
 		name: string;
 		level: number;
 		rarity: number;
+		speed?: { existingSpeed: any; baseSpeed: number };
+		fromMods?: any[];
 	};
 }
 

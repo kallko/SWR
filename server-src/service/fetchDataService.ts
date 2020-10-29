@@ -47,13 +47,17 @@ export const fetchDataService = {
 			  }
 			: null;
 	},
-	async getPlayer2(allyCode) {
+	async getPlayerFromSWAPI(allyCode: number) {
 		await swapi.connect();
 		const payload = { allyCode };
 		const { result, error, warning } = await swapi.fetchPlayer(
 			payload,
 			'units'
 		);
+		return result;
+	},
+	async getPlayer2(allyCode: number) {
+		const result = await fetchDataService.getPlayerFromSWAPI(allyCode);
 		return result ? transformData(result[0]) : null;
 	}
 };
