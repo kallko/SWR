@@ -3,7 +3,7 @@ import { modController } from '../server-src/controller/modController';
 import { fetchDataService } from '../server-src/service/fetchDataService';
 const sinon = require('sinon');
 
-describe('mod Controller tests:', async function () {
+xdescribe('mod Controller tests:', async function () {
 	beforeEach(function () {
 		this.stubGetAllMods = sinon.spy(fetchDataService, 'getAllMods');
 		this.stubGetPlayer = sinon.spy(fetchDataService, 'getPlayer');
@@ -20,7 +20,7 @@ describe('mod Controller tests:', async function () {
 		await modController.creator(621723826);
 		expect(this.stubGetPlayer.callCount).equal(1);
 	});
-	it.only('developer test', async function () {
+	it('developer test', async function () {
 		this.timeout(10000);
 		const result = await modController.creator(621723826);
 	});

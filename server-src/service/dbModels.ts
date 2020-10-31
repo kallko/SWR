@@ -351,3 +351,31 @@ GuildMembers.init(
 		timestamps: false
 	}
 );
+
+export interface ISquadCreationAttributes {
+	id?: number;
+	squad: string;
+	used: number;
+	allyCode: string;
+}
+
+export class Squad extends Model<ISquadCreationAttributes> implements Squad {
+	id!: number;
+	squad: string;
+	used: number;
+	allyCode: string;
+}
+
+Squad.init(
+	{
+		id: { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
+		squad: { type: DataTypes.STRING, allowNull: false },
+		used: { type: DataTypes.NUMBER, allowNull: true },
+		allyCode: { type: DataTypes.NUMBER, allowNull: true }
+	},
+	{
+		sequelize,
+		tableName: 'Squad',
+		timestamps: true
+	}
+);
