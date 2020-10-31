@@ -21,7 +21,7 @@ export const squadOptions: IUnitModOptions[] = [
 		name: 'KYLORENUNMASKED',
 		possibleSets: ['Health'],
 		completeSets: true,
-		arrow: ['Speed'],
+		arrow: ['Health'],
 		cross: ['Health'],
 		triangle: ['Health'],
 		circle: ['Health'],

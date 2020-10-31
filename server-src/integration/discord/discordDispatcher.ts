@@ -198,8 +198,12 @@ export const discordDispatcher = {
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
 	): Promise<IDiscordEmbed> {
-		const result = await modController.creator(msg.author.allyCode);
-		return discordResultEmbed.arenaMods(result, msg);
+		try {
+			const result = await modController.creator(msg.author.allyCode);
+			return discordResultEmbed.arenaMods(result, msg);
+		} catch (err) {
+			return discordResultEmbed.error(err, msg);
+		}
 	}
 };
 

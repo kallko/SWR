@@ -13,7 +13,7 @@ import { discordResultEmbed } from '../server-src/integration/discord/discordRes
 
 xdescribe('discordDispatcher tests:', async function () {
 	this.timeout(500000);
-	it('msg with content swr -h and correct discord id should call help function', async function () {
+	xit('msg with content swr -h and correct discord id should call help function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
 		const message: IDiscordMessage = {
 			content: 'swr -h',
@@ -30,7 +30,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		// expect(result).equal(true);
 		stub.restore();
 	});
-	it('msg with content swr -h and not correct discord id should call help function', async function () {
+	xit('msg with content swr -h and not correct discord id should call help function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
 		const message: IDiscordMessage = {
 			content: 'swr -h',
@@ -47,7 +47,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		// expect(result).equal(true);
 		stub.restore();
 	});
-	it('msg with content swr -cu should call colorUp function', async function () {
+	xit('msg with content swr -cu should call colorUp function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'colorUp').callsFake(() => true);
 		const message: IDiscordMessage = {
 			content: 'swr -cu',
@@ -64,7 +64,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		// expect(result).equal(true);
 		stub.restore();
 	});
-	it('msg with content swr -lp should call legend progress function', async function () {
+	xit('msg with content swr -lp should call legend progress function', async function () {
 		const stub = sinon
 			.stub(discordDispatcher, 'legendProgress')
 			.callsFake(() => true);
@@ -83,7 +83,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		// expect(result).equal(true);
 		stub.restore();
 	});
-	it('msg with content swr -gl should call guildList function', async function () {
+	xit('msg with content swr -gl should call guildList function', async function () {
 		const stub = sinon
 			.stub(discordDispatcher, 'guildList')
 			.callsFake(() => true);
@@ -102,7 +102,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		// expect(result).equal(true);
 		stub.restore();
 	});
-	it("shouldn't register a user with wrong allyCode", async function () {
+	xit("shouldn't register a user with wrong allyCode", async function () {
 		const spy = sinon.spy(fetchDataService, 'getPlayer');
 		const message: IDiscordMessage = {
 			content: 'swr -r 12312',
@@ -120,7 +120,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		// expect(spy.callCount).equal(0);
 		spy.restore();
 	});
-	it('should register a user with new allyCode and new discordCode', async function () {
+	xit('should register a user with new allyCode and new discordCode', async function () {
 		const stubCreate = sinon
 			.stub(userService, 'createUser')
 			.callsFake(() => true);
@@ -150,7 +150,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		stubCreate.restore();
 		stubFetch.restore();
 	});
-	it('should not register a user with wrong allyCode', async function () {
+	xit('should not register a user with wrong allyCode', async function () {
 		const stubCreate = sinon
 			.stub(userService, 'createUser')
 			.callsFake(() => true);
@@ -170,7 +170,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		// expect(stubCreate.callCount).equal(0);
 		stubCreate.restore();
 	});
-	it('should update a user with wrong existing discord code', async function () {
+	xit('should update a user with wrong existing discord code', async function () {
 		const stubCreate = sinon
 			.stub(userService, 'createUser')
 			.callsFake(() => true);
@@ -195,7 +195,7 @@ xdescribe('discordDispatcher tests:', async function () {
 		// expect(stubUpdate.callCount).equal(1);
 		stubCreate.restore();
 	});
-	it('should update a user with wrong existing discord code', async function () {
+	xit('should update a user with wrong existing discord code', async function () {
 		const message: IDiscordMessage = {
 			content: 'swr -gth',
 			author: {
@@ -225,7 +225,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			spyGetGuildTopByField.restore();
 			spyStringGuildTop.restore();
 		});
-		it('should return units with top-speed for guild', async function () {
+		xit('should return units with top-speed for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=speed',
 				author: {
@@ -246,7 +246,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-power for guild', async function () {
+		xit('should return units with top-power for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=power',
 				author: {
@@ -267,7 +267,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-health for guild', async function () {
+		xit('should return units with top-health for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=health',
 				author: {
@@ -288,7 +288,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-defense for guild', async function () {
+		xit('should return units with top-defense for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=defense',
 				author: {
@@ -309,7 +309,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-damage for guild', async function () {
+		xit('should return units with top-damage for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=damage',
 				author: {
@@ -330,7 +330,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-defense for guild', async function () {
+		xit('should return units with top-defense for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=defense',
 				author: {
@@ -351,7 +351,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-potency for guild', async function () {
+		xit('should return units with top-potency for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=potency',
 				author: {
@@ -372,7 +372,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-tenacity for guild', async function () {
+		xit('should return units with top-tenacity for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=tenacity',
 				author: {
@@ -393,7 +393,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should return units with top-protection for guild', async function () {
+		xit('should return units with top-protection for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=protection',
 				author: {
@@ -414,7 +414,7 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyGetGuildTopByField.callCount).equal(1);
 			// expect(spyStringGuildTop.callCount).equal(1);
 		});
-		it('should not return results for wrong rank for guild', async function () {
+		xit('should not return results for wrong rank for guild', async function () {
 			const message: IDiscordMessage = {
 				content: 'swr -gtu -rank=blablabla',
 				author: {
@@ -436,11 +436,11 @@ xdescribe('discordDispatcher tests:', async function () {
 			// expect(spyStringGuildTop.callCount).equal(0);
 		});
 	});
-	it('should parse string with option', async function () {
+	xit('should parse string with option', async function () {
 		const result = discordHelper.getParameters('-gtu -rank=health ', '-gtu');
 		expect(result).deep.equal({ rank: 'health' });
 	});
-	it('should parse string with several options', async function () {
+	xit('should parse string with several options', async function () {
 		const result = discordHelper.getParameters(
 			'-gtu -rank=health -sort=desc',
 			'-gtu'
@@ -464,5 +464,22 @@ xdescribe('discordDispatcher tests:', async function () {
 		// 	id: 100,
 		// 	type: 0
 		// });
+	});
+	xit('msg with content swr -mba should call colorUp function', async function () {
+		// const stub = sinon.stub(discordDispatcher, 'arenaMods').callsFake(() => true);
+		const message: IDiscordMessage = {
+			content: 'swr -mba',
+			author: {
+				id: '590913433738936329',
+				username: 'test',
+				bot: false
+			}
+		};
+		let result: any = await discordDispatcher.dispatch(null, message, {
+			id: 100,
+			type: 0
+		});
+		expect(result).equal(true);
+		// stub.restore();
 	});
 });

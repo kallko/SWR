@@ -5,6 +5,11 @@ import { TopFieldList } from '../../@types/IUnit';
 import { IDiscordEmbed, IDiscordMessage } from '../../@types/IDiscord';
 import { discordConfig } from './discordConfig';
 import * as moment from 'moment';
+import {
+	stringifyBestMods,
+	getNameWithSecondary,
+	getModRules
+} from '../../helper/modHelper';
 const version = process.env.npm_package_version;
 
 const footer = {
@@ -281,6 +286,7 @@ export const discordResultEmbed = {
 		};
 	},
 	colorUpMods(result, msg: IDiscordMessage): IDiscordEmbed {
+		// todo make color green for all the best;
 		const value =
 			result.length === 0
 				? 'You made your best. Nothing to upgrade.'
@@ -334,6 +340,7 @@ export const discordResultEmbed = {
 		};
 	},
 	arenaMods(result, msg: IDiscordMessage): IDiscordEmbed {
+		// todo make color green for all the best;
 		return {
 			title: msg.author.greeting || msg.author.username,
 			description: 'For Your Arena team',
@@ -342,32 +349,48 @@ export const discordResultEmbed = {
 			fields: [
 				{
 					name: 'Mod Set Options:',
-					value: 'trulala',
-					inline: true
+					value: getModRules(result.squadOptions),
+					inline: false
 				},
 				{
-					name: 'Unit 1:',
-					value: 'trulala',
-					inline: true
+					name: getNameWithSecondary(result.newSets[0].hero),
+					value: stringifyBestMods(result.newSets[0], result.existingMods),
+					inline: false
 				},
 				{
-					name: 'Unit 2:',
-					value: 'trulala',
-					inline: true
+					name: getNameWithSecondary(result.newSets[1].hero),
+					value: stringifyBestMods(result.newSets[1], result.existingMods),
+					inline: false
 				},
 				{
-					name: 'Unit 3:',
-					value: 'trulala',
-					inline: true
+					name: getNameWithSecondary(result.newSets[2].hero),
+					value: stringifyBestMods(result.newSets[2], result.existingMods),
+					inline: false
 				},
 				{
-					name: 'Unit 4:',
-					value: 'trulala',
-					inline: true
+					name: getNameWithSecondary(result.newSets[3].hero),
+					value: stringifyBestMods(result.newSets[3], result.existingMods),
+					inline: false
 				},
 				{
-					name: 'Unit 5:',
-					value: 'trulala',
+					name: getNameWithSecondary(result.newSets[4].hero),
+					value: stringifyBestMods(result.newSets[4], result.existingMods),
+					inline: false
+				}
+			],
+			footer
+		};
+	},
+	error(error, msg: IDiscordMessage): IDiscordEmbed {
+		return {
+			title: msg.author.greeting || msg.author.username,
+			description: 'Something goes wrong',
+			author,
+			color: '16711735',
+			fields: [
+				{
+					name: 'Description:',
+					value: error.toString(),
 					inline: true
 				}
 			],
@@ -378,7 +401,7 @@ export const discordResultEmbed = {
 
 function transformEstimatedDate(date: Date): string {
 	let result = moment(date).format('DD:MM:YYYY');
-	if (moment(date).isSame('1970-01-01')) {
+	if (moment(date).isSame('1970-01-01') || moment(date).isBefore(moment())) {
 		result = 'Maybe never';
 	}
 	if (moment(date).isSame('1980-01-01')) {

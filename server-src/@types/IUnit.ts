@@ -1,5 +1,6 @@
 export interface IImportUnit {
 	data: {
+		newTenacity: number;
 		newPotency: number;
 		newOffense: number;
 		newProtection: number;

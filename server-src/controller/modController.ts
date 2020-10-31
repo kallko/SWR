@@ -27,7 +27,7 @@ export const modController = {
 		return Transformer.transformColorUpMods(colorUpMods);
 	},
 	async creator(allyCode: number) {
-		let result = [];
+		let newSets = [];
 		let blockedHeroes = [];
 		let mods: IMod[] = await fetchDataService.getAllMods(allyCode);
 		const player = await fetchDataService.getPlayer(allyCode);
@@ -35,6 +35,9 @@ export const modController = {
 		const units = getUnitsWithStats(player.units, mods);
 		const arenaUnits = playerController.getArenaUnits(allyCode);
 		//todo getOptions for Arena Units
+		if (!squadOptions) {
+			throw new Error('No such arena squad config');
+		}
 
 		squadOptions.forEach((hero) => {
 			const unit = units.find((unit) => unit.data.base_id === hero.name);
@@ -56,86 +59,7 @@ export const modController = {
 				);
 				let newSpeed = bestModsForUnit[bestModsForUnit.length - 1];
 				bestModsForUnit.pop();
-				result.push({ name: hero.name, bestMods });
 				calculateNewStats(unit, bestModsForUnit);
-				const isNotUpgradeble = bestModsForUnit.every(
-					(mod) => mod.character === hero.name
-				);
-				if (isNotUpgradeble) {
-					console.log(
-						'Congrats ',
-						hero.name,
-						' have best mod set with speed ',
-						newSpeed
-					);
-				} else {
-					console.log(
-						hero.name + (hero.secondary ? ' (' + hero.secondary : '') + ') ',
-						unit.data.speed.existingSpeed,
-						'/',
-						newSpeed,
-						'Health ',
-						unit.data.stats['1'],
-						'/',
-						Math.round(unit.data.newHealth),
-						'Protection',
-						unit.data.stats['28'],
-						'/',
-						Math.round(unit.data.newProtection),
-						'Damage',
-						unit.data.stats['6'],
-						'/',
-						Math.round(unit.data.newOffense),
-						'Potency',
-						Math.round(unit.data.stats['17'] * 100),
-						'/',
-						Math.round(unit.data.newPotency * 100),
-						'C-Chance',
-						Math.round(unit.data.stats['14']),
-						'/',
-						Math.round(unit.data['newCritical Chance']),
-						'C-Damage',
-						Math.round(unit.data.stats['16'] * 100) / 100,
-						'/',
-						Math.round(unit.data['newCritical Damage'] * 100) / 100
-					);
-					bestModsForUnit.forEach((mod) => {
-						let emod = existingMods.find((eMod) => eMod.id === mod.id);
-						if (emod.character !== hero.name) {
-							//todo !comment for result
-							const identifikator =
-								mod.secondary_stats[0].name +
-								' ' +
-								(('' + mod.secondary_stats[0].value).indexOf('0000') !== -1
-									? mod.secondary_stats[0].value / 10000
-									: Math.round(mod.secondary_stats[0].value) / 100 + '%');
-							const set = MOD_OPTIONS.sets.find((mmm) => mmm.id === mod.set);
-							// console.log('MOD ', MOD.form[mod.slot], ' from ', emod.character);
-							//todo comment uncomment for info:
-							console.log(
-								'MOD ',
-								MOD_OPTIONS.form[mod.slot],
-								' from ',
-								emod.character,
-								'SET:',
-								set.name,
-								'Prime:',
-								mod.primary_stat.name +
-									': ' +
-									(('' + mod.primary_stat.value).indexOf('0000') !== -1
-										? mod.primary_stat.value / 10000
-										: Math.round(mod.primary_stat.value) / 100 + '%'),
-								'Second:',
-								identifikator,
-								'tier',
-								mod.tier,
-								'rarity',
-								mod.rarity
-							);
-						}
-					});
-				}
-
 				mods = mods.map((mod) => {
 					if (mod.character === hero.name) {
 						mod.character = '';
@@ -145,6 +69,12 @@ export const modController = {
 				bestModsForUnit.forEach((bMod) => {
 					let mod = mods.find((m) => m.id === bMod.id);
 					mod.character = hero.name;
+				});
+				newSets.push({
+					hero,
+					bestModsForUnit,
+					unit,
+					newSpeed
 				});
 			}
 			blockedHeroes.push(hero.name);
@@ -174,7 +104,7 @@ export const modController = {
 		// 	let quant = leftMods.filter((mod) => mod.set === set.id).length;
 		// 	console.log('For set ', set.name, ' we lost ', quant, ' mods');
 		// });
-		return result;
+		return { existingMods, squadOptions, newSets };
 	}
 };
 

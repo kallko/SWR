@@ -23,6 +23,5 @@ describe('mod Controller tests:', async function () {
 	it.only('developer test', async function () {
 		this.timeout(10000);
 		const result = await modController.creator(621723826);
-		console.log('Result ', result);
 	});
 });

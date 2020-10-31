@@ -1,4 +1,4 @@
-import { MOD_FORM } from '../@types/IMod';
+import { MOD_FORM, IMod } from '../@types/IMod';
 import { IImportUnit } from '../@types/IUnit';
 import { MOD_OPTIONS, STATS } from '../@const/modOptions';
 
@@ -169,4 +169,152 @@ export function getBaseStat(secondaryName, existStat, secondary) {
 		}
 	}
 	return baseStat;
+}
+
+export function stringifyBestMods(
+	{ hero, bestModsForUnit, unit, newSpeed },
+	existingMods
+): string {
+	let result: string = '';
+	const isNotUpgradable = bestModsForUnit.every((mod) => {
+		const oldMod = existingMods.find((eMod) => eMod.id === mod.id);
+		return oldMod.character === mod.character;
+	});
+	if (isNotUpgradable) {
+		result = `Have best mod set with speed ${newSpeed}`;
+	} else {
+		result = `
+		${getSpeedChanging(unit, newSpeed)}${getHealthChanging(
+			unit
+		)}${getProtectionChanging(unit)}${getDamageChanging(
+			unit
+		)}${getPotencyChanging(unit)}${getCriticalChanceChanging(
+			unit
+		)}${getCriticalDamageChanging(unit)}\n`;
+
+		bestModsForUnit.forEach((mod) => {
+			let emod = existingMods.find((eMod) => eMod.id === mod.id);
+			if (emod.character !== hero.name) {
+				result += getNewModInfo(mod, emod);
+				// console.log(
+				// 	'MOD ',
+				// 	MOD_OPTIONS.form[mod.slot],
+				// 	' from ',
+				// 	emod.character,
+				// 	'SET:',
+				// 	set.name,
+				// 	'Prime:',
+				// 	mod.primary_stat.name +
+				// 		': ' +
+				// 		(('' + mod.primary_stat.value).indexOf('0000') !== -1
+				// 			? mod.primary_stat.value / 10000
+				// 			: Math.round(mod.primary_stat.value) / 100 + '%'),
+				// 	'Second:',
+				// 	identifier,
+				// 	'tier',
+				// 	mod.tier,
+				// 	'rarity',
+				// 	mod.rarity
+				// );
+			}
+		});
+	}
+
+	return result;
+}
+
+export function getNameWithSecondary(hero): string {
+	return hero.name + (hero.secondary ? ' (' + hero.secondary + ')' : '');
+}
+
+function getSpeedChanging(unit: IImportUnit, newSpeed: number): string {
+	return unit.data.speed.existingSpeed !== newSpeed
+		? `Speed: ${unit.data.speed.existingSpeed}/${newSpeed}\n`
+		: '';
+}
+
+function getHealthChanging(unit: IImportUnit): string {
+	return unit.data.stats['1'] !== unit.data.newHealth
+		? `Health: ${unit.data.stats['1']}/${Math.round(unit.data.newHealth)}\n`
+		: '';
+}
+
+function getProtectionChanging(unit: IImportUnit): string {
+	return unit.data.stats['28'] !== unit.data.newProtection
+		? `Protection: ${unit.data.stats['28']}/${Math.round(
+				unit.data.newProtection
+		  )}\n`
+		: '';
+}
+
+function getDamageChanging(unit: IImportUnit): string {
+	return unit.data.stats['6'] !== unit.data.newOffense
+		? `Damage: ${unit.data.stats['6']}/${Math.round(unit.data.newOffense)}\n`
+		: '';
+}
+
+function getPotencyChanging(unit: IImportUnit): string {
+	return Math.round(unit.data.stats['17'] * 100) !==
+		Math.round(unit.data.newPotency * 100)
+		? `Potency: ${Math.round(unit.data.stats['17'] * 100)}/${Math.round(
+				unit.data.newPotency * 100
+		  )}\n`
+		: '';
+}
+
+// todo add tenacity calculating
+function getTenacityChanging(unit: IImportUnit): string {
+	return `Tenacity: ${unit.data.newTenacity}\n`;
+}
+
+function getCriticalChanceChanging(unit: IImportUnit): string {
+	return Math.round(unit.data.stats['14']) !==
+		Math.round(unit.data['newCritical Chance'])
+		? `C-Chance: ${Math.round(unit.data.stats['14'])}/${Math.round(
+				unit.data['newCritical Chance']
+		  )}\n`
+		: '';
+}
+
+function getCriticalDamageChanging(unit: IImportUnit): string {
+	return Math.round(unit.data.stats['16'] * 100) / 100 !==
+		Math.round(unit.data['newCritical Damage'] * 100) / 100
+		? `C-Damage: ${Math.round(unit.data.stats['16'] * 100) / 100}/${
+				Math.round(unit.data['newCritical Damage'] * 100) / 100
+		  }\n`
+		: '';
+}
+
+function getNewModInfo(mod: IMod, existMod: IMod): string {
+	const identifier =
+		mod.secondary_stats[0].name +
+		' ' +
+		(('' + mod.secondary_stats[0].value).indexOf('0000') !== -1
+			? mod.secondary_stats[0].value / 10000
+			: Math.round(mod.secondary_stats[0].value) / 100 + '%');
+	const set = MOD_OPTIONS.sets.find((mmm) => mmm.id === mod.set);
+	return `${MOD_OPTIONS.form[mod.slot]} from ${existMod.character} \nSET: ${
+		set.name
+	} Prime: ${mod.primary_stat.name} ${
+		('' + mod.primary_stat.value).indexOf('0000') !== -1
+			? mod.primary_stat.value / 10000
+			: Math.round(mod.primary_stat.value) / 100 + '%'
+	} Second: ${identifier} tier: ${mod.tier} rarity: ${mod.rarity} \n`;
+}
+
+export function getModRules(options): string {
+	return options.reduce(
+		(result, option) => result + getHeroModRules(option),
+		''
+	);
+}
+
+function getHeroModRules(option) {
+	return `${option.name}:\n Possible sets: ${
+		option.possibleSets.toString() ?? 'Any'
+	} Main Stat: ${option.secondary}\n${
+		'arrow: ' + (option.arrow ? option.arrow : 'any')
+	}\n${'triangle: ' + (option.triangle ? option.triangle : 'any')}\n${
+		'circle: ' + (option.circle ? option.circle : 'any')
+	}\n${'cross: ' + (option.cross ? option.cross : 'any')}\n`;
 }
