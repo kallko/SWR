@@ -49,9 +49,9 @@ export const playerController = {
 			lodash.groupBy(unitsForLegends, 'name')
 		);
 		let result: ILegendProgress[] = [];
-		if (await isPlayerUnitsNeedUpdate(allyCode)) {
-			await playerController.updatePlayerUnits(allyCode, true);
-		}
+		// if (await isPlayerUnitsNeedUpdate(allyCode)) {
+		// 	await playerController.updatePlayerUnits(allyCode, true);
+		// }
 		const units: Unit[] = await UnitService.getAllPlayerUnits(allyCode);
 		await playerController.saveLegendProgress(allyCode);
 		//todo update mods
