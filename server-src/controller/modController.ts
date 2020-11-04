@@ -5,8 +5,7 @@ import { MOD_OPTIONS, STATS } from '../@const/modOptions';
 import { Sorter } from '../helper/sorter';
 import { Transformer } from '../helper/transformer';
 import { getModForms, getUnitsWithStats } from '../helper/modHelper';
-import { playerController } from './playerController';
-import { squadOptions } from '../@const/squadOptions';
+import { squadController } from './squadController';
 let currentSecondary = null;
 let currentUnit = null;
 
@@ -33,12 +32,15 @@ export const modController = {
 		const player = await fetchDataService.getPlayer(allyCode);
 		const existingMods = JSON.parse(JSON.stringify(mods));
 		const units = getUnitsWithStats(player.units, mods);
-		const arenaUnits = playerController.getArenaUnits(allyCode);
 		//todo getOptions for Arena Units
+		const squadOptions = await squadController.getModeRulesForArenaSquad(
+			allyCode
+		);
 		if (!squadOptions) {
-			throw new Error('No such arena squad config');
+			throw new Error(
+				'No such arena squad config exists.\nTo create config for Your squad, You should become a patron for project,\nor wait until this squad became more popular.'
+			);
 		}
-
 		squadOptions.forEach((hero) => {
 			const unit = units.find((unit) => unit.data.base_id === hero.name);
 			if (unit) {

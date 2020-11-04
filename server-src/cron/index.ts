@@ -14,15 +14,6 @@ export const cronJob = {
 				Math.floor((Date.now() - start) / 1000)
 			);
 		});
-		cron.schedule('00 50 11 * * *', async () => {
-			const start = Date.now();
-			console.info('Cron JOB day update guild');
-			await guildController.updateData();
-			console.info(
-				'Update finished in ',
-				Math.floor((Date.now() - start) / 1000)
-			);
-		});
 		cron.schedule('00 50 0 * * *', async () => {
 			const start = Date.now();
 			console.info('Cron JOB clear old data');

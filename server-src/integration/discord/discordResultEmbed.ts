@@ -353,27 +353,27 @@ export const discordResultEmbed = {
 					inline: false
 				},
 				{
-					name: getNameWithSecondary(result.newSets[0].hero),
+					name: getNameWithSecondary(result.newSets[0]?.hero),
 					value: stringifyBestMods(result.newSets[0], result.existingMods),
 					inline: false
 				},
 				{
-					name: getNameWithSecondary(result.newSets[1].hero),
+					name: getNameWithSecondary(result.newSets[1]?.hero),
 					value: stringifyBestMods(result.newSets[1], result.existingMods),
 					inline: false
 				},
 				{
-					name: getNameWithSecondary(result.newSets[2].hero),
+					name: getNameWithSecondary(result.newSets[2]?.hero),
 					value: stringifyBestMods(result.newSets[2], result.existingMods),
 					inline: false
 				},
 				{
-					name: getNameWithSecondary(result.newSets[3].hero),
+					name: getNameWithSecondary(result.newSets[3]?.hero),
 					value: stringifyBestMods(result.newSets[3], result.existingMods),
 					inline: false
 				},
 				{
-					name: getNameWithSecondary(result.newSets[4].hero),
+					name: getNameWithSecondary(result.newSets[4]?.hero),
 					value: stringifyBestMods(result.newSets[4], result.existingMods),
 					inline: false
 				}

@@ -6,3 +6,6 @@ CREATE TABLE `swr`.`Squad` (
   `createdAt` DATETIME NULL,
   `updatedAt` DATETIME NULL,
   PRIMARY KEY (`id`));
+
+ALTER TABLE `swr`.`Squad`
+ADD COLUMN `modeRules` TEXT NULL DEFAULT NULL AFTER `squad`;

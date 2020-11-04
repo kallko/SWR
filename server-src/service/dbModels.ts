@@ -355,6 +355,7 @@ GuildMembers.init(
 export interface ISquadCreationAttributes {
 	id?: number;
 	squad: string;
+	modeRules: string;
 	used: number;
 	allyCode: string;
 }
@@ -362,6 +363,7 @@ export interface ISquadCreationAttributes {
 export class Squad extends Model<ISquadCreationAttributes> implements Squad {
 	id!: number;
 	squad: string;
+	modeRules: string;
 	used: number;
 	allyCode: string;
 }
@@ -370,6 +372,7 @@ Squad.init(
 	{
 		id: { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
 		squad: { type: DataTypes.STRING, allowNull: false },
+		modeRules: { type: DataTypes.STRING, allowNull: true },
 		used: { type: DataTypes.NUMBER, allowNull: true },
 		allyCode: { type: DataTypes.NUMBER, allowNull: true }
 	},

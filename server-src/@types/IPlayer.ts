@@ -15,6 +15,7 @@ export interface IPlayer {
 		arena: {
 			leader: string;
 			rank: number;
+			members?: string[];
 		};
 		galactic_power: number;
 	};

@@ -6,6 +6,9 @@ import {
 	getEstimatedDate
 } from '../server-src/controller/playerController';
 import { LegendService } from '../server-src/service/LegendService';
+import { sortUnitsInSquad } from '../server-src/controller/squadController';
+import { guildController } from '../server-src/controller/guildController';
+import { modController } from '../server-src/controller/modController';
 
 xdescribe('playerController tests:', async function () {
 	it('should legend progress for Kylo and Rey', async function () {
@@ -65,5 +68,39 @@ xdescribe('playerController tests:', async function () {
 	});
 	xit('Save legend Progress', async function () {
 		const result = await LegendService.clearOldData();
+	});
+	xit('Developer test', async function () {
+		this.timeout(2222000);
+		const result = [];
+		const guild = await guildController.getGuildAll(621723826);
+		for (const member of guild.members) {
+			console.log('Start for', member.id);
+			const units = await playerController.getArenaUnits(member.id);
+			const squad = sortUnitsInSquad(units);
+			console.log('SQUAD ', squad);
+			if (!result.some((arena) => arena === squad)) {
+				result.push(squad);
+			}
+			console.log('in Result ', result);
+		}
+		result.sort();
+		console.log('Result ', result);
+	});
+	xit('Developer test 2', async function () {
+		this.timeout(22220000);
+		const guild = await guildController.getGuildAll(621723826);
+		for (const member of guild.members) {
+			console.log('Start for', member.id);
+			try {
+				const mods = await modController.creator(member.id);
+			} catch (err) {
+				console.log('ERRR ', err);
+			}
+		}
+	});
+	xit('Developer test 3', async function () {
+		this.timeout(2222000);
+		const mods = await modController.creator(621723826);
+		// console.log('MODS ', JSON.stringify(mods));
 	});
 });
