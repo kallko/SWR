@@ -11,6 +11,7 @@ import { LegendRequirementsService } from '../service/LegendRequirementsService'
 import { Unit, LegendRequirements, LegendProgress } from '../service/dbModels';
 import { UnitService } from '../service/UnitService';
 import { IPlayer } from '../@types/IPlayer';
+import { userService } from '../service/UserService';
 
 let LEGEND_REQUIREMENTS: LegendRequirements[];
 (async function f() {
@@ -49,9 +50,9 @@ export const playerController = {
 			lodash.groupBy(unitsForLegends, 'name')
 		);
 		let result: ILegendProgress[] = [];
-		if (await isPlayerUnitsNeedUpdate(allyCode)) {
-			await playerController.updatePlayerUnits(allyCode, true);
-		}
+		// if (await isPlayerUnitsNeedUpdate(allyCode)) {
+		// 	await playerController.updatePlayerUnits(allyCode, true);
+		// }
 		const units: Unit[] = await UnitService.getAllPlayerUnits(allyCode);
 		await playerController.saveLegendProgress(allyCode);
 		//todo update mods
@@ -114,42 +115,53 @@ export const playerController = {
 		return player?.data?.name || player.detail;
 	},
 	async saveLegendProgress(allyCode: number): Promise<boolean> {
-		const legendNames = await LegendService.getLegendNames();
-		const existLegends = await UnitService.getPlayerUnitsByBaseId(
-			allyCode,
-			legendNames.map((legend) => legend.name)
-		);
+		const user = await userService.getUserByAllyCode({ allyCode });
+		if (user) {
+			const legendNames = await LegendService.getLegendNames();
+			const existLegends = await UnitService.getPlayerUnitsByBaseId(
+				allyCode,
+				legendNames.map((legend) => legend.name)
+			);
 
-		let legendBaseIds: string[] = LEGEND_REQUIREMENTS.map((unit) => {
-			if (!existLegends.some((legend) => legend.baseId === unit.name)) {
-				return unit.baseId;
+			let legendBaseIds: string[] = LEGEND_REQUIREMENTS.map((unit) => {
+				if (!existLegends.some((legend) => legend.baseId === unit.name)) {
+					return unit.baseId;
+				}
+			}).filter((unit) => unit);
+			let freshLegendUnits = await UnitService.getPlayerUnitsByBaseId(
+				allyCode,
+				legendBaseIds
+			);
+			const createdAt: Date = new Date();
+			createdAt.setHours(0, 0, 0, 0);
+			for (let i: number = 0; i < legendBaseIds.length; i++) {
+				const existUnit = freshLegendUnits.find(
+					(unit) => unit.baseId === legendBaseIds[i]
+				);
+				const legendUnit = LEGEND_REQUIREMENTS.find(
+					(lUnit) => lUnit.baseId === legendBaseIds[i]
+				);
+				await LegendService.createOrUpdate({
+					baseId: legendBaseIds[i],
+					power: existUnit?.power || 0,
+					relic: existUnit?.relic || null,
+					ship: existUnit?.combatType === 2 || null,
+					rarity: existUnit?.rarity || null,
+					createdAt: createdAt,
+					allyCode: allyCode,
+					isComplete: existUnit?.isComplete || isComplete(legendUnit, existUnit)
+				});
 			}
-		}).filter((unit) => unit);
-		let freshLegendUnits = await UnitService.getPlayerUnitsByBaseId(
-			allyCode,
-			legendBaseIds
-		);
-		const createdAt: Date = new Date();
-		createdAt.setHours(0, 0, 0, 0);
-		for (let i: number = 0; i < legendBaseIds.length; i++) {
-			const existUnit = freshLegendUnits.find(
-				(unit) => unit.baseId === legendBaseIds[i]
-			);
-			const legendUnit = LEGEND_REQUIREMENTS.find(
-				(lUnit) => lUnit.baseId === legendBaseIds[i]
-			);
-			await LegendService.createOrUpdate({
-				baseId: legendBaseIds[i],
-				power: existUnit?.power || 0,
-				relic: existUnit?.relic || null,
-				ship: existUnit?.combatType === 2 || null,
-				rarity: existUnit?.rarity || null,
-				createdAt: createdAt,
-				allyCode: allyCode,
-				isComplete: existUnit?.isComplete || isComplete(legendUnit, existUnit)
-			});
+			return true;
 		}
-		return true;
+	},
+	async getArenaUnitsSwapi(allyCode: number): Promise<string[]> {
+		const player = await fetchDataService.getPlayerFromSWAPI(allyCode);
+		return player[0].arena.char.squad.map((unit) => unit.defId);
+	},
+	async getArenaUnits(allyCode: number): Promise<string[]> {
+		const player = await fetchDataService.getPlayer(allyCode);
+		return player.data.arena.members;
 	}
 };
 
