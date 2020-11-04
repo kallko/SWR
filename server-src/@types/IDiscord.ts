@@ -11,6 +11,7 @@ export interface IDiscordMessage {
 		greeting?: string;
 		guildName?: string;
 	};
+	addReaction?(s: string): void;
 }
 
 export interface IDiscordUser {

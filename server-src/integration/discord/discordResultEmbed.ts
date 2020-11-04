@@ -5,12 +5,18 @@ import { TopFieldList } from '../../@types/IUnit';
 import { IDiscordEmbed, IDiscordMessage } from '../../@types/IDiscord';
 import { discordConfig } from './discordConfig';
 import * as moment from 'moment';
+import {
+	stringifyBestMods,
+	getNameWithSecondary,
+	getModRules
+} from '../../helper/modHelper';
+const version = process.env.npm_package_version;
 
 const footer = {
 	text: `Support SWR Bot on patreon: https://www.patreon.com/kalko`
 };
 const author = {
-	name: `SWR Bot v1.5.2`
+	name: `SWR Bot v${version}`
 };
 
 export const discordResultEmbed = {
@@ -280,6 +286,7 @@ export const discordResultEmbed = {
 		};
 	},
 	colorUpMods(result, msg: IDiscordMessage): IDiscordEmbed {
+		// todo make color green for all the best;
 		const value =
 			result.length === 0
 				? 'You made your best. Nothing to upgrade.'
@@ -331,12 +338,70 @@ export const discordResultEmbed = {
 			],
 			footer
 		};
+	},
+	arenaMods(result, msg: IDiscordMessage): IDiscordEmbed {
+		// todo make color green for all the best;
+		return {
+			title: msg.author.greeting || msg.author.username,
+			description: 'For Your Arena team',
+			author,
+			color: '16768350',
+			fields: [
+				{
+					name: 'Mod Set Options:',
+					value: getModRules(result.squadOptions),
+					inline: false
+				},
+				{
+					name: getNameWithSecondary(result.newSets[0]?.hero),
+					value: stringifyBestMods(result.newSets[0], result.existingMods),
+					inline: false
+				},
+				{
+					name: getNameWithSecondary(result.newSets[1]?.hero),
+					value: stringifyBestMods(result.newSets[1], result.existingMods),
+					inline: false
+				},
+				{
+					name: getNameWithSecondary(result.newSets[2]?.hero),
+					value: stringifyBestMods(result.newSets[2], result.existingMods),
+					inline: false
+				},
+				{
+					name: getNameWithSecondary(result.newSets[3]?.hero),
+					value: stringifyBestMods(result.newSets[3], result.existingMods),
+					inline: false
+				},
+				{
+					name: getNameWithSecondary(result.newSets[4]?.hero),
+					value: stringifyBestMods(result.newSets[4], result.existingMods),
+					inline: false
+				}
+			],
+			footer
+		};
+	},
+	error(error, msg: IDiscordMessage): IDiscordEmbed {
+		return {
+			title: msg.author.greeting || msg.author.username,
+			description: 'Something goes wrong',
+			author,
+			color: '16711735',
+			fields: [
+				{
+					name: 'Description:',
+					value: error.toString(),
+					inline: true
+				}
+			],
+			footer
+		};
 	}
 };
 
 function transformEstimatedDate(date: Date): string {
 	let result = moment(date).format('DD:MM:YYYY');
-	if (moment(date).isSame('1970-01-01')) {
+	if (moment(date).isSame('1970-01-01') || moment(date).isBefore(moment())) {
 		result = 'Maybe never';
 	}
 	if (moment(date).isSame('1980-01-01')) {

@@ -193,6 +193,17 @@ export const discordDispatcher = {
 			);
 			return embedResult;
 		}
+	},
+	arenaMods: async function (
+		channel: IDiscordChannel,
+		msg: IDiscordMessage
+	): Promise<IDiscordEmbed> {
+		try {
+			const result = await modController.creator(msg.author.allyCode);
+			return discordResultEmbed.arenaMods(result, msg);
+		} catch (err) {
+			return discordResultEmbed.error(err, msg);
+		}
 	}
 };
 

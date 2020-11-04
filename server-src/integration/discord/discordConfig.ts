@@ -32,13 +32,22 @@ export const discordConfig: IDiscordOption[] = [
 	},
 	{
 		id: 10,
-		key: '-cu',
+		key: '-mcu',
 		description:
-			'ColorUp. \nFind mods, which after color-up, could add more than 20 speed',
+			'Mods ColorUp. \nFind mods, which after color-up, could add more than 20 speed',
 		handler: 'colorUp'
 	},
 	{
 		id: 11,
+		key: '-mba',
+		minimalRang: Rang.officer,
+		retry: 24 * 7,
+		description:
+			'Mods best for Arena. \nCreate fastest set of mods for Your arena team',
+		handler: 'arenaMods'
+	},
+	{
+		id: 12,
 		key: '-lp',
 		description: 'LegendProgress. \nCheck Your progress to receiving Legends',
 		handler: 'legendProgress'

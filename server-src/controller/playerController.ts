@@ -154,6 +154,14 @@ export const playerController = {
 			}
 			return true;
 		}
+	},
+	async getArenaUnitsSwapi(allyCode: number): Promise<string[]> {
+		const player = await fetchDataService.getPlayerFromSWAPI(allyCode);
+		return player[0].arena.char.squad.map((unit) => unit.defId);
+	},
+	async getArenaUnits(allyCode: number): Promise<string[]> {
+		const player = await fetchDataService.getPlayer(allyCode);
+		return player.data.arena.members;
 	}
 };
 

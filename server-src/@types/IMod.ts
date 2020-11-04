@@ -18,7 +18,7 @@ export interface IMod {
 	primary_stat: IStat;
 }
 
-enum MOD_FORM {
+export enum MOD_FORM {
 	'' = 0,
 	'square' = 1,
 	'arrow' = 2,
@@ -86,4 +86,13 @@ export interface IMOD_OPTIONS {
 		)[];
 		square: 'Offense'[];
 	};
+}
+
+export interface IBestMods {
+	arrow: IMod[];
+	circle: IMod[];
+	square: IMod[];
+	triangle: IMod[];
+	cross: IMod[];
+	romb: IMod[];
 }
