@@ -55,7 +55,6 @@ export const modController = {
 				let bestModsForUnit: IMod[] = modVariator(
 					hero,
 					bestMods,
-					hero.secondary,
 					unit,
 					hero.possibleSets
 				);
@@ -147,7 +146,7 @@ function sortBySpeed(first, second) {
 	}
 }
 
-function modVariator(hero, mods, secondary, unit, possibleSets) {
+function modVariator(hero, mods, unit, possibleSets) {
 	let result = [];
 	let forms = [].concat(MOD_OPTIONS.form);
 	forms.shift();

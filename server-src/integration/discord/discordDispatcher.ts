@@ -35,6 +35,7 @@ export const discordDispatcher = {
 		msg.author.allyCode = user?.allyCode || null;
 		msg.author.greeting = userService.getGreeting(user, msg);
 		if ((option && user?.allyCode) || option?.id < 10) {
+			msg.addReaction('👍');
 			const parameters =
 				option?.id >= 10
 					? discordHelper.getParameters(
@@ -53,11 +54,14 @@ export const discordDispatcher = {
 				parameters
 			);
 		} else if (option && option.id !== 0 && !user) {
+			msg.addReaction('🤔');
 			return discordResultEmbed.notRegistered(msg);
 		}
 		if (msg.channel.type === 1 && !msg.author.bot) {
+			msg.addReaction('❌');
 			return discordDispatcher['help'].call(discordDispatcher, channel, msg);
 		}
+		return discordDispatcher['help'].call(discordDispatcher, channel, msg);
 	},
 	register: async function (
 		channel: IDiscordChannel,
@@ -109,10 +113,10 @@ export const discordDispatcher = {
 			return discordResultEmbed.registered(player.data.name, allyCode);
 		}
 	},
-	help: async function (
+	help: function (
 		channel: IDiscordChannel,
 		msg: IDiscordMessage
-	): Promise<IDiscordEmbed> {
+	): IDiscordEmbed {
 		return discordResultEmbed.help(msg);
 	},
 	colorUp: async function (
@@ -200,6 +204,9 @@ export const discordDispatcher = {
 	): Promise<IDiscordEmbed> {
 		try {
 			const result = await modController.creator(msg.author.allyCode);
+			if (!result) {
+				throw new Error('Creation mod set return Error');
+			}
 			return discordResultEmbed.arenaMods(result, msg);
 		} catch (err) {
 			return discordResultEmbed.error(err, msg);

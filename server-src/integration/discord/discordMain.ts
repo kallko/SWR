@@ -8,14 +8,17 @@ import { discordDispatcher } from './discordDispatcher';
 import { discordResultEmbed } from './discordResultEmbed';
 let masterChannel: IDiscordChannel;
 const eris = require('eris');
-
+let isServerStarted = false;
 const bot = new eris.Client(config.discordToken);
 
 bot.on('ready', async () => {
 	masterChannel = await bot.getDMChannel(config.discordMasterId);
-	masterChannel.createMessage(
-		process.env.NODE_ENV + ' Server started: ' + new Date().toLocaleString()
-	);
+	if (!isServerStarted) {
+		masterChannel.createMessage(
+			process.env.NODE_ENV + ' Server started: ' + new Date().toLocaleString()
+		);
+	}
+	isServerStarted = true;
 	await bot.editStatus('online', { name: 'swr -h', type: 0 });
 });
 
@@ -39,7 +42,7 @@ bot.on(
 		const channel =
 			process.env.NODE_ENV === 'PRODUCTION' ? msg.channel : masterChannel;
 		if (!msg.author.bot && msg.content.toLowerCase().startsWith('swr')) {
-			msg.addReaction('👍');
+			msg.addReaction('🤖');
 			const embedMessage: IDiscordEmbed = await discordDispatcher.dispatch(
 				bot,
 				msg,
