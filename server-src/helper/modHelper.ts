@@ -42,11 +42,11 @@ export function getExistingSecondary(mods, unit) {
 	const name = unit.data.base_id;
 	const heroMods = mods.filter((mod) => mod.character === name);
 	return MOD_OPTIONS.secondary.map((secondary) =>
-		getSecondarySet(heroMods, name, secondary)
+		getSecondarySet(heroMods, secondary)
 	);
 }
 
-export function getSecondarySet(mods, name, secondary) {
+export function getSecondarySet(mods, secondary) {
 	let additionalSecondaryPercent = 0;
 	let additionalSecondary = 0;
 	const addPrimeSecondaryPercent = mods.reduce((summ, mod) => {
@@ -263,9 +263,9 @@ function getPotencyChanging(unit: IImportUnit): string {
 }
 
 // todo add tenacity calculating
-function getTenacityChanging(unit: IImportUnit): string {
-	return `Tenacity: ${unit.data.newTenacity}\n`;
-}
+// function getTenacityChanging(unit: IImportUnit): string {
+// 	return `Tenacity: ${unit.data.newTenacity}\n`;
+// }
 
 function getCriticalChanceChanging(unit: IImportUnit): string {
 	return Math.round(unit.data.stats['14']) !==

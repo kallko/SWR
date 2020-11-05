@@ -1,4 +1,4 @@
-import { GuildMembers, User } from './dbModels';
+import { User } from './dbModels';
 import { Rang } from '../@types/iRegistration';
 import { Op } from 'sequelize';
 import { IDiscordMessage } from '../@types/IDiscord';
