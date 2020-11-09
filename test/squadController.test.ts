@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { squadController } from '../server-src/controller/squadController';
 import { squadService } from '../server-src/service/squadService';
 
-xdescribe('SquadController tests:', async function () {
+describe('SquadController tests:', async function () {
 	xit('return rules for mod with 5 different heroes', async function () {
 		this.timeout(20000);
 		const result = await squadController.getModeRulesForArenaSquad(621723826);
@@ -18,7 +18,7 @@ xdescribe('SquadController tests:', async function () {
 		expect(result[0].hasOwnProperty('possibleSets')).equal(true);
 		expect(result[0].hasOwnProperty('secondary')).equal(true);
 	});
-	it('Service test for order', async function () {
+	it.only('Service test for order', async function () {
 		this.timeout(20000);
 		const result = await squadService.getBySquad(
 			{

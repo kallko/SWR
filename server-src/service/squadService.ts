@@ -14,7 +14,7 @@ export const squadService = {
 					squad: options.squad
 				},
 				order: [
-					['allyCode', 'ASC'],
+					['allyCode', 'DESC'],
 					['createdAt', 'DESC']
 				]
 			};
