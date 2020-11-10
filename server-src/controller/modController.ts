@@ -36,11 +36,6 @@ export const modController = {
 		const squadOptions = await squadController.getModeRulesForArenaSquad(
 			allyCode
 		);
-		if (!squadOptions) {
-			throw new Error(
-				'No such arena squad config exists.\nTo create config for Your squad, You should become a patron for project,\nor wait until this squad became more popular.'
-			);
-		}
 		squadOptions.forEach((hero) => {
 			const unit = units.find((unit) => unit.data.base_id === hero.name);
 			if (unit) {

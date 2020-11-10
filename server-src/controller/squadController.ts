@@ -10,6 +10,11 @@ export const squadController = {
 			storedSquads?.length > 0
 				? await JSON.parse(storedSquads[0]?.modeRules)
 				: null;
+		if (!squadOptions) {
+			throw new Error(
+				'No such arena squad config exists.\nTo create config for Your squad, You should become a patron for project,\nor wait until this squad became more popular.'
+			);
+		}
 		if (!isCorrectSquadOptions(arenaUnits, squadOptions)) {
 			throw new Error('Incorrect Squad options.\n');
 		}
