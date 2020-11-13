@@ -16,6 +16,7 @@ export interface IMod {
 	set: number;
 	secondary_stats: IStat[];
 	primary_stat: IStat;
+	expectedSpeed?: number;
 }
 
 export enum MOD_FORM {
@@ -95,4 +96,8 @@ export interface IBestMods {
 	triangle: IMod[];
 	cross: IMod[];
 	romb: IMod[];
+}
+export interface IModEvaluation {
+	parent: IMod;
+	children: IMod[];
 }

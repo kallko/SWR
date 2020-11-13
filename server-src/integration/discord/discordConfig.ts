@@ -48,6 +48,15 @@ export const discordConfig: IDiscordOption[] = [
 	},
 	{
 		id: 12,
+		key: '-mue',
+		minimalRang: Rang.officer,
+		retry: 24 * 7,
+		description:
+			'Mods Unit Evolution. \nFound gold mods for unit which You could change with lower quality mod\nBy default for most powerful unit. You could specify unit like swr -mue -unit=3 (in this case it will be 3 by power unit) \nor swr -mue -unit=PADMEAMIDALA ',
+		handler: 'modEvolution'
+	},
+	{
+		id: 12,
 		key: '-lp',
 		description: 'LegendProgress. \nCheck Your progress to receiving Legends',
 		handler: 'legendProgress'

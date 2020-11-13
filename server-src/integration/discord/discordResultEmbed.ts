@@ -8,8 +8,10 @@ import * as moment from 'moment';
 import {
 	stringifyBestMods,
 	getNameWithSecondary,
-	getModRules
+	getModRules,
+	getModForms
 } from '../../helper/modHelper';
+import { IModEvaluation } from '../../@types/IMod';
 const version = process.env.npm_package_version;
 
 const footer = {
@@ -30,7 +32,7 @@ export const discordResultEmbed = {
 					'\n Where xxxxxxxxx is Your ally-code ' +
 					'\n You should be registered on swogh.gg',
 			author,
-			color: '16711735',
+			color: '16735873',
 			fields: [],
 			footer
 		};
@@ -40,7 +42,7 @@ export const discordResultEmbed = {
 			title: msg.author.username,
 			description: ` Input parameter pls, for example: \n swr -gtu -rank=speed \n (Possible ranks: health, speed, power, damage, defense, potency, tenacity, protection)`,
 			author,
-			color: '16711735',
+			color: '16735873',
 			fields: [],
 			footer
 		};
@@ -381,12 +383,58 @@ export const discordResultEmbed = {
 			footer
 		};
 	},
+	modEvolution(
+		modsForEvolution: IModEvaluation[],
+		msg: IDiscordMessage,
+		baseId
+	) {
+		const description =
+			modsForEvolution.length > 0
+				? 'For ' + baseId + ', i will recommend to upgrade these mods:'
+				: 'For ' + baseId + ' all mods looks good.';
+		const modForms = getModForms();
+		const color = modsForEvolution.length > 0 ? '6225884' : '16768350';
+		const fields =
+			modsForEvolution.length === 0
+				? []
+				: modsForEvolution.map((set) => {
+						const value = set.children.reduce(
+							(sum, mod) =>
+								sum +
+								mod.character +
+								' (possible speed: ' +
+								mod.expectedSpeed +
+								')' +
+								'\n',
+							''
+						);
+						return {
+							name: modForms[set.parent.slot - 1].toString(),
+							value,
+							inline: false
+						};
+				  });
+		fields.push({
+			name: 'additional tips:',
+			value:
+				'You could use: \n swr -mue -unit=3 (advice about third by power unit mods)\n swr -mue -unit=KYLOREN\n swr -mue by default give advice about most powerful unit, which could be upgraded',
+			inline: false
+		});
+		return {
+			title: msg.author.greeting || msg.author.username,
+			description,
+			author,
+			color,
+			fields,
+			footer
+		};
+	},
 	error(error, msg: IDiscordMessage): IDiscordEmbed {
 		return {
 			title: msg.author.greeting || msg.author.username,
 			description: 'Something goes wrong',
 			author,
-			color: '16711735',
+			color: '16735873',
 			fields: [
 				{
 					name: 'Description:',

@@ -20,6 +20,7 @@ import { discordConfig } from './discordConfig';
 import { ideaService } from '../../service/IdeaService';
 import { IIdeaCreationAttributes } from '../../service/dbModels';
 import { guildService } from '../../service/guildService';
+import { IModEvaluation } from '../../@types/IMod';
 
 export const discordDispatcher = {
 	dispatch: async function (
@@ -208,6 +209,28 @@ export const discordDispatcher = {
 				throw new Error('Creation mod set return Error');
 			}
 			return discordResultEmbed.arenaMods(result, msg);
+		} catch (err) {
+			return discordResultEmbed.error(err, msg);
+		}
+	},
+	modEvolution: async function (
+		channel: IDiscordChannel,
+		msg: IDiscordMessage,
+		parameters
+	): Promise<IDiscordEmbed> {
+		try {
+			const modsForEvolution: {
+				result: IModEvaluation[];
+				baseId: string;
+			} = await modController.getModForEvolution(
+				msg.author.allyCode,
+				parameters
+			);
+			return discordResultEmbed.modEvolution(
+				modsForEvolution.result,
+				msg,
+				modsForEvolution.baseId
+			);
 		} catch (err) {
 			return discordResultEmbed.error(err, msg);
 		}
