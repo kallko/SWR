@@ -1,11 +1,13 @@
 import { fetchDataService } from '../service/fetchDataService';
-import { IMod, IBestMods } from '../@types/IMod';
+import { IMod, IBestMods, IModEvaluation } from '../@types/IMod';
 import { IFrontColorUpMod } from '../@types/IFrontEnd';
 import { MOD_OPTIONS, STATS } from '../@const/modOptions';
 import { Sorter } from '../helper/sorter';
 import { Transformer } from '../helper/transformer';
 import { getModForms, getUnitsWithStats } from '../helper/modHelper';
 import { squadController } from './squadController';
+import { UnitService } from '../service/UnitService';
+import { Unit } from '../service/dbModels';
 let currentSecondary = null;
 let currentUnit = null;
 
@@ -101,6 +103,35 @@ export const modController = {
 		// 	console.log('For set ', set.name, ' we lost ', quant, ' mods');
 		// });
 		return { existingMods, squadOptions, newSets };
+	},
+	async getModForEvolution(
+		allyCode: number,
+		parameters: any
+	): Promise<{ result: IModEvaluation[]; baseId: string }> {
+		let units: Unit[] = await UnitService.getAllPlayerUnits(allyCode, [
+			'power',
+			'DESC'
+		]);
+		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
+		let baseId = await getBaseIdForModEvolution(parameters, units);
+		let rankedModSets = [];
+		if (!baseId) {
+			for (const unit of units) {
+				rankedModSets = rankMods(units, mods, unit.baseId);
+				if (rankedModSets.length > 0) {
+					baseId = unit.baseId;
+					break;
+				}
+			}
+		} else {
+			rankedModSets = rankMods(units, mods, baseId);
+		}
+		rankedModSets.forEach(
+			(rankedModSet) =>
+				(rankedModSet.children.length =
+					rankedModSet.children.length > 3 ? 3 : rankedModSet.children.length)
+		);
+		return { result: sortMods(rankedModSets), baseId };
 	}
 };
 
@@ -316,13 +347,7 @@ function getSpeed(mods) {
 	let additionalSpeed = mods.reduce((summ, mod) => {
 		const addPrimeSpeed =
 			mod.primary_stat.name === 'Speed' ? mod.primary_stat.value / 10000 : 0;
-		let addSecSpeed = 0;
-		const addSecSpeedStat = mod.secondary_stats.find(
-			(ss) => ss.name === 'Speed'
-		);
-		if (addSecSpeedStat) {
-			addSecSpeed = addSecSpeedStat.value / 10000;
-		}
+		let addSecSpeed = getSecondaryModSpeed(mod);
 		return summ + addPrimeSpeed + addSecSpeed;
 	}, 0);
 	if (mods.filter((mod) => mod.set === 4 && mod.level >= 1).length >= 4) {
@@ -444,4 +469,107 @@ function getBestMods({ hero, possibleMods, unit }): IBestMods {
 		bestMods[form] = [...temp];
 	});
 	return bestMods as IBestMods;
+}
+
+function rankMods(units: Unit[], mods: IMod[], baseId: string) {
+	const result = [];
+	const unit = units.find((unit) => unit.baseId === baseId);
+	const unitMods = mods.filter(
+		(mod) => mod.character === unit.baseId && mod.slot !== 2 && mod.rarity < 6
+	);
+	unitMods.forEach((unitMod) => {
+		const unitPower = unit.power;
+		let possibleMods = mods.filter(
+			(mod) =>
+				mod.character !== unitMod.character &&
+				mod.set === unitMod.set &&
+				mod.slot === unitMod.slot &&
+				mod.primary_stat.name === unitMod.primary_stat.name &&
+				(unitMod.rarity > mod.rarity ||
+					(unitMod.rarity === mod.rarity && unitMod.tier >= mod.tier))
+		);
+		possibleMods = possibleMods.filter((pmod) => {
+			const unit = units.find((unit) => unit.baseId === pmod.character);
+			return !unit || unit.power <= unitPower * 0.8;
+		});
+
+		possibleMods = possibleMods.filter(
+			(pMod) => getComparedSpeed(unitMod, pMod) > getSecondaryModSpeed(unitMod)
+		);
+		if (possibleMods.length > 0) {
+			possibleMods.forEach(
+				(mod) => (mod.expectedSpeed = getComparedSpeed(unitMod, mod))
+			);
+			result.push({ parent: unitMod, children: possibleMods });
+		}
+	});
+	return result;
+}
+
+function getComparedSpeed(parentMod: IMod, childMod: IMod): number {
+	const baseSpeed = getSecondaryModSpeed(childMod);
+	if (baseSpeed === 0) {
+		return baseSpeed;
+	}
+	const secondarySpeed = childMod.secondary_stats.find(
+		(ss) => ss.name === 'Speed'
+	);
+	if (childMod.rarity < 5) {
+		const updates = 5 - childMod.tier;
+		return baseSpeed + updates * 5;
+	}
+	let updates =
+		childMod.rarity === parentMod.rarity
+			? parentMod.tier - childMod.tier
+			: 5 - childMod.tier + parentMod.tier;
+	updates = Math.min(updates, 5 - secondarySpeed.roll);
+	const rarityDiff = parentMod.rarity - childMod.rarity;
+	return baseSpeed + rarityDiff + updates * 4;
+}
+
+function getSecondaryModSpeed(mod: IMod): number {
+	let addSecSpeed = 0;
+	const addSecSpeedStat = mod.secondary_stats.find((ss) => ss.name === 'Speed');
+	if (addSecSpeedStat) {
+		addSecSpeed = addSecSpeedStat.value / 10000;
+	}
+	return addSecSpeed;
+}
+
+function sortMods(evalModSets: IModEvaluation[]): IModEvaluation[] {
+	return evalModSets.map((set) => {
+		return {
+			parent: set.parent,
+			children: set.children.sort(sortByExpectedSpeed)
+		};
+	});
+}
+
+function sortByExpectedSpeed(first: IMod, second: IMod): number {
+	return getSecondaryModSpeed(second) - getSecondaryModSpeed(first) === 0
+		? second.tier - first.tier
+		: getSecondaryModSpeed(second) - getSecondaryModSpeed(first);
+}
+
+async function getBaseIdForModEvolution(
+	parameters,
+	units: Unit[]
+): Promise<string> {
+	if (!parameters?.unit || parameters.unit == 0) {
+		return null;
+	}
+	if (parameters.unit >>> 0 === parseFloat(parameters.unit)) {
+		const index = parseInt(parameters.unit);
+		const realIndex = Math.min(index - 1, units.length - 1);
+		return units[realIndex].baseId;
+	}
+	const unit = units.find(
+		(unit) => unit.baseId === parameters.unit.toUpperCase().trim()
+	);
+	if (unit) {
+		return unit.baseId;
+	}
+	throw new Error(
+		'Wrong baseId for unit. You could try find unit by power rank or baseId, for example:\n swr -mue -unit=3\n swr -mue -unit=23\n swr -mue -unit=KYLOREN'
+	);
 }

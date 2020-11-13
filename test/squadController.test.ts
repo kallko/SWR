@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { squadController } from '../server-src/controller/squadController';
 import { squadService } from '../server-src/service/squadService';
 
-describe('SquadController tests:', async function () {
+xdescribe('SquadController tests:', async function () {
 	xit('return rules for mod with 5 different heroes', async function () {
 		this.timeout(20000);
 		const result = await squadController.getModeRulesForArenaSquad(621723826);

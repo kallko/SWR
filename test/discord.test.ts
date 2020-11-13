@@ -11,7 +11,7 @@ import { discordHelper } from '../server-src/integration/discord/discordHelper';
 import { UnitService } from '../server-src/service/UnitService';
 import { discordResultEmbed } from '../server-src/integration/discord/discordResultEmbed';
 
-xdescribe('discordDispatcher tests:', async function () {
+describe.only('discordDispatcher tests:', async function () {
 	this.timeout(500000);
 	xit('msg with content swr -h and correct discord id should call help function', async function () {
 		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
@@ -481,5 +481,23 @@ xdescribe('discordDispatcher tests:', async function () {
 		});
 		expect(result).equal(true);
 		// stub.restore();
+	});
+	it.only('developer test 111', async function () {
+		const message: IDiscordMessage = {
+			content: 'swr -me -unit=PADMEAMIDALA',
+			author: {
+				id: '590913433738936329',
+				username: 'test',
+				bot: false
+			},
+			addReaction(s: string) {}
+		};
+		console.log('start test');
+		let result: any = await discordDispatcher.dispatch(null, message, {
+			id: 100,
+			type: 0
+		});
+		console.log('Result ', JSON.stringify(result));
+		expect(result.length).equal(5);
 	});
 });
