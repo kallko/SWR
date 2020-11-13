@@ -1,7 +1,7 @@
 import { Unit, IUnitSQLCreationAttributes } from './dbModels';
 import { IImportUnit } from '../@types/IUnit';
 import { Transformer } from '../helper/transformer';
-import { Op } from 'sequelize';
+import { Op, OrderItem } from 'sequelize';
 import { guildController } from '../controller/guildController';
 import { IGuild } from '../@types/IGuild';
 
@@ -57,11 +57,16 @@ export const UnitService = {
 			nest: true
 		});
 	},
-	getAllPlayerUnits: async function (allyCode: number): Promise<Unit[]> {
-		return await Unit.findAll({
+	getAllPlayerUnits: async function (
+		allyCode: number,
+		order?: OrderItem
+	): Promise<Unit[]> {
+		return Unit.findAll({
 			where: {
-				allyCode
+				allyCode,
+				combatType: 1
 			},
+			order: [order ?? ['id', 'DESC']],
 			raw: true,
 			nest: true
 		});
