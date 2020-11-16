@@ -112,7 +112,7 @@ export const modController = {
 			'power',
 			'DESC'
 		]);
-		units = units.filter(unit => unit.combatType === 1);
+		units = units.filter((unit) => unit.combatType === 1);
 		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
 		let baseId = await getBaseIdForModEvolution(parameters, units);
 		let rankedModSets = [];
@@ -178,6 +178,7 @@ function modVariator(hero, mods, unit, possibleSets) {
 	let forms = [].concat(MOD_OPTIONS.form);
 	forms.shift();
 	let bestSpeed = 0;
+	let bestSecondary = 0;
 	mods.square.forEach((mSquare) => {
 		mods.arrow.forEach((mArrow) => {
 			mods.romb.forEach((mRomb) => {
@@ -202,9 +203,27 @@ function modVariator(hero, mods, unit, possibleSets) {
 									unit.data.speed.baseSpeed * (1 + speed.speedFromSet / 100) +
 										speed.additionalSpeed
 								);
-								if (withNewSetSpeed > bestSpeed) {
-									bestSpeed = withNewSetSpeed;
-									result = mods;
+								if (withNewSetSpeed >= bestSpeed) {
+									const newUnit = JSON.parse(JSON.stringify(unit));
+									// todo calculate only 1 field
+									calculateNewStats(newUnit, [
+										mSquare,
+										mArrow,
+										mRomb,
+										mTriangle,
+										mCircle,
+										mCross
+									]);
+									const newSecondary = newUnit.data['new' + hero.secondary];
+									if (
+										withNewSetSpeed > bestSpeed ||
+										(withNewSetSpeed === bestSpeed &&
+											newSecondary > bestSecondary)
+									) {
+										bestSpeed = withNewSetSpeed;
+										bestSecondary = newSecondary;
+										result = mods;
+									}
 								}
 							}
 						});
