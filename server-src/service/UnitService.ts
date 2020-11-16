@@ -63,8 +63,7 @@ export const UnitService = {
 	): Promise<Unit[]> {
 		return Unit.findAll({
 			where: {
-				allyCode,
-				combatType: 1
+				allyCode
 			},
 			order: [order ?? ['id', 'DESC']],
 			raw: true,
