@@ -482,7 +482,7 @@ describe.only('discordDispatcher tests:', async function () {
 		expect(result).equal(true);
 		// stub.restore();
 	});
-	it.only('developer test 111', async function () {
+	xit('developer test 111', async function () {
 		const message: IDiscordMessage = {
 			content: 'swr -me -unit=PADMEAMIDALA',
 			author: {
