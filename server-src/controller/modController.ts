@@ -112,6 +112,7 @@ export const modController = {
 			'power',
 			'DESC'
 		]);
+		units = units.filter(unit => unit.combatType === 1);
 		const mods: IMod[] = await fetchDataService.getAllMods(allyCode);
 		let baseId = await getBaseIdForModEvolution(parameters, units);
 		let rankedModSets = [];
