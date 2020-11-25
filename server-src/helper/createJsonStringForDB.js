@@ -1,6 +1,7 @@
 const units = require('../@const/unitModOptions');
 
-const squadString = 'GLREY,GENERALKENOBI,FIRSTORDERTROOPER,HK47,DARTHSION';
+const squadString =
+	'SUPREMELEADERKYLOREN,FIRSTORDEROFFICERMALE,FIRSTORDERTROOPER,GENERALHUX,KYLORENUNMASKED';
 
 function createJsonString(squadString) {
 	const units = sortSquad(squadString);

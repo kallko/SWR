@@ -17,10 +17,16 @@ export function getUnitsWithStats(units: IImportUnit[], mods) {
 			let secondaryName = Object.keys(secondary)[0];
 			let statsNumber = STATS[secondaryName];
 			let existStat = unit.data.stats['' + statsNumber];
+			let print = false;
+			if (unit.data.base_id === 'PHASMA') {
+				print = true;
+				console.log('Secondary name ', secondaryName);
+			}
 			unit.data['base' + secondaryName] = getBaseStat(
 				secondaryName,
 				existStat,
-				secondary
+				secondary,
+				print
 			);
 		});
 	});
@@ -134,29 +140,59 @@ export function getSpeed(mods) {
 	return { additionalSpeed, speedFromSet };
 }
 
-export function getBaseStat(secondaryName, existStat, secondary) {
+export function getBaseStat(
+	secondaryName,
+	existStat,
+	secondary,
+	print = false
+) {
 	let baseStat: number = 0;
 	switch (secondaryName) {
-		case 'Potency':
 		case 'Offense':
 		case 'Health':
-		case 'Tenacity':
-		case 'Protection':
-		case 'Critical Chance': {
+		case 'Protection': {
 			baseStat =
 				(existStat - secondary[secondaryName].additionalSecondary) /
 				(1 +
 					secondary[secondaryName].additionalSecondaryPercent / 100 +
 					secondary[secondaryName].secondaryFromSet / 100);
+			// existStat -
+			// secondary[secondaryName].additionalSecondary -
+			// secondary[secondaryName].additionalSecondaryPercent / 100 -
+			// secondary[secondaryName].secondaryFromSet / 100;
+			if (print && secondaryName === 'Critical Chance') {
+				console.log(
+					'FOR CALCULATE',
+					existStat,
+					secondary[secondaryName].additionalSecondaryPercent,
+					secondary[secondaryName].additionalSecondary,
+					secondary[secondaryName].secondaryFromSet,
+					baseStat
+				);
+			}
 			break;
 		}
+		case 'Critical Chance':
 		case 'Defense': {
 			baseStat =
 				existStat -
 				secondary[secondaryName].additionalSecondaryPercent -
-				secondary[secondaryName].additionalSecondary / 10;
+				secondary[secondaryName].additionalSecondary / 10 -
+				secondary[secondaryName].secondaryFromSet;
+			if (print && secondaryName === 'Critical Chance') {
+				console.log(
+					'FOR CALCULATE',
+					existStat,
+					secondary[secondaryName].additionalSecondaryPercent,
+					secondary[secondaryName].additionalSecondary,
+					secondary[secondaryName].secondaryFromSet,
+					baseStat
+				);
+			}
 			break;
 		}
+		case 'Potency':
+		case 'Tenacity':
 		case 'Critical Damage': {
 			baseStat =
 				existStat -

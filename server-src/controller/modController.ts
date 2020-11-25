@@ -259,7 +259,7 @@ function cutBestMods(mods) {
 	return result;
 }
 
-function calculateNewStats(unit, mods) {
+export function calculateNewStats(unit, mods) {
 	[
 		'Health',
 		'Protection',
