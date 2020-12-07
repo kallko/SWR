@@ -50,12 +50,18 @@ export const LegendService = {
 		const legendDBUnits: LegendRequirements[] = LEGEND_REQUIREMENTS.filter(
 			(LR) => LR.name === legendBaseId
 		);
+		// todo fast fix then refactor
+		const date = new Date();
+		date.setDate(new Date().getDate() - interval);
+		date.setHours(0);
+		date.setMinutes(0);
+		date.setSeconds(0);
 		return await LegendProgress.findOne({
 			where: {
 				baseId: legendDBUnits[2].baseId,
 				allyCode,
 				createdAt: {
-					[Op.gte]: new Date().setDate(new Date().getDate() - interval)
+					[Op.gte]: date
 				}
 			},
 			raw: true,
