@@ -29,12 +29,14 @@ export const discordDispatcher = {
 		channel?: IDiscordChannel
 	): Promise<IDiscordEmbed> {
 		//todo check message here
+		console.log('msg.content ', msg.content);
 		const option = discordConfig.find((entry) =>
 			msg.content.toLowerCase().replace('swr', '').trim().startsWith(entry.key)
 		);
 		const user = await userService.getUserByDiscordId(msg.author.id);
 		msg.author.allyCode = user?.allyCode || null;
 		msg.author.greeting = userService.getGreeting(user, msg);
+		console.log('input ', option, user);
 		if ((option && user?.allyCode) || option?.id < 10) {
 			msg.addReaction('👍');
 			const parameters =
@@ -58,7 +60,7 @@ export const discordDispatcher = {
 			msg.addReaction('🤔');
 			return discordResultEmbed.notRegistered(msg);
 		}
-		if (msg.channel.type === 1 && !msg.author.bot) {
+		if (msg.channel?.type === 1 && !msg.author?.bot) {
 			msg.addReaction('❌');
 			return discordDispatcher['help'].call(discordDispatcher, channel, msg);
 		}
