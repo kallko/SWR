@@ -260,10 +260,9 @@ export async function getEstimatedDate(
 		interval,
 		legendBaseId
 	);
-	let diffDays: number = moment(new Date()).diff(
-		moment(date.createdAt),
-		'days'
-	);
+	let diffDays: number = date
+		? moment(new Date()).diff(moment(date.createdAt), 'days')
+		: 0;
 	if (diffDays < 30) {
 		interval = diffDays;
 		date = await LegendService.getDateFromPastInterval(
@@ -271,7 +270,9 @@ export async function getEstimatedDate(
 			interval,
 			legendBaseId
 		);
-		diffDays = moment(new Date()).diff(moment(date.createdAt), 'days');
+		diffDays = date
+			? moment(new Date()).diff(moment(date.createdAt), 'days')
+			: 0;
 	}
 	const progress = await getLegendProgressByInterval(
 		legendBaseId,
