@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-const sinon = require('sinon');
+import * as sinon from 'sinon';
 import { IDiscordMessage } from '../server-src/@types/IDiscord';
 
 import { discordDispatcher } from '../server-src/integration/discord/discordDispatcher';
