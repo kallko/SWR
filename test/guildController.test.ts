@@ -1,57 +1,76 @@
 import { expect } from 'chai';
 import { guildController } from '../server-src/controller/guildController';
 import { IGuild } from '../server-src/@types/IGuild';
-import { IFrontLegendTable } from '../server-src/@types/IFrontEnd';
-import * as lodash from 'lodash';
+import { guildService } from '../server-src/service/guildService';
+import * as sinon from 'sinon';
+import { userService } from '../server-src/service/UserService';
+import { playerController } from '../server-src/controller/playerController';
 
 describe('guildController tests:', async function () {
-	xit('receive allyCode for all players of Guild', async function () {
-		this.timeout(500000);
+	const sandbox = sinon.createSandbox();
+	this.timeout(50000);
+	afterEach(() => {
+		sandbox.restore();
+	});
+	it('receive allyCode for all players of Guild', async function () {
+		const getGuildFunction = sandbox
+			.stub(guildService, 'getGuildId')
+			.callsFake(() => 2);
+		const getGuildNameFunction = sandbox
+			.stub(guildService, 'getGuildName')
+			.callsFake(() => 'GuildName');
+		const getGuildMembersFunction = sandbox
+			.stub(guildService, 'getGuildMembers')
+			.callsFake(() => [1, 2, 3]);
 		const result: IGuild = await guildController.getGuildAll(621723826);
 		expect(result.members.length > 0).equal(true);
 		expect(result.members[0].hasOwnProperty('name')).equal(true);
 		expect(result.members[0].hasOwnProperty('id')).equal(true);
+		expect(getGuildFunction.callCount).equal(1);
+		expect(getGuildNameFunction.callCount).equal(1);
+		expect(getGuildMembersFunction.callCount).equal(1);
 	});
-	xit('receive Legend Progress by allyCode', async function () {
-		this.timeout(500000);
-		const result: IFrontLegendTable[][] = await guildController.getLegendProgress(
-			621723826
-		);
-		expect(result.length === 2).equal(true);
-		expect(result[0].length === 3).equal(true);
-		expect(result[0][0].hasOwnProperty('player')).equal(true);
-		expect(result[0][0].hasOwnProperty('sort')).equal(true);
-		expect(result[0][0].hasOwnProperty('display')).equal(true);
-	});
-	xit('check guild', async function () {
-		this.timeout(500000);
-		const result: IGuild = await guildController.getGuildAll(621723826);
-		console.log('Guild test ', result);
-	});
-	xit('Get All Ally Codes', async function () {
-		this.timeout(50000);
+	it('Get All Ally Codes with a common users/members', async function () {
+		sandbox
+			.stub(guildService, 'getAll')
+			.callsFake(() => [{ allyCode: 21 }, { allyCode: 32 }]);
+		sandbox
+			.stub(userService, 'getUsersAllyCode')
+			.callsFake(() => [{ allyCode: 21 }, { allyCode: 22 }]);
 		const result = await guildController.getAllAllyCodes();
-		const uniq = lodash.uniqBy(result, 'allyCode');
 		expect(result.length).greaterThan(0);
-		expect(result.length).equal(uniq.length);
+		expect(result.length).equal(3);
 	});
-	xit('Update Guilds', async function () {
-		this.timeout(500000);
-		const members = await guildController.getAllAllyCodes();
-		const result = await guildController.updateGuilds(members);
-		expect(result).equal(true);
+	it('Get All Ally Codes without a common users/members', async function () {
+		sandbox
+			.stub(guildService, 'getAll')
+			.callsFake(() => [{ allyCode: 21 }, { allyCode: 42 }]);
+		sandbox
+			.stub(userService, 'getUsersAllyCode')
+			.callsFake(() => [{ allyCode: 25 }, { allyCode: 22 }]);
+		const result = await guildController.getAllAllyCodes();
+		expect(result.length).greaterThan(0);
+		expect(result.length).equal(4);
 	});
-	xit('Update Data', async function () {
-		this.timeout(500000);
-		const members = await guildController.updateData();
-		// const tri1 = await fetchDataService.getPlayer(621723826);
-		// const tri2 = await fetchDataService.getPlayer2(621723826);
-		// console.log(JSON.stringify(tri1));
-		// console.log('------------------------------------------------------');
-		// console.log('------------------------------------------------------');
-		// console.log('------------------------------------------------------');
-		// console.log(tri2);
-
-		// console.log('TEST RESULT ', members);
+	it('Update Data', async function () {
+		sandbox
+			.stub(guildService, 'getAll')
+			.callsFake(() => [{ allyCode: 21 }, { allyCode: 42 }]);
+		sandbox
+			.stub(userService, 'getUsersAllyCode')
+			.callsFake(() => [{ allyCode: 25 }, { allyCode: 22 }]);
+		const updateGuildMembersFunction = sandbox.spy(
+			guildController,
+			'updateGuildMembers'
+		);
+		const updatePlayerUnitsFunction = sandbox
+			.stub(playerController, 'updatePlayerUnits')
+			.callsFake(() => true);
+		const updateLegendProgressFunction = sandbox
+			.stub(playerController, 'saveLegendProgress')
+			.callsFake(() => true);
+		await guildController.updateData();
+		expect(updatePlayerUnitsFunction.callCount).eq(4);
+		expect(updateLegendProgressFunction.callCount).eq(4);
 	});
 });

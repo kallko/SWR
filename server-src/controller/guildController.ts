@@ -94,25 +94,6 @@ export const guildController = {
 		});
 		return guildMembers;
 	},
-	updateGuilds: async function (guildMembers: GuildMembers[]): Promise<void> {
-		let allMembers = [];
-		for (const member of guildMembers) {
-			if (!allMembers.some((cm) => cm.id === member.allyCode)) {
-				const guild = await fetchDataService.getGuildPlayersCode(
-					member.allyCode
-				);
-				if (guild?.members) {
-					allMembers = allMembers.concat(guild.members);
-				} else {
-					allMembers = allMembers.concat({
-						id: member.allyCode,
-						name: member.name
-					});
-				}
-			}
-		}
-		await guildController.updateGuildMembers(allMembers);
-	},
 	updateGuildMembers: async function (members) {
 		for (const member of members) {
 			await guildService.updateGuildMember(member.id);
