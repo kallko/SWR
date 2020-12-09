@@ -12,6 +12,7 @@ import { discordResultEmbed } from '../server-src/integration/discord/discordRes
 import { guildService } from '../server-src/service/guildService';
 import { ideaService } from '../server-src/service/IdeaService';
 import { modController } from '../server-src/controller/modController';
+import { guildController } from '../server-src/controller/guildController';
 
 const MESSAGE: IDiscordMessage = {
 	content: 'swr -h',
@@ -145,6 +146,7 @@ describe('discordDispatcher tests:', async function () {
 				sandbox.stub(guildService, 'updateGuildMember').callsFake(() => {
 					return {};
 				});
+				sandbox.stub(guildController, 'updateData').callsFake(() => true);
 			}
 		});
 		afterEach(() => {

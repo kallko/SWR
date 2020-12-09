@@ -109,7 +109,6 @@ export const discordDispatcher = {
 			);
 			setTimeout(async function () {
 				await guildController.updateData();
-				await guildController.updateData();
 			}, 100);
 			return discordResultEmbed.registered(player.data.name, allyCode);
 		}
