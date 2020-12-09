@@ -11,7 +11,7 @@ import { guildController } from '../server-src/controller/guildController';
 import { modController } from '../server-src/controller/modController';
 
 xdescribe('playerController tests:', async function () {
-	it.only('should legend progress for Kylo and Rey', async function () {
+	it('should legend progress for Kylo and Rey', async function () {
 		this.timeout(5000);
 		const result: any = await playerController.getLegendProgress(621723826);
 		expect(result.length).equal(4);

@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 const sinon = require('sinon');
-
 import { IDiscordMessage } from '../server-src/@types/IDiscord';
 
 import { discordDispatcher } from '../server-src/integration/discord/discordDispatcher';
@@ -10,513 +9,441 @@ import { userService } from '../server-src/service/UserService';
 import { discordHelper } from '../server-src/integration/discord/discordHelper';
 import { UnitService } from '../server-src/service/UnitService';
 import { discordResultEmbed } from '../server-src/integration/discord/discordResultEmbed';
-import { Rang } from '../server-src/@types/iRegistration';
+import { guildService } from '../server-src/service/guildService';
+import { ideaService } from '../server-src/service/IdeaService';
+import { modController } from '../server-src/controller/modController';
 
-if (process.env.NODE_ENV === 'TEST') {
-	const userServiceStub = sinon
-		.stub(userService, 'getUserByDiscordId')
-		.callsFake(() => {
-			return { id: 1, playerName: 'TestUser', allyCode: '1234567', rang: 0 };
-		});
-}
+const MESSAGE: IDiscordMessage = {
+	content: 'swr -h',
+	author: {
+		id: '590913433738936329',
+		username: 'test',
+		bot: false
+	},
+	addReaction(s: string) {}
+};
 
-describe.only('discordDispatcher tests:', async function () {
+const CHANNEL = {
+	id: 100,
+	type: 0,
+	createMessage: (msg, channel) => {}
+};
+
+const BOT = null;
+
+const sandbox = sinon.createSandbox();
+
+describe('discordDispatcher tests:', async function () {
 	this.timeout(500000);
-	it('msg with content swr -h and correct discord id should call help function', async function () {
-		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
-		const message: IDiscordMessage = {
-			content: 'swr -h',
-			author: {
-				id: '590913433738936329',
-				username: 'test',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		let result: any = await discordDispatcher.dispatch(null, message, {
-			id: 100,
-			type: 0
+
+	describe('Check for call correct function', () => {
+		beforeEach(() => {
+			if (process.env.NODE_ENV === 'TEST') {
+				sandbox.stub(userService, 'getUserByDiscordId').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(userService, 'getUser').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(userService, 'update').callsFake(() => {
+					return { playerName: 'NewTestName' };
+				});
+				sandbox.stub(guildService, 'updateGuildMember').callsFake(() => {
+					return {};
+				});
+			}
 		});
-		expect(result).equal(true);
-		stub.restore();
-	});
-	it('msg with content swr -h and not correct discord id should call help function', async function () {
-		const stub = sinon.stub(discordDispatcher, 'help').callsFake(() => true);
-		const message: IDiscordMessage = {
-			content: 'swr -h',
-			author: {
-				id: '59091343373893632',
-				username: 'test',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		let result: any = await discordDispatcher.dispatch(null, message, {
-			id: 100,
-			type: 0
+		afterEach(() => {
+			sandbox.restore();
 		});
-		expect(result).equal(true);
-		stub.restore();
-	});
-	it('msg with content swr -mcu should call colorUp function', async function () {
-		const stub = sinon.stub(discordDispatcher, 'colorUp').callsFake(() => true);
-		const message: IDiscordMessage = {
-			content: 'swr -mcu',
-			author: {
-				id: '590913433738936329',
-				username: 'test',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		let result: any = await discordDispatcher.dispatch(null, message, {
-			id: 100,
-			type: 0
+		it('msg with content swr -h and correct discord id should call help function', async function () {
+			sandbox.stub(discordDispatcher, 'help').callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			const result: any = await discordDispatcher.dispatch(
+				BOT,
+				message,
+				CHANNEL
+			);
+			expect(result).equal(true);
 		});
-		expect(result).equal(true);
-		stub.restore();
-	});
-	it('msg with content swr -lp should call legend progress function', async function () {
-		const stub = sinon
-			.stub(discordDispatcher, 'legendProgress')
-			.callsFake(() => true);
-		const message: IDiscordMessage = {
-			content: 'swr -lp',
-			author: {
-				id: '590913433738936329',
-				username: 'test',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		let result: any = await discordDispatcher.dispatch(null, message, {
-			id: 100,
-			type: 0
+		it('msg with content swr -h and not correct discord id should call help function', async function () {
+			sandbox.stub(discordDispatcher, 'help').callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.author.id = '5909134';
+			const result: any = await discordDispatcher.dispatch(
+				BOT,
+				message,
+				CHANNEL
+			);
+			expect(result).equal(true);
 		});
-		expect(result).equal(true);
-		stub.restore();
-	});
-	it('msg with content swr -gl should call guildList function', async function () {
-		const stub = sinon
-			.stub(discordDispatcher, 'guildList')
-			.callsFake(() => true);
-		const message: IDiscordMessage = {
-			content: 'swr -gl',
-			author: {
-				id: '590913433738936329',
-				username: 'triton',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		let result: any = await discordDispatcher.dispatch(null, message, {
-			id: 100,
-			type: 0
+		it('msg with content swr -mcu should call colorUp function', async function () {
+			sandbox.stub(discordDispatcher, 'colorUp').callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -mcu';
+			const result: any = await discordDispatcher.dispatch(
+				BOT,
+				message,
+				CHANNEL
+			);
+			expect(result).equal(true);
 		});
-		expect(result).equal(true);
-		stub.restore();
-	});
-	it("shouldn't register a user with wrong allyCode", async function () {
-		const spy = sinon.spy(fetchDataService, 'getPlayer');
-		const message: IDiscordMessage = {
-			content: 'swr -r 12312',
-			author: {
-				id: '590913433738936329',
-				username: 'triton',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		await discordDispatcher.dispatch(null, message, {
-			createMessage: (msg, channel) => {},
-			id: 100,
-			type: 0
+		it('msg with content swr -lp should call legend progress function', async function () {
+			sandbox.stub(discordDispatcher, 'legendProgress').callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -lp';
+			const result: any = await discordDispatcher.dispatch(
+				BOT,
+				message,
+				CHANNEL
+			);
+			expect(result).equal(true);
 		});
-		expect(spy.callCount).equal(0);
-		spy.restore();
+		it('msg with content swr -gl should call guildList function', async function () {
+			sandbox.stub(discordDispatcher, 'guildList').callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gl';
+			const result: any = await discordDispatcher.dispatch(
+				BOT,
+				message,
+				CHANNEL
+			);
+			expect(result).equal(true);
+		});
+		it('msg with content swr -mba should call colorUp function', async function () {
+			sandbox.stub(discordDispatcher, 'arenaMods').callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -mba';
+			const result: any = await discordDispatcher.dispatch(
+				BOT,
+				message,
+				CHANNEL
+			);
+			expect(result).equal(true);
+		});
 	});
-	it('should register a user with new allyCode and new discordCode', async function () {
-		const stubCreate = sinon
-			.stub(userService, 'createUser')
-			.callsFake(() => true);
-		const stubFetch = sinon
-			.stub(fetchDataService, 'getPlayer')
-			.callsFake(() => {
+
+	describe('Check registration options', async () => {
+		beforeEach(() => {
+			if (process.env.NODE_ENV === 'TEST') {
+				sandbox.stub(userService, 'getUserByDiscordId').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(guildService, 'updateGuildMember').callsFake(() => {
+					return {};
+				});
+			}
+		});
+		afterEach(() => {
+			sandbox.restore();
+		});
+		it("shouldn't register a user with wrong allyCode", async function () {
+			const spy = sandbox.spy(fetchDataService, 'getPlayer');
+			sandbox.stub(discordResultEmbed, 'registered').callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -r 12312';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(spy.callCount).equal(0);
+			spy.restore();
+		});
+		it('should register a user with new allyCode and new discordCode', async function () {
+			const createUser = sandbox
+				.stub(userService, 'createUser')
+				.callsFake(() => true);
+			sandbox.stub(fetchDataService, 'getPlayer').callsFake(() => {
 				return {
 					data: {
 						name: 'testName'
 					}
 				};
 			});
-		const message: IDiscordMessage = {
-			content: 'swr -r 111111111',
-			author: {
-				id: '111',
-				username: 'Test',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		await discordDispatcher.dispatch(null, message, {
-			createMessage: (msg, channel) => {},
-			id: 100,
-			type: 0
+			sandbox.stub(userService, 'getUser').callsFake(() => {
+				return null;
+			});
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -r 111111111';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(createUser.callCount).equal(1);
+			createUser.restore();
 		});
-		expect(stubCreate.callCount).equal(1);
-		stubCreate.restore();
-		stubFetch.restore();
-	});
-	xit('should not register a user with wrong allyCode', async function () {
-		const stubCreate = sinon
-			.stub(userService, 'createUser')
-			.callsFake(() => true);
-		const message: IDiscordMessage = {
-			content: 'swr -r 111111111',
-			author: {
-				id: '111',
-				username: 'Test',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		await discordDispatcher.dispatch(null, message, {
-			createMessage: (msg, channel) => {},
-			id: 100,
-			type: 0
+		it('should not register a user with wrong allyCode', async function () {
+			const stubCreate = sinon
+				.stub(userService, 'createUser')
+				.callsFake(() => true);
+			sandbox.stub(userService, 'getUser').callsFake(() => {
+				return {
+					id: 1,
+					playerName: 'TestUser',
+					allyCode: '1234567',
+					rang: 0
+				};
+			});
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -r 111111111';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(stubCreate.callCount).equal(0);
+			stubCreate.restore();
 		});
-		expect(stubCreate.callCount).equal(0);
-		stubCreate.restore();
-	});
-	xit('should update a user with wrong existing discord code', async function () {
-		const stubCreate = sinon
-			.stub(userService, 'createUser')
-			.callsFake(() => true);
-		const stubUpdate = sinon.stub(userService, 'update').callsFake(() => true);
-		const message: IDiscordMessage = {
-			content: 'swr -r 621723826',
-			author: {
-				id: '590913433738936329',
-				username: 'Test',
-				bot: false
-			},
-			channel: {
-				type: 1
-			},
-			addReaction(s: string) {}
-		};
-		await discordDispatcher.dispatch(null, message, {
-			createMessage: (msg, channel) => {},
-			id: 100,
-			type: 0
+		it('should update a user with wrong existing discord code', async function () {
+			const stubCreate = sinon
+				.stub(userService, 'createUser')
+				.callsFake(() => true);
+			const userServiceStubUpdate = sinon
+				.stub(userService, 'update')
+				.callsFake(() => true);
+			sandbox.stub(userService, 'getUser').callsFake(() => {
+				return {
+					id: 1,
+					playerName: 'TestUser',
+					allyCode: '1234567',
+					rang: 0
+				};
+			});
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -r 621723826';
+			message.author.id = '590913433738936329546';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(stubCreate.callCount).equal(0);
+			expect(userServiceStubUpdate.callCount).equal(1);
+			stubCreate.restore();
+			userServiceStubUpdate.restore();
 		});
-		expect(stubCreate.callCount).equal(0);
-		expect(stubUpdate.callCount).equal(1);
-		stubCreate.restore();
-	});
-	xit('should update a user with wrong existing discord code', async function () {
-		const message: IDiscordMessage = {
-			content: 'swr -gth',
-			author: {
-				id: '590913433738936329',
-				username: 'Test',
-				bot: false
-			},
-			channel: {
-				type: 1
-			},
-			addReaction(s: string) {}
-		};
-		await discordDispatcher.dispatch(null, message, {
-			createMessage: (msg, channel) => {},
-			id: 100,
-			type: 0
+		it('should return help with wrong options', async function () {
+			const helpFunction = sinon
+				.stub(discordDispatcher, 'help')
+				.callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gth';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(helpFunction.callCount).equal(1);
 		});
 	});
+
 	describe('guild top list:', async function () {
-		let spyGetGuildTop, spyGetGuildTopByField, spyStringGuildTop;
+		let spyGetGuildTop,
+			UnitServiceGetGuildTopByField,
+			discordResultEmbedGuildTop;
+
 		beforeEach(function () {
-			spyGetGuildTop = sinon.spy(discordDispatcher, 'guildTop');
-			spyGetGuildTopByField = sinon.spy(UnitService, 'getGuildTopByField');
-			spyStringGuildTop = sinon.spy(discordResultEmbed, 'guildTop');
+			if (process.env.NODE_ENV === 'TEST') {
+				sandbox.stub(userService, 'getUserByDiscordId').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(userService, 'getUser').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(userService, 'update').callsFake(() => {
+					return { playerName: 'NewTestName' };
+				});
+				sandbox.stub(guildService, 'updateGuildMember').callsFake(() => {
+					return {};
+				});
+				UnitServiceGetGuildTopByField = sinon
+					.stub(UnitService, 'getGuildTopByField')
+					.callsFake(() => true);
+				discordResultEmbedGuildTop = sinon
+					.stub(discordResultEmbed, 'guildTop')
+					.callsFake(() => true);
+				spyGetGuildTop = sinon.spy(discordDispatcher, 'guildTop');
+				sandbox.stub(guildService, 'getGuildId').callsFake(() => 1);
+				sandbox.stub(guildService, 'getGuildName').callsFake(() => '1');
+				sandbox.stub(guildService, 'getGuildMembers').callsFake(() => true);
+			}
 		});
 		afterEach(function () {
 			spyGetGuildTop.restore();
-			spyGetGuildTopByField.restore();
-			spyStringGuildTop.restore();
+			UnitServiceGetGuildTopByField.restore();
+			discordResultEmbedGuildTop.restore();
+			sandbox.restore();
 		});
-		xit('should return units with top-speed for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=speed',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
+		it('should return units with top-speed for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=speed';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(1);
+			expect(discordResultEmbedGuildTop.callCount).equal(1);
+			UnitServiceGetGuildTopByField.restore();
+			discordResultEmbedGuildTop.restore();
 		});
-		xit('should return units with top-power for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=power',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
+		it('should return units with top-power for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=power';
+			await discordDispatcher.dispatch(null, message, CHANNEL);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(1);
+			expect(discordResultEmbedGuildTop.callCount).equal(1);
 		});
-		xit('should return units with top-health for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=health',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
+		it('should return units with top-health for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=health';
+			await discordDispatcher.dispatch(null, message, CHANNEL);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(1);
+			expect(discordResultEmbedGuildTop.callCount).equal(1);
 		});
-		xit('should return units with top-defense for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=defense',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
+		it('should return units with top-defense for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=defense';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(1);
+			expect(discordResultEmbedGuildTop.callCount).equal(1);
 		});
-		xit('should return units with top-damage for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=damage',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
+		it('should return units with top-damage for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=damage';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(1);
+			expect(discordResultEmbedGuildTop.callCount).equal(1);
 		});
-		xit('should return units with top-defense for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=defense',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
+		it('should return units with top-potency for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=potency';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(1);
+			expect(discordResultEmbedGuildTop.callCount).equal(1);
 		});
-		xit('should return units with top-potency for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=potency',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
+		it('should return units with top-tenacity for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=tenacity';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(1);
+			expect(discordResultEmbedGuildTop.callCount).equal(1);
 		});
-		xit('should return units with top-tenacity for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=tenacity',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
+		it('should return units with top-protection for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=protection';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(1);
+			expect(discordResultEmbedGuildTop.callCount).equal(1);
 		});
-		xit('should return units with top-protection for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=protection',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(1);
-			// expect(spyStringGuildTop.callCount).equal(1);
-		});
-		xit('should not return results for wrong rank for guild', async function () {
-			const message: IDiscordMessage = {
-				content: 'swr -gtu -rank=blablabla',
-				author: {
-					id: '590913433738936329',
-					username: 'Test',
-					bot: false
-				},
-				channel: {
-					type: 1
-				}
-			};
-			// await discordDispatcher.dispatch(message, {
-			// 	createMessage: (msg, channel) => {},
-			// 	id: 100,
-			// 	type: 0
-			// });
-			// expect(spyGetGuildTop.callCount).equal(1);
-			// expect(spyGetGuildTopByField.callCount).equal(0);
-			// expect(spyStringGuildTop.callCount).equal(0);
+		it('should not return results for wrong rank for guild', async function () {
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -gtu -rank=blablabla';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(spyGetGuildTop.callCount).equal(1);
+			expect(UnitServiceGetGuildTopByField.callCount).equal(0);
+			expect(discordResultEmbedGuildTop.callCount).equal(0);
 		});
 	});
-	xit('should parse string with option', async function () {
-		const result = discordHelper.getParameters('-gtu -rank=health ', '-gtu');
-		expect(result).deep.equal({ rank: 'health' });
+	describe('String option parser', () => {
+		it('should parse string with option', async function () {
+			const result = discordHelper.getParameters('-gtu -rank=health ', '-gtu');
+			expect(result).deep.equal({ rank: 'health' });
+		});
+		it('should parse string with several options', async function () {
+			const result = discordHelper.getParameters(
+				'-gtu -rank=health -sort=desc',
+				'-gtu'
+			);
+			expect(result).deep.equal({ rank: 'health', sort: 'desc' });
+		});
 	});
-	xit('should parse string with several options', async function () {
-		const result = discordHelper.getParameters(
-			'-gtu -rank=health -sort=desc',
-			'-gtu'
-		);
-		expect(result).deep.equal({ rank: 'health', sort: 'desc' });
-	});
-	xit('should create idea in db', async function () {
-		const message: IDiscordMessage = {
-			content: 'swr -i hi, I am idea',
-			author: {
-				id: '590913433738936329',
-				username: 'Test',
-				bot: false
-			},
-			channel: {
-				type: 1
+	describe('Idea creator', () => {
+		beforeEach(function () {
+			if (process.env.NODE_ENV === 'TEST') {
+				sandbox.stub(userService, 'getUserByDiscordId').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(userService, 'getUser').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(userService, 'update').callsFake(() => {
+					return { playerName: 'NewTestName' };
+				});
+				sandbox.stub(guildService, 'updateGuildMember').callsFake(() => {
+					return {};
+				});
 			}
-		};
-		// await discordDispatcher.dispatch(message, {
-		// 	createMessage: (msg, channel) => {},
-		// 	id: 100,
-		// 	type: 0
-		// });
+		});
+		afterEach(function () {
+			sandbox.restore();
+		});
+		it('should create idea in db', async function () {
+			const ideaSpy = sinon.stub(ideaService, 'create').callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -i hi, I am idea';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(ideaSpy.callCount).equal(1);
+			ideaSpy.restore();
+		});
 	});
-	xit('msg with content swr -mba should call colorUp function', async function () {
-		// const stub = sinon.stub(discordDispatcher, 'arenaMods').callsFake(() => true);
-		const message: IDiscordMessage = {
-			content: 'swr -mba',
-			author: {
-				id: '590913433738936329',
-				username: 'test',
-				bot: false
+	describe('Mod Units evaluator', () => {
+		beforeEach(function () {
+			if (process.env.NODE_ENV === 'TEST') {
+				sandbox.stub(userService, 'getUserByDiscordId').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(userService, 'getUser').callsFake(() => {
+					return {
+						id: 1,
+						playerName: 'TestUser',
+						allyCode: '1234567',
+						rang: 0
+					};
+				});
+				sandbox.stub(userService, 'update').callsFake(() => {
+					return { playerName: 'NewTestName' };
+				});
+				sandbox.stub(guildService, 'updateGuildMember').callsFake(() => {
+					return {};
+				});
 			}
-		};
-		let result: any = await discordDispatcher.dispatch(null, message, {
-			id: 100,
-			type: 0
 		});
-		expect(result).equal(true);
-		// stub.restore();
-	});
-	xit('developer test 111', async function () {
-		const message: IDiscordMessage = {
-			content: 'swr -me -unit=PADMEAMIDALA',
-			author: {
-				id: '590913433738936329',
-				username: 'test',
-				bot: false
-			},
-			addReaction(s: string) {}
-		};
-		console.log('start test');
-		let result: any = await discordDispatcher.dispatch(null, message, {
-			id: 100,
-			type: 0
+		afterEach(function () {
+			sandbox.restore();
 		});
-		console.log('Result ', JSON.stringify(result));
-		expect(result.length).equal(5);
+		it('Looking for evaluation mods from Padme Amidala', async function () {
+			const controllerSpy = sinon
+				.stub(modController, 'getModForEvolution')
+				.callsFake(() => true);
+			const message: IDiscordMessage = MESSAGE;
+			message.content = 'swr -mue -unit=PADMEAMIDALA';
+			await discordDispatcher.dispatch(BOT, message, CHANNEL);
+			expect(controllerSpy.callCount).equal(1);
+			controllerSpy.restore();
+		});
 	});
 });
