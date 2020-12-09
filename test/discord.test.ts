@@ -31,11 +31,9 @@ const CHANNEL = {
 
 const BOT = null;
 
-const sandbox = sinon.createSandbox();
-
 describe('discordDispatcher tests:', async function () {
 	this.timeout(500000);
-
+	const sandbox = sinon.createSandbox();
 	describe('Check for call correct function', () => {
 		beforeEach(() => {
 			if (process.env.NODE_ENV === 'TEST') {
