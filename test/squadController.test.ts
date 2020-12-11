@@ -18,7 +18,7 @@ xdescribe('SquadController tests:', async function () {
 		expect(result[0].hasOwnProperty('possibleSets')).equal(true);
 		expect(result[0].hasOwnProperty('secondary')).equal(true);
 	});
-	it.only('Service test for order', async function () {
+	it('Service test for order', async function () {
 		this.timeout(20000);
 		const result = await squadService.getBySquad(
 			{

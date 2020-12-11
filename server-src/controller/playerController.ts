@@ -14,9 +14,11 @@ import { IPlayer } from '../@types/IPlayer';
 import { userService } from '../service/UserService';
 
 let LEGEND_REQUIREMENTS: LegendRequirements[];
-(async function f() {
-	LEGEND_REQUIREMENTS = await LegendRequirementsService.getAll();
-})();
+if (process.env.NODE_ENV !== 'TEST') {
+	(async function f() {
+		LEGEND_REQUIREMENTS = await LegendRequirementsService.getAll();
+	})();
+}
 
 export const playerController = {
 	getPlayer: async function (allyCode: number): Promise<IPlayer> {

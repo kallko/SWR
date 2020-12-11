@@ -42,7 +42,8 @@
     "server": "tsc -p server-src/tsconfigServer.json && NODE_ENV=DEVELOPMENT node ./server-dist/main.js",
     "serverProd": "NODE_ENV=PRODUCTION node ./server-dist/main.js",
     "server-build": "tsc -p server-src/tsconfigServer.json",
-    "server-test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --require ts-node/register 'test/*.test.ts'"
+    "server-test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' NODE_ENV=TEST mocha --require ts-node/register 'test/*.test.ts'",
+    "server-tdd": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' NODE_ENV=DEVELOPMENT mocha --require ts-node/register 'test/*.test.ts'"
   },
   "eslintConfig": {
     "extends": "react-app"
