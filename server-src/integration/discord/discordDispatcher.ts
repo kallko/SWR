@@ -58,7 +58,7 @@ export const discordDispatcher = {
 			msg.addReaction('🤔');
 			return discordResultEmbed.notRegistered(msg);
 		}
-		if (msg.channel.type === 1 && !msg.author.bot) {
+		if (msg.channel?.type === 1 && !msg.author?.bot) {
 			msg.addReaction('❌');
 			return discordDispatcher['help'].call(discordDispatcher, channel, msg);
 		}
@@ -108,7 +108,6 @@ export const discordDispatcher = {
 				player.data.name
 			);
 			setTimeout(async function () {
-				await guildController.updateData();
 				await guildController.updateData();
 			}, 100);
 			return discordResultEmbed.registered(player.data.name, allyCode);
