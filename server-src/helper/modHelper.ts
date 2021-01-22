@@ -18,10 +18,6 @@ export function getUnitsWithStats(units: IImportUnit[], mods) {
 			let statsNumber = STATS[secondaryName];
 			let existStat = unit.data.stats['' + statsNumber];
 			let print = false;
-			if (unit.data.base_id === 'PHASMA') {
-				print = true;
-				console.log('Secondary name ', secondaryName);
-			}
 			unit.data['base' + secondaryName] = getBaseStat(
 				secondaryName,
 				existStat,
@@ -156,20 +152,6 @@ export function getBaseStat(
 				(1 +
 					secondary[secondaryName].additionalSecondaryPercent / 100 +
 					secondary[secondaryName].secondaryFromSet / 100);
-			// existStat -
-			// secondary[secondaryName].additionalSecondary -
-			// secondary[secondaryName].additionalSecondaryPercent / 100 -
-			// secondary[secondaryName].secondaryFromSet / 100;
-			if (print && secondaryName === 'Critical Chance') {
-				console.log(
-					'FOR CALCULATE',
-					existStat,
-					secondary[secondaryName].additionalSecondaryPercent,
-					secondary[secondaryName].additionalSecondary,
-					secondary[secondaryName].secondaryFromSet,
-					baseStat
-				);
-			}
 			break;
 		}
 		case 'Critical Chance':
@@ -179,16 +161,6 @@ export function getBaseStat(
 				secondary[secondaryName].additionalSecondaryPercent -
 				secondary[secondaryName].additionalSecondary / 10 -
 				secondary[secondaryName].secondaryFromSet;
-			if (print && secondaryName === 'Critical Chance') {
-				console.log(
-					'FOR CALCULATE',
-					existStat,
-					secondary[secondaryName].additionalSecondaryPercent,
-					secondary[secondaryName].additionalSecondary,
-					secondary[secondaryName].secondaryFromSet,
-					baseStat
-				);
-			}
 			break;
 		}
 		case 'Potency':
@@ -232,26 +204,6 @@ export function stringifyBestMods(
 			let emod = existingMods.find((eMod) => eMod.id === mod.id);
 			if (emod.character !== hero.name) {
 				result += getNewModInfo(mod, emod);
-				// console.log(
-				// 	'MOD ',
-				// 	MOD_OPTIONS.form[mod.slot],
-				// 	' from ',
-				// 	emod.character,
-				// 	'SET:',
-				// 	set.name,
-				// 	'Prime:',
-				// 	mod.primary_stat.name +
-				// 		': ' +
-				// 		(('' + mod.primary_stat.value).indexOf('0000') !== -1
-				// 			? mod.primary_stat.value / 10000
-				// 			: Math.round(mod.primary_stat.value) / 100 + '%'),
-				// 	'Second:',
-				// 	identifier,
-				// 	'tier',
-				// 	mod.tier,
-				// 	'rarity',
-				// 	mod.rarity
-				// );
 			}
 		});
 	}

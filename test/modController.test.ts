@@ -11,7 +11,7 @@ import { discordDispatcher } from '../server-src/integration/discord/discordDisp
 import { getUnitsWithStats } from '../server-src/helper/modHelper';
 import { IImportUnit } from '../server-src/@types/IUnit';
 
-describe.only('mod Controller tests:', async function () {
+xdescribe('mod Controller tests:', async function () {
 	let trooper, general, phasma, officer;
 	let trooperMods, generalMods, phasmaMods, officerMods;
 	before(function () {
