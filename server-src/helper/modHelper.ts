@@ -17,10 +17,12 @@ export function getUnitsWithStats(units: IImportUnit[], mods) {
 			let secondaryName = Object.keys(secondary)[0];
 			let statsNumber = STATS[secondaryName];
 			let existStat = unit.data.stats['' + statsNumber];
+			let print = false;
 			unit.data['base' + secondaryName] = getBaseStat(
 				secondaryName,
 				existStat,
-				secondary
+				secondary,
+				print
 			);
 		});
 	});
@@ -134,15 +136,17 @@ export function getSpeed(mods) {
 	return { additionalSpeed, speedFromSet };
 }
 
-export function getBaseStat(secondaryName, existStat, secondary) {
+export function getBaseStat(
+	secondaryName,
+	existStat,
+	secondary,
+	print = false
+) {
 	let baseStat: number = 0;
 	switch (secondaryName) {
-		case 'Potency':
 		case 'Offense':
 		case 'Health':
-		case 'Tenacity':
-		case 'Protection':
-		case 'Critical Chance': {
+		case 'Protection': {
 			baseStat =
 				(existStat - secondary[secondaryName].additionalSecondary) /
 				(1 +
@@ -150,13 +154,17 @@ export function getBaseStat(secondaryName, existStat, secondary) {
 					secondary[secondaryName].secondaryFromSet / 100);
 			break;
 		}
+		case 'Critical Chance':
 		case 'Defense': {
 			baseStat =
 				existStat -
 				secondary[secondaryName].additionalSecondaryPercent -
-				secondary[secondaryName].additionalSecondary / 10;
+				secondary[secondaryName].additionalSecondary / 10 -
+				secondary[secondaryName].secondaryFromSet;
 			break;
 		}
+		case 'Potency':
+		case 'Tenacity':
 		case 'Critical Damage': {
 			baseStat =
 				existStat -
@@ -196,26 +204,6 @@ export function stringifyBestMods(
 			let emod = existingMods.find((eMod) => eMod.id === mod.id);
 			if (emod.character !== hero.name) {
 				result += getNewModInfo(mod, emod);
-				// console.log(
-				// 	'MOD ',
-				// 	MOD_OPTIONS.form[mod.slot],
-				// 	' from ',
-				// 	emod.character,
-				// 	'SET:',
-				// 	set.name,
-				// 	'Prime:',
-				// 	mod.primary_stat.name +
-				// 		': ' +
-				// 		(('' + mod.primary_stat.value).indexOf('0000') !== -1
-				// 			? mod.primary_stat.value / 10000
-				// 			: Math.round(mod.primary_stat.value) / 100 + '%'),
-				// 	'Second:',
-				// 	identifier,
-				// 	'tier',
-				// 	mod.tier,
-				// 	'rarity',
-				// 	mod.rarity
-				// );
 			}
 		});
 	}
