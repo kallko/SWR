@@ -3,9 +3,15 @@ import { IRegistration, Rang } from '../@types/iRegistration';
 import { IReqUnits } from '../@types/IGuild';
 import { config } from '../config/config';
 
+let logging = true;
+if (process.env.NODE_ENV === 'TEST') {
+	logging = false;
+}
 const sequelize = new Sequelize('swr', 'root', config.MySQL.password, {
 	host: 'localhost',
-	dialect: 'mysql'
+	dialect: 'mysql',
+	pool: { acquire: 60000 },
+	logging
 });
 
 interface UserCreationAttributes extends Optional<IRegistration, 'id'> {}
