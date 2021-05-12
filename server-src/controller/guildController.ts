@@ -40,10 +40,10 @@ export const guildController = {
 		let player;
 		if (!guildId) {
 			player = await fetchDataService.getPlayer(allyCode);
-			guildId = player.data.guild_id;
+			guildId = player?.data?.guild_id;
 		}
 		let guildName =
-			(await guildService.getGuildName(guildId)) || player.data.guild_name;
+			(await guildService.getGuildName(guildId)) || player?.data?.guild_name;
 		let guild = await guildService.getGuildMembers(guildId);
 		let members;
 		if (guild?.length === 0) {
