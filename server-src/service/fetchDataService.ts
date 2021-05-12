@@ -6,6 +6,7 @@ const ApiSwgohHelp = require('api-swgoh-help');
 import { config } from '../config/config';
 
 const swapi = new ApiSwgohHelp(config.swoghApiHelpCredentials);
+swapi.connect();
 
 export const fetchDataService = {
 	async getAllHeroes(): Promise<number[]> {
@@ -32,7 +33,6 @@ export const fetchDataService = {
 		return { units: null, data: null, detail: null, ally_code: null };
 	},
 	async getGuildPlayersCode(allyCode: number): Promise<IGuild> {
-		await swapi.connect();
 		const payload = { allyCode };
 		const { result } = await swapi.fetchGuild(payload);
 		return result
@@ -48,7 +48,6 @@ export const fetchDataService = {
 			: null;
 	},
 	async getPlayerFromSWAPI(allyCode: number) {
-		await swapi.connect();
 		const payload = { allyCode };
 		const { result, error, warning } = await swapi.fetchPlayer(
 			payload,
@@ -84,11 +83,11 @@ function transformData(player): IPlayer {
 			guild_name: player.guildName,
 			arena_rank: player.arena.char.rank,
 			fleet_arena: {
-				leader: player.arena.ship.squad[0].defId,
+				leader: player.arena.ship.squad?.[0].defId,
 				rank: player.arena.ship.rank
 			},
 			arena: {
-				leader: player.arena.char.squad[0].defId,
+				leader: player.arena.ship.squad?.[0].defId,
 				rank: player.arena.char.rank
 			},
 			galactic_power: null
