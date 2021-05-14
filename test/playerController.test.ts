@@ -10,7 +10,7 @@ import { sortUnitsInSquad } from '../server-src/controller/squadController';
 import { guildController } from '../server-src/controller/guildController';
 import { modController } from '../server-src/controller/modController';
 
-describe('playerController tests:', async function () {
+xdescribe('playerController tests:', async function () {
 	it.only('should legend progress for Kylo and Rey', async function () {
 		this.timeout(5000);
 		const result: any = await playerController.getLegendProgress(621723826);

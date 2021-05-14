@@ -10,8 +10,9 @@ import { PLAYER } from './examples/player';
 import { discordDispatcher } from '../server-src/integration/discord/discordDispatcher';
 import { getUnitsWithStats } from '../server-src/helper/modHelper';
 import { IImportUnit } from '../server-src/@types/IUnit';
+import { IMod } from '../server-src/@types/IMod';
 
-xdescribe('mod Controller tests:', async function () {
+describe('mod Controller tests:', async function () {
 	let trooper, general, phasma, officer;
 	let trooperMods, generalMods, phasmaMods, officerMods;
 	before(function () {
@@ -180,7 +181,7 @@ xdescribe('mod Controller tests:', async function () {
 			expect(Math.ceil(officer.data['baseCritical Chance'] * 100)).equal(6738);
 		});
 	});
-	describe.only('Calculate units in another mods ', function () {
+	describe('Calculate units in another mods ', function () {
 		before(function () {
 			calculateNewStats(general, trooperMods);
 			calculateNewStats(trooper, generalMods);
@@ -211,6 +212,28 @@ xdescribe('mod Controller tests:', async function () {
 		});
 		it('Check Speed for General in FOT mods', function () {
 			expect(Math.floor(general.data.newSpeed)).equal(274);
+		});
+	});
+	describe.only('update MCU for 6 star modules', () => {
+		it('develop', async () => {
+			const playerMods: IMod[] = await fetchDataService.getAllMods(621723826);
+			let colorUpMods: IMod[] = playerMods.filter(
+				(mod) =>
+					mod.rarity > 5 &&
+					mod.slot !== 2 &&
+					mod.secondary_stats.some(
+						(secondary) =>
+							secondary.name === 'Speed' &&
+							((secondary.roll <= 4 &&
+								secondary.value >= 160000 &&
+								mod.tier < 4) ||
+								(secondary.roll <= 3 &&
+									secondary.value >= 120000 &&
+									mod.tier < 3))
+					)
+			);
+			console.log('Qount ', colorUpMods.length);
+			console.log('colorUpMods ', JSON.stringify(colorUpMods));
 		});
 	});
 });

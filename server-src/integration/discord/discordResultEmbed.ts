@@ -287,30 +287,53 @@ export const discordResultEmbed = {
 			footer
 		};
 	},
-	colorUpMods(result, msg: IDiscordMessage): IDiscordEmbed {
+	colorUpMods(mods, msg: IDiscordMessage): IDiscordEmbed {
 		// todo make color green for all the best;
-		const value =
-			result.length === 0
+		const value5 =
+			mods.length === 0
 				? 'You made your best. Nothing to upgrade.'
-				: result.reduce(
+				: mods.reduce(
 						(sum, entry) =>
-							sum +
-							entry.character +
-							' - ' +
-							MOD_OPTIONS.form[entry.slot] +
-							'\n',
+							entry.rarity === 5
+								? sum +
+								  entry.character +
+								  ' - ' +
+								  MOD_OPTIONS.form[entry.slot] +
+								  '\n'
+								: '',
 						''
 				  );
+
+		let value6 =
+			mods.length === 0
+				? 'You made your best. Nothing to upgrade.'
+				: mods.reduce(
+						(sum, entry) =>
+							entry.rarity === 6
+								? sum +
+								  entry.character +
+								  ' - ' +
+								  MOD_OPTIONS.form[entry.slot] +
+								  '\n'
+								: '',
+						''
+				  );
+		value6 = validateColorUpModsStringLength(value6);
 		return {
 			title: msg.author.greeting || msg.author.username,
-			description: 'These mods after upgrade could add more than 20 speed:',
+			description: 'These mods after upgrade could add more than 25 speed:',
 			author,
 			color: '16768350',
 			fields: [
 				{
-					name: 'Mods:',
-					value: value,
-					inline: true
+					name: 'Mods 6*:',
+					value: value6 || 'You made your best. Nothing to upgrade.',
+					inline: false
+				},
+				{
+					name: 'Mods 5*:',
+					value: value5 || 'You made your best. Nothing to upgrade.',
+					inline: false
 				}
 			],
 			footer
@@ -459,4 +482,24 @@ function transformEstimatedDate(date: Date): string {
 		result = 'Not enough data, try in a week';
 	}
 	return result;
+}
+
+function validateColorUpModsStringLength(valueString: string): string {
+	const maxStringLength = 1024;
+	if (valueString.length < maxStringLength) {
+		return valueString;
+	}
+	const parts = valueString.split('\n');
+	let newValueString = '';
+	let index = parts.length - 1;
+	for (const part of parts) {
+		if (newValueString.length + part.length < maxStringLength - 10) {
+			newValueString += `${part}\n`;
+		} else {
+			newValueString += `and ${index}  more...`;
+			break;
+		}
+		index--;
+	}
+	return newValueString;
 }
