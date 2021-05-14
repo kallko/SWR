@@ -10,7 +10,8 @@ export const Transformer = {
 		return mods.map((mod: IMod) => {
 			return {
 				character: mod.character,
-				slot: mod.slot
+				slot: mod.slot,
+				rarity: mod.rarity
 			};
 		});
 	},
