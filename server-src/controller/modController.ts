@@ -14,18 +14,9 @@ let currentUnit = null;
 export const modController = {
 	async getColorUpMods(id: number): Promise<IFrontColorUpMod[]> {
 		const playerMods: IMod[] = await fetchDataService.getAllMods(id);
-		let colorUpMods: IMod[] = playerMods.filter(
-			(mod) => mod.rarity === 5 && mod.slot !== 2
-		);
-		colorUpMods = colorUpMods.filter((mod) => {
-			const minSpeed = MOD_OPTIONS.speedForUpgrade[mod.tier];
-			return mod.secondary_stats.some(
-				(second) => second.name === 'Speed' && second.value / 10000 > minSpeed
-			);
-		});
-		colorUpMods.sort(Sorter.sortByTier);
-
-		return Transformer.transformColorUpMods(colorUpMods);
+		const colorUpMods5: IMod[] = filter5StarModsForColorUp(playerMods);
+		const colorUpMods6: IMod[] = filter6StarModsForColorUp(playerMods);
+		return Transformer.transformColorUpMods([...colorUpMods5, ...colorUpMods6]);
 	},
 	async creator(allyCode: number) {
 		let newSets = [];
@@ -592,4 +583,32 @@ async function getBaseIdForModEvolution(
 	throw new Error(
 		'Wrong baseId for unit. You could try find unit by power rank or baseId, for example:\n swr -mue -unit=3\n swr -mue -unit=23\n swr -mue -unit=KYLOREN'
 	);
+}
+
+function filter5StarModsForColorUp(mods: IMod[]): IMod[] {
+	let colorUpMods: IMod[] = mods.filter(
+		(mod) => mod.rarity === 5 && mod.slot !== 2
+	);
+	const colorUpMods5 = colorUpMods.filter((mod) => {
+		const minSpeed = MOD_OPTIONS.speedForUpgrade[mod.tier];
+		return mod.secondary_stats.some(
+			(second) => second.name === 'Speed' && second.value / 10000 > minSpeed
+		);
+	});
+	return colorUpMods5.sort(Sorter.sortByTier);
+}
+
+function filter6StarModsForColorUp(mods: IMod[]): IMod[] {
+	const colorUpMods6 = mods.filter(
+		(mod) =>
+			mod.rarity > 5 &&
+			mod.slot !== 2 &&
+			mod.secondary_stats.some(
+				(secondary) =>
+					secondary.name === 'Speed' &&
+					((secondary.roll <= 4 && secondary.value >= 200000 && mod.tier < 4) ||
+						(secondary.roll <= 3 && secondary.value >= 160000 && mod.tier < 3))
+			)
+	);
+	return colorUpMods6.sort(Sorter.sortByTier);
 }
