@@ -6,7 +6,7 @@ export const squadService = {
 		return await Squad.create(options);
 	},
 	getBySquad: async function (options, allyCode?: number) {
-		let searchOptions = {};
+		let searchOptions;
 		if (allyCode) {
 			searchOptions = {
 				where: {
@@ -16,7 +16,9 @@ export const squadService = {
 				order: [
 					['allyCode', 'DESC'],
 					['createdAt', 'DESC']
-				]
+				],
+				raw: true,
+				nest: true
 			};
 		} else {
 			searchOptions = {
@@ -28,7 +30,9 @@ export const squadService = {
 						}
 					]
 				},
-				order: [['createdAt', 'DESC']]
+				order: [['createdAt', 'DESC']],
+				raw: true,
+				nest: true
 			};
 		}
 		const squads = await Squad.findAll(searchOptions);
@@ -38,6 +42,13 @@ export const squadService = {
 		return squads;
 	},
 	increaseUsed: async function (squad) {
-		return await squad.update({ used: squad.used + 1 });
+		if (process.env.NODE_ENV !== 'TEST') {
+			const squadToUpdate = await Squad.findOne({
+				where: {
+					id: squad.id
+				}
+			});
+			return await squadToUpdate.update({ used: squad.used + 1 });
+		}
 	}
 };
