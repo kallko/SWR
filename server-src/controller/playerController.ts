@@ -4,16 +4,22 @@ import * as lodash from 'lodash';
 import { ILegendProgress } from '../@types/IGuild';
 import { IImportUnit } from '../@types/IUnit';
 import { IMod } from '../@types/IMod';
+import { LEGEND_REQUIREMENTS_CONST } from '../@const/LEGENDREQ';
 
 import { fetchDataService } from '../service/fetchDataService';
 import { LegendService } from '../service/LegendService';
 import { LegendRequirementsService } from '../service/LegendRequirementsService';
-import { Unit, LegendRequirements, LegendProgress } from '../service/dbModels';
+import {
+	Unit,
+	LegendRequirements,
+	LegendProgress,
+	LegendRequirementsCreationAttributes
+} from '../service/dbModels';
 import { UnitService } from '../service/UnitService';
 import { IPlayer } from '../@types/IPlayer';
 import { userService } from '../service/UserService';
 
-let LEGEND_REQUIREMENTS: LegendRequirements[];
+let LEGEND_REQUIREMENTS: LegendRequirementsCreationAttributes[] = LEGEND_REQUIREMENTS_CONST;
 if (process.env.NODE_ENV !== 'TEST') {
 	(async function f() {
 		LEGEND_REQUIREMENTS = await LegendRequirementsService.getAll();
@@ -174,7 +180,10 @@ function isLegendExist(legendBaseId: string, units: Unit[]) {
 		units.some((unit: Unit) => unit.baseId === legendBaseId)
 	);
 }
-function isComplete(legendUnit: LegendRequirements, unit: Unit) {
+function isComplete(
+	legendUnit: LegendRequirementsCreationAttributes,
+	unit: Unit
+) {
 	return (
 		unit &&
 		(unit.relic - 2 >= legendUnit.relic ||
