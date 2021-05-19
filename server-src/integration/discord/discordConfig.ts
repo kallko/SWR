@@ -34,7 +34,7 @@ export const discordConfig: IDiscordOption[] = [
 		id: 10,
 		key: '-mcu',
 		description:
-			'Mods ColorUp. \nFind mods, which after color-up, could add more than 20 speed',
+			'Mods ColorUp. \nFind mods, which after color-up, could add more than 25 speed',
 		handler: 'colorUp'
 	},
 	{
