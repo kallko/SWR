@@ -282,6 +282,20 @@ export const discordResultEmbed = {
 							  transformEstimatedDate(result[3].display_data.estimated_date)
 							: ''),
 					inline: true
+				},
+				{
+					name: 'Kenobi Progress',
+					value:
+						result[4].display_data.display_status +
+						'\n' +
+						'From last week: ' +
+						result[4].display_data.last_week_add +
+						(result[4].display_data.estimated_date
+							? '\n' +
+							  'Receiving: ' +
+							  transformEstimatedDate(result[4].display_data.estimated_date)
+							: ''),
+					inline: false
 				}
 			],
 			footer
