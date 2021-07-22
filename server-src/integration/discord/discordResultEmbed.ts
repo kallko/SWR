@@ -303,21 +303,15 @@ export const discordResultEmbed = {
 	},
 	colorUpMods(mods, msg: IDiscordMessage): IDiscordEmbed {
 		// todo make color green for all the best;
+		const mods5 = mods.filter((mod) => mod.rarity === 5);
 		const value5 =
-			mods.length === 0
+			mods5.length === 0
 				? 'You made your best. Nothing to upgrade.'
-				: mods.reduce(
+				: mods5.reduce(
 						(sum, entry) =>
-							entry.rarity === 5
-								? sum +
-								  entry.character +
-								  ' - ' +
-								  MOD_OPTIONS.form[entry.slot] +
-								  '\n'
-								: '',
+							entry.character + ' - ' + MOD_OPTIONS.form[entry.slot] + '\n',
 						''
 				  );
-
 		let value6 =
 			mods.length === 0
 				? 'You made your best. Nothing to upgrade.'
