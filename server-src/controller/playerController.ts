@@ -99,9 +99,9 @@ export const playerController = {
 					//todo take name no baseId
 					legend_name: legendBaseId,
 					display_data: {
-						display_status: '' + progress + '%',
+						display_status: '' + Math.min(progress, 100) + '%',
 						sorting_data: progress,
-						last_week_add: progress - progressLastWeek,
+						last_week_add: progress - progressLastWeek && 0,
 						estimated_date:
 							history?.createdAt && progress !== progress - progressLastWeek
 								? await getEstimatedDate(
