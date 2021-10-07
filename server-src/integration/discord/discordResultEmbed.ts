@@ -296,6 +296,20 @@ export const discordResultEmbed = {
 							  transformEstimatedDate(result[4].display_data.estimated_date)
 							: ''),
 					inline: false
+				},
+				{
+					name: 'Vader Progress',
+					value:
+						result[5].display_data.display_status +
+						'\n' +
+						'From last week: ' +
+						result[5].display_data.last_week_add +
+						(result[5].display_data.estimated_date
+							? '\n' +
+							  'Receiving: ' +
+							  transformEstimatedDate(result[4].display_data.estimated_date)
+							: ''),
+					inline: false
 				}
 			],
 			footer
